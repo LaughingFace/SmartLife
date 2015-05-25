@@ -3,7 +3,7 @@ package com.laughingFace.microWash.ui.activity;
 import android.os.Bundle;
 import com.laughingFace.microWash.R;
 
-public class MyActivity extends BaseActivity {
+public class DeviceActivity extends BaseActivity {
     /**
      * Called when the activity is first created.
      */

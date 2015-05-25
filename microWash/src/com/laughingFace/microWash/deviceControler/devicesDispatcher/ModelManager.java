@@ -1,6 +1,7 @@
 package com.laughingFace.microWash.deviceControler.devicesDispatcher;
 
 
+import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 
 public class ModelManager extends ModelAngel implements DeviceMonitor {
@@ -16,7 +17,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     }
 
     @Override
-    public void onStart() {
+    public void onStart(Model model) {
 
     }
 
