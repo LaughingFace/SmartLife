@@ -27,7 +27,7 @@ public class ModelAngel implements DeviceStateListener,ModelRunningState{
 	public void startModel(Model model) {
 		if (null == device)
 		{
-			modelStateListener.faillOnStart();
+			modelStateListener.faillOnStart(model);
 			return;
 		}
 		this.RunningModel = model;
@@ -51,7 +51,7 @@ public class ModelAngel implements DeviceStateListener,ModelRunningState{
 		this.device = null;
 		if (null != RunningModel)
 		{
-			modelStateListener.onInterupt();
+			modelStateListener.onInterupt(RunningModel);
 			RunningModel = null;
 		}
 
@@ -74,13 +74,13 @@ public class ModelAngel implements DeviceStateListener,ModelRunningState{
 			}
 			else if (0 == modelState)
 			{
-				modelStateListener.onFinish();
+				modelStateListener.onFinish(RunningModel);
 
 				endModel();
 			}
 			else
 			{
-				modelStateListener.faillOnStart();
+				modelStateListener.faillOnStart(RunningModel);
 
 				endModel();
 			}
