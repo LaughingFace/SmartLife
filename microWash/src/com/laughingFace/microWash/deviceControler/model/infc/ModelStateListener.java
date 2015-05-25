@@ -1,8 +1,10 @@
 package com.laughingFace.microWash.deviceControler.model.infc;
 
+import com.laughingFace.microWash.deviceControler.model.Model;
+
 public interface ModelStateListener {
 
-	public abstract void onStart();
+	public abstract void onStart(Model model);
 
 	public abstract void onProcessing();
 

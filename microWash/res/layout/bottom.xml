@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+<RelativeLayout android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_margin="10dp">
+
+    <ImageButton
+        android:layout_width="62dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="17dp"
+        android:id="@+id/light"
+        android:background="@drawable/btn_light_off"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true"
+        android:contentDescription=""
+        />
+
+    <ImageButton
+            android:visibility="gone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/warning"
+        android:background="@drawable/warn"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/light"
+
+        android:contentDescription=""
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/nextPage"
+        android:background="@drawable/nextpage"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentRight="true"
+        android:contentDescription=""/>
+</RelativeLayout>
+</merge>

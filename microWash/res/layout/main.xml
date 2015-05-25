@@ -1,13 +1,340 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
-    <TextView
-            android:layout_width="fill_parent"
+<!--suppress ALL -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:myattr="http://schemas.android.com/apk/res/com.cdlx.sockMachine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/main_bg">
+   <!-- <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:layout_alignParentTop="true"
+                 android:layout_centerHorizontal="true"
+                 android:layout_gravity="center"
+                 android:layout_marginTop="40dp"
+                 android:id="@+id/mianFram"
+            >
+        <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/mianFlag"
+                android:adjustViewBounds="true"
+                android:maxHeight="270dp"
+                android:maxWidth="270dp"
+                android:src="@drawable/main_flag"
+                />
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:id="@+id/tv_mode"
+                  android:textSize="40sp"
+                  android:textColor="@color/main_text"
+                  android:focusableInTouchMode="false"
+                  android:focusable="false"
+                  android:text=""/>
+    </FrameLayout>
+
+    <ImageView
+            android:id="@+id/mainText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World, MyActivity"
+            android:layout_below="@id/mianFram"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="70dp"
+            android:maxWidth="230dp"
+            android:src="@drawable/main_flag_text"
             />
-</LinearLayout>
+
+    <com.cdlx.sockMachine.view.CircleLayout
+            android:id="@+id/normalWithRange"
+            android:layout_width="390dp"
+            android:layout_height="390dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            myattr:angleOffset="160"
+            myattr:angleRange="270"
+            myattr:innerRadius="60dp"
+            >
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:id="@+id/device_model_standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:id="@+id/device_model_timingDryOff"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:id="@+id/device_model_timingWash"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:id="@+id/device_model_dryOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:visibility="gone"
+                android:id="@+id/device_model_sterilization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:id="@+id/device_model_openTheDoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+        <com.cdlx.sockMachine.view.DragableFrameLayout
+                android:id="@+id/device_model_closeTheDoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="33dp"
+                    android:maxWidth="33dp"
+                    android:src="@drawable/item_outside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="-357"
+
+                    />
+
+            <com.cdlx.sockMachine.view.RotateImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="47dp"
+                    android:maxWidth="47dp"
+                    android:src="@drawable/item_inside"
+                    myattr:duration="800"
+                    myattr:fromDegrees="0"
+                    myattr:repeatCount="-1"
+                    myattr:startOnLoad="true"
+                    myattr:toDegrees="357"
+                    />
+        </com.cdlx.sockMachine.view.DragableFrameLayout>
+
+
+
+    </com.cdlx.sockMachine.view.CircleLayout>
+
+
+    <com.cdlx.sockMachine.view.DeviceSpinner
+            android:id="@+id/ds_devices"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/mainText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/select_bg"/>-->
+
+    <include layout="@layout/bottom"/>
+</RelativeLayout>
 

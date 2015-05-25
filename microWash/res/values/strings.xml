@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">微洗</string>
+<string name="app_name">微洗</string>
+<string name="noConnect">未连接</string>
+<string name="conn_set">连接设置</string>
+
+<string name="password">密  码</string>
+
+<string name="standard">标准程序</string>
+<string name="timingdryoff">智能烘干</string>
+<string name="timingwash">定时清洗</string>
+<string name="dryoff">烘干模式</string>
+<string name="sterilization">杀菌模式</string>
+<string name="not_connect_state">未连接</string>
+<!--时间选择的滚轮中数字格式-->
+<string name="format">%02d</string>
+
 </resources>

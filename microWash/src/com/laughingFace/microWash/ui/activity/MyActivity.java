@@ -1,9 +1,9 @@
-package com.laughingFace.microWash;
+package com.laughingFace.microWash.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import com.laughingFace.microWash.R;
 
-public class MyActivity extends Activity {
+public class MyActivity extends BaseActivity {
     /**
      * Called when the activity is first created.
      */
