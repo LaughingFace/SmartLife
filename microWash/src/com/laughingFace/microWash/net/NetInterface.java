@@ -6,4 +6,7 @@ package com.laughingFace.microWash.net;
 public interface NetInterface {
     void send(String data);
     void send(byte[] data);
+    void setOnModelState();
+    void setOnProcessingState();
+    void setOnDeviceState();
 }

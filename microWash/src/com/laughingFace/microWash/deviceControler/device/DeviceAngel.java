@@ -1,11 +1,9 @@
 package com.laughingFace.microWash.deviceControler.device;
 
 
+import com.laughingFace.microWash.deviceControler.device.infc.DeviceStateListener;
+
 public class DeviceAngel {
-
-	public void operation17() {
-
-	}
 
 	public void connectToDevice() {
 
@@ -15,4 +13,8 @@ public class DeviceAngel {
 
 	}
 
+	public void setDeviceStateListener(DeviceStateListener listener)
+	{
+
+	}
 }
