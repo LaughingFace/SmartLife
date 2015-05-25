@@ -17,11 +17,17 @@ public class ModelAngel implements DeviceStateListener,ModelRunningState{
 	private DeviceStateListener deviceStateListener;
 	private Device device;
 	private Model RunningModel;
-	public ModelAngel(ModelStateListener modelStateListener,DeviceStateListener deviceStateListener)
+	public ModelAngel()
 	{
 		deviceAngel = new DeviceAngel();
 		deviceAngel.setDeviceStateListener(this);
+	}
+	public void setModelStateListener(ModelStateListener modelStateListener)
+	{
 		this.modelStateListener = modelStateListener;
+	}
+	public void setDeviceStateListener(DeviceStateListener deviceStateListener)
+	{
 		this.deviceStateListener = deviceStateListener;
 	}
 	public void startModel(Model model) {
