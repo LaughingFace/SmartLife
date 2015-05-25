@@ -2,6 +2,7 @@ package com.laughingFace.microWash.deviceControler.model;
 
 
 import com.laughingFace.microWash.deviceControler.device.DeviceAngel;
+import com.laughingFace.microWash.deviceControler.device.infc.DeviceStateListener;
 import com.laughingFace.microWash.deviceControler.model.infc.ModelStateListener;
 
 public class ModelAngel {
@@ -12,11 +13,11 @@ public class ModelAngel {
 
 	}
 
-	public void setModelStateListener() {
+	public void setModelStateListener(ModelStateListener modelStateListener) {
 
 	}
 
-	public void setDeviceStateListener() {
+	public void setDeviceStateListener(DeviceStateListener deviceStateListener) {
 
 	}
 

@@ -7,6 +7,12 @@ import com.laughingFace.microWash.deviceControler.model.infc.ModelStateListener;
 
 public class ModelManager extends ModelAngel implements DeviceMonitor {
 
+    private ModelManager instance;
+    private ModelManager(){
+        setModelStateListener(this);
+        setDeviceStateListener(this);
+    }
+
     @Override
     public void startModel(Model model, ModelStateListener modelStateListener) {
 
