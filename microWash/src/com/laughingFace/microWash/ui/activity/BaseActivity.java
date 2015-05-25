@@ -3,9 +3,11 @@ package com.laughingFace.microWash.ui.activity;
 import android.app.Activity;
 import android.view.Window;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.devicesDispatcher.DeviceMonitor;
 import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.deviceControler.model.Model;
+import com.laughingFace.microWash.deviceControler.model.Progress;
 
 /**
  * Created by zihao on 15-5-25.
@@ -25,7 +27,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     }
 
     @Override
-    public void onLine() {
+    public void onLine(Device device) {
 
     }
 
@@ -35,7 +37,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     }
 
     @Override
-    public void onProcessing() {
+    public void onProcessing(Progress progress) {
 
     }
 
