@@ -7,12 +7,12 @@ public interface ModelStateListener {
 
 	public abstract void onStart(Model model);
 
-	public abstract void onProcessing(Progress progress);
+	public abstract void onProcessing(Model model);
 
-	public abstract void onFinish();
+	public abstract void onFinish(Model model);
 
-	public abstract void onInterupt();
+	public abstract void onInterupt(Model model);
 
-	public abstract void faillOnStart();
+	public abstract void faillOnStart(Model model);
 
 }

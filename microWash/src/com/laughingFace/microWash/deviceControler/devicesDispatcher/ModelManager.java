@@ -1,11 +1,10 @@
 package com.laughingFace.microWash.deviceControler.devicesDispatcher;
 
 
+import android.util.Log;
 import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
-import com.laughingFace.microWash.deviceControler.model.Progress;
-import com.laughingFace.microWash.deviceControler.model.infc.ModelStateListener;
 import com.laughingFace.microWash.deviceControler.utils.Timer;
 
 public class ModelManager extends ModelAngel implements DeviceMonitor {
@@ -37,7 +36,6 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         onTimingActionListener = new Timer.OnTimingActionListener() {
             @Override
             public void befor() {
-
             }
 
             @Override
@@ -61,7 +59,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
             super.startModel(model);
         }
         else {
-            deviceMonitor.faillOnStart();
+            deviceMonitor.faillOnStart( model);
         }
 
     }
@@ -81,26 +79,40 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     @Override
     public void onStart(Model model) {
         deviceMonitor.onStart(model);
+        timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount()));
+        timer.start();
 
     }
 
     @Override
-    public void onProcessing(Progress progress) {
-        deviceMonitor.onProcessing(progress);
+    public void onProcessing(Model model) {
+
+        if(timer==null || getRunningModel() == null) {
+            return;
+        }
+        //计算误差
+        long deviation  =(model.getProgress().getTotal()-(timer.getCurt()*timer.getInterval())) - model.getProgress().getRemain();
+        Log.i("xixi", "current deviation:" + deviation + " total:" + model.getProgress().getTotal() * 1000 + " timer:" + timer.getCurt() * timer.getInterval());
+        /**
+         * 修正误差
+         */
+        if(Math.abs(deviation) >model.getProgress().getMaxDeviation()){
+            timer.puase(-deviation);
+        }
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(Model model) {
 
     }
 
     @Override
-    public void onInterupt() {
+    public void onInterupt(Model model) {
 
     }
 
     @Override
-    public void faillOnStart() {
+    public void faillOnStart(Model model) {
 
     }
 }

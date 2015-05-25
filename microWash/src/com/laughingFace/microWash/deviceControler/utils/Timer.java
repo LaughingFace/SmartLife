@@ -6,7 +6,7 @@ package com.laughingFace.microWash.deviceControler.utils;
  * 周期性的执行某些代码
  */
 public class Timer implements Runnable{
-	private int interval = 0;//时间间隔
+	private long interval = 0;//时间间隔
 	private int repeatCount = 0;//重复次数
 	private int curt = 0;//当前进行到第几次
 	private int flg = 0;
@@ -14,7 +14,7 @@ public class Timer implements Runnable{
 
 	private OnTimingActionListener action;
 	private Thread thread = new Thread(this);
-	private static int puase = 0;
+	private static long puase = 0;
 
 	public Timer(int interval, int repeat, OnTimingActionListener listener) {
 		this.interval = interval;
@@ -60,11 +60,11 @@ public class Timer implements Runnable{
 		flg = -1;
 	}
 
-	public int getInterval() {
+	public long getInterval() {
 		return interval;
 	}
 
-	public Timer setInterval(int interval) {
+	public Timer setInterval(long interval) {
 		this.interval = interval;
 		return this;
 	}
@@ -87,7 +87,7 @@ public class Timer implements Runnable{
 		return this;
 	}
 
-	int li;
+	long li;
 	@Override
 	public void run() {
 		if(null != action){
@@ -134,7 +134,7 @@ public class Timer implements Runnable{
 		this.curt = curt;
 	}
 
-	public synchronized void  puase(int howLong){
+	public synchronized void  puase(long howLong){
 		this.puase = howLong;
 	}
 

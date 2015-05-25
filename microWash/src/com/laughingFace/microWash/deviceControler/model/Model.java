@@ -24,4 +24,12 @@ public class Model {
 	public int getStateCode() {
 		return stateCode;
 	}
+
+	public Progress getProgress() {
+		return progress;
+	}
+
+	public void setProgress(Progress progress) {
+		this.progress = progress;
+	}
 }
