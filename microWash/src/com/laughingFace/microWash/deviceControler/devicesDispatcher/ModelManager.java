@@ -40,16 +40,16 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
             @Override
             public void action() {
-
+                deviceMonitor.onProcessing(getRunningModel());
             }
 
             @Override
             public void after() {
-
+                notifyFinish();
             }
         };
         timer = new Timer(onTimingActionListener);
-        timer.setRepeatCount(100);
+        timer.setRepeatCount(99);
     }
 
     @Override
@@ -103,16 +103,19 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     @Override
     public void onFinish(Model model) {
+        timer.stop();
+        deviceMonitor.onFinish(model);
 
     }
 
     @Override
     public void onInterupt(Model model) {
-
+        timer.stop();
+        deviceMonitor.onInterupt(model);
     }
 
     @Override
     public void faillOnStart(Model model) {
-
+        deviceMonitor.faillOnStart(model);
     }
 }
