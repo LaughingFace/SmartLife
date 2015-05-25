@@ -13,4 +13,19 @@ public class NetworkManager implements NetInterface{
     public void send(byte[] data) {
 
     }
+
+    @Override
+    public void setOnModelState() {
+
+    }
+
+    @Override
+    public void setOnProcessingState() {
+
+    }
+
+    @Override
+    public void setOnDeviceState() {
+
+    }
 }

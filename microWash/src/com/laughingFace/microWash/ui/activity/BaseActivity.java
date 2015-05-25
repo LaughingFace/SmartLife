@@ -37,22 +37,22 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     }
 
     @Override
-    public void onProcessing(Progress progress) {
+    public void onProcessing(Model model) {
 
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(Model model) {
 
     }
 
     @Override
-    public void onInterupt() {
+    public void onInterupt(Model model) {
 
     }
 
     @Override
-    public void faillOnStart() {
+    public void faillOnStart(Model model) {
 
     }
 }
