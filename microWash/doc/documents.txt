@@ -1,0 +1,10 @@
+-app调试端口，
+aap接收转调试端口：4545
+app发送转调试端口：6565
+--keystore
+主密码：15514face
+别名密码：15514weixi
+--wifi 模块指令
+重启：AT#R
+ap模式启动：AT#A
+sta模式启动：AT#S
