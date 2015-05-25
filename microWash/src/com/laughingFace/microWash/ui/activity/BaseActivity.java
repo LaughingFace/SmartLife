@@ -16,7 +16,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
         super.setContentView(layoutResID);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);// 设置标题栏的布局
-    }
+    }//
 
     @Override
     public void onStart(Model model) {
