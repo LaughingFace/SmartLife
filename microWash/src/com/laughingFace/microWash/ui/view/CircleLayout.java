@@ -241,9 +241,7 @@ public class CircleLayout extends ViewGroup {
 		
 		for(int i=0; i<childs; i++) {
 			final View child = getChildAt(i);
-			
 			LayoutParams lp = layoutParams(child);
-			
 			totalWeight += lp.weight;
 		}
 		
