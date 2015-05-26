@@ -48,8 +48,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
                 notifyFinish();
             }
         };
-        timer = new Timer(onTimingActionListener);
-        timer.setRepeatCount(99);
+        timer = new Timer(onTimingActionListener,99);
     }
 
     @Override
@@ -79,8 +78,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     @Override
     public void onStart(Model model) {
         deviceMonitor.onStart(model);
-        timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount()));
-        timer.start();
+        timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
 
     }
 

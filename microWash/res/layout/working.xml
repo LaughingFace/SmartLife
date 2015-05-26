@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.laughingFace.microWash.ui.view.SlidingMenu
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res/com.laughingFace.microWash"
+                                     android:layout_width="fill_parent"
+                                     android:layout_height="fill_parent"
+                                       android:id="@+id/slideMenuLayout"
+        android:background="@drawable/main_bg">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:gravity="center"
+                  android:id="@+id/content">
+
+        <com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:maxProgress="100"
+                app:showProgress="true"
+                app:progress="0"
+                android:id="@+id/process"
+                app:waterWaveColor="#a40ed5de"
+                app:waterWaveBgColor="#3FFFFFFF"
+                app:progressColor="#a40ed5de"
+                app:progressBgColor="#3FFFFFFF"
+                android:visibility="visible"
+                />
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/runningModelName"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="10dp"
+                  android:textSize="37sp"
+                  android:textColor="#37ffef"/>
+
+    </LinearLayout>
+    <!--=================================菜单与主内容部分的分割线===================================-->
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:orientation="horizontal"
+                  android:background="@color/tran"
+                  android:id="@+id/menu">
+
+            <ScrollView android:layout_width="0px"
+                        android:layout_weight="2"
+                        android:layout_height="fill_parent"
+                        android:scrollbars="none"
+                        android:background="#7af0f0f0"
+                        android:id="@+id/menu_content">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center" >
+
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="103dp"
+                            android:layout_margin="7dp"
+                            android:layout_weight="1"
+                            android:paddingTop="20dp"
+                            android:background="@drawable/module_item_btn"
+                            android:id="@+id/model_standard"
+                            android:drawableTop="@drawable/sunny"
+                            android:drawableBottom="@drawable/line_horizontal"
+                            android:text="@string/standard"
+                            android:textColor="#37ffef"/>
+
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="103dp"
+                            android:layout_margin="7dp"
+                            android:paddingTop="20dp"
+                            android:background="@drawable/module_item_btn"
+                            android:id="@+id/model_timingdryoff"
+                            android:drawableTop="@drawable/sunny"
+                            android:text="@string/timingdryoff"
+                            android:textColor="#37ffef"
+                            android:drawableBottom="@drawable/line_horizontal"
+                            android:layout_weight="7"
+                            />
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="103dp"
+                            android:layout_weight="1"
+                            android:layout_margin="7dp"
+                            android:paddingTop="20dp"
+                            android:background="@drawable/module_item_btn"
+                            android:id="@+id/model_timingwash"
+                            android:drawableTop="@drawable/sunny"
+                            android:text="@string/timingwash"
+                            android:textColor="#37ffef"
+                            android:drawableBottom="@drawable/line_horizontal"
+                            />
+
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="103dp"
+                            android:layout_weight="1"
+                            android:layout_margin="7dp"
+                            android:paddingTop="20dp"
+                            android:background="@drawable/module_item_btn"
+                            android:id="@+id/model_dryoff"
+                            android:drawableTop="@drawable/sunny"
+                            android:text="@string/dryoff"
+                            android:textColor="#37ffef"
+                            android:drawableBottom="@drawable/line_horizontal"
+                            />
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="103dp"
+                            android:layout_weight="1"
+                            android:layout_margin="7dp"
+                            android:paddingTop="20dp"
+                            android:background="@drawable/module_item_btn"
+                            android:id="@+id/model_sterilization"
+                            android:drawableTop="@drawable/sunny"
+                            android:text="@string/sterilization"
+                            android:textColor="#37ffef"
+                            android:drawableBottom="@drawable/line_horizontal"
+                            />
+
+                </LinearLayout>
+            </ScrollView>
+
+        <ImageView android:layout_width="12dp"
+                   android:layout_height="80dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_gravity="bottom"
+                   android:src="@drawable/menu_handle"/>
+
+        <View android:layout_width="0dp"
+              android:layout_height="fill_parent"
+              android:layout_weight="5"/>
+
+    </LinearLayout>
+
+</com.laughingFace.microWash.ui.view.SlidingMenu>
+

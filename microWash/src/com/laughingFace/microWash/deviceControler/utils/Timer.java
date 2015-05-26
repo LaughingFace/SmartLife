@@ -16,24 +16,19 @@ public class Timer implements Runnable{
 	private Thread thread = new Thread(this);
 	private static long puase = 0;
 
-	public Timer(int interval, int repeat, OnTimingActionListener listener) {
+
+
+	public Timer(OnTimingActionListener listener,int interval, int repeat) {
 		this.interval = interval;
 		this.repeatCount = repeat;
 		this.action = listener;
 	}
 
-	public Timer(int interval, int repeat) {
-		this.interval = interval;
+
+
+	public Timer(OnTimingActionListener listener,int repeat) {
+		this.action = listener;
 		this.repeatCount = repeat;
-	}
-
-	public Timer(int interval, OnTimingActionListener listener) {
-		this.interval = interval;
-		this.action = listener;
-	}
-
-	public Timer(OnTimingActionListener listener) {
-		this.action = listener;
 	}
 	public Timer() {
 	}
