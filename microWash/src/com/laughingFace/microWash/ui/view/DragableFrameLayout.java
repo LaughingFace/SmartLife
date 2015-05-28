@@ -101,7 +101,6 @@ public class DragableFrameLayout extends FrameLayout {
                 locE[1] = (int) event.getRawY() - lastY;
                 eRepair(locE,event);//合成两个方向变化量。
 
-//                Log.i("haha","move.."+mode+" dx:"+dx+" dy"+dy+" lastx:"+lastX);
 
                 if(Math.abs(locE[0])>10|| Math.abs(locE[1]) >10) {
                      ll = this.getLeft() + locE[0];
@@ -112,25 +111,25 @@ public class DragableFrameLayout extends FrameLayout {
                     /**
                      * 边缘检测
                      */
-                    if (ll < 0) {
+                    /*if (ll < 0) {
                         ll = 0;
                         rr =this.getWidth();
                     }
                     if(tt<0){
                         tt = 0;
                         bb = this.getHeight();
-                    }
+                    }*/
 
-                    this.layout(ll, tt, rr, bb);
+                    //this.layout(ll, tt, rr, bb);
+                    this.scrollTo((int) event.getX(), (int) event.getY());
                     lastX = (int) event.getRawX();
                     lastY = (int) event.getRawY();
-                    this.postInvalidate();
+                    //this.postInvalidate();
 
                 }
 
                 break;
             case MotionEvent.ACTION_UP:
-                Log.i("haha", "upupup");
                 isFirst = true;
                 lastX = -100;
                 lastY = -100;

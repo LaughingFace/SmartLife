@@ -1,358 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--suppress ALL -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res/com.laughingFace.microWash"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res/com.laughingFace.microWash"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/main_bg">
+
+    <LinearLayout
+            android:layout_weight="240"
+            android:id="@+id/main_logo"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+        <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/main_bg">
-        <!--<TextView android:layout_width="320dp" android:layout_height="320dp"
-                android:background="#ff0000"/>-->
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/tv_mode"
+                android:textSize="20sp"
+                android:textColor="@color/main_text"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:text="标准模式"/>
 
-    <FrameLayout android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentTop="true"
-                 android:layout_centerHorizontal="true"
-                 android:layout_gravity="center"
-                 android:layout_marginTop="40dp"
-                 android:id="@+id/mianFram"
-            >
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="match_parent">
+
             <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content">
-                    <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                    <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/mianFlag"
-                            android:adjustViewBounds="true"
-                            android:maxHeight="200dp"
-                            android:maxWidth="200dp"
-
-                            android:src="@drawable/main_flag"
-                            android:layout_weight="2"
-                            />
-                    <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-
+                          android:layout_height="match_parent"
+                          android:gravity="center">
+                <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+                <ImageView
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/mianFlag"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="270dp"
+                        android:maxWidth="270dp"
+                        android:src="@drawable/main_flag"
+                        />
+                <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
             </LinearLayout>
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center"
-                  android:id="@+id/tv_mode"
-                  android:textSize="40sp"
-                  android:textColor="@color/main_text"
-                  android:focusableInTouchMode="false"
-                  android:focusable="false"
-                  android:text=""/>
-    </FrameLayout>
+            <com.laughingFace.microWash.ui.view.CircleLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    app:angleOffset="160"
+                    app:angleRange="270"
+                    >
 
-    <ImageView
-            android:id="@+id/mainText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/mianFram"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:adjustViewBounds="true"
-            android:maxHeight="70dp"
-            android:maxWidth="230dp"
-            android:src="@drawable/main_flag_text"
-            />
+                <com.laughingFace.microWash.ui.view.WaterRipplesView
+                        android:id="@+id/checkArea"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"/>
 
+                <com.laughingFace.microWash.ui.view.WaterRipplesView
+                        android:id="@+id/model_standard"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        />
 
-    <com.laughingFace.microWash.ui.view.CircleLayout
-            android:id="@+id/normalWithRange"
-            android:layout_width="360dp"
-            android:layout_height="360dp"
-            android:layout_centerHorizontal="true"
-            app:angleOffset="160"
-            app:angleRange="270"
-            app:innerRadius="60dp"
-            >
+                <com.laughingFace.microWash.ui.view.WaterRipplesView
+                        android:id="@+id/model_dryoff"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"/>
 
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:id="@+id/device_model_standard"
+                <com.laughingFace.microWash.ui.view.WaterRipplesView
+                        android:id="@+id/model_timingwash"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"/>
+
+                <com.laughingFace.microWash.ui.view.WaterRipplesView
+                        android:id="@+id/model_sterilization"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"/>
+            </com.laughingFace.microWash.ui.view.CircleLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+        <ImageView
+                android:id="@+id/mainText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:maxHeight="70dp"
+                android:maxWidth="230dp"
+                android:layout_marginTop="-27dp"
+                android:layout_marginBottom="27dp"
+                android:src="@drawable/main_flag_text"
+                />
 
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="25">
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <ImageButton
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/select_bg"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
                     />
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
+        </LinearLayout>
+
+        <include layout="@layout/bottom"/>
 
 
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:id="@+id/device_model_timingDryOff"
-                android:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
-                    />
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
-
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:id="@+id/device_model_timingWash"
-                android:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
-                    />
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
-
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:id="@+id/device_model_dryOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
-                    />
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
-
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:visibility="visible"
-                android:id="@+id/device_model_sterilization"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
-                    />
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
-
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:id="@+id/device_model_openTheDoor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
-                    />
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
-
-        <com.laughingFace.microWash.ui.view.DragableFrameLayout
-                android:id="@+id/device_model_closeTheDoor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="33dp"
-                    android:maxWidth="33dp"
-                    android:src="@drawable/item_outside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="-357"
-
-                    />
-
-            <com.laughingFace.microWash.ui.view.RotateImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:maxHeight="47dp"
-                    android:maxWidth="47dp"
-                    android:src="@drawable/item_inside"
-                    app:duration="800"
-                    app:fromDegrees="0"
-                    app:repeatCount="-1"
-                    app:startOnLoad="true"
-                    app:toDegrees="357"
-                    />
-        </com.laughingFace.microWash.ui.view.DragableFrameLayout>
-
-
-
-    </com.laughingFace.microWash.ui.view.CircleLayout>
-
-
-    <!--<com.cdlx.sockMachine.view.DeviceSpinner
-            android:id="@+id/ds_devices"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/mainText"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/select_bg"/>-->
-
-        <ImageButton android:layout_width="150dp" android:layout_height="40dp"
-                     android:layout_below="@id/mainText"
-                android:background="@drawable/select_bg"
-                     android:layout_centerHorizontal="true"
-                     android:layout_marginTop="20dp"/>
-
-    <include layout="@layout/bottom"/>
-</RelativeLayout>
-
+</LinearLayout>

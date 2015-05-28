@@ -24,21 +24,26 @@ import android.graphics.Region.Op;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.laughingFace.microWash.R;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class CircleLayout extends ViewGroup {
 
+	private View dragingView;//正被拖着到处跑的vie
+
 	public static final int LAYOUT_NORMAL = 1;
 	public static final int LAYOUT_PIE = 2;
-	
+
 	private int mLayoutMode = LAYOUT_NORMAL;
 	
 	private Drawable mInnerCircle;
@@ -67,7 +72,21 @@ public class CircleLayout extends ViewGroup {
 	private Canvas mCachedCanvas;
 	private Set<View> mDirtyViews = new HashSet<View>();
 	private boolean mCached = false;
-	
+
+	/**
+	 * 让被拖拽的view回复到可见状态的handler
+	 */
+	Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			if(null !=dragingView &&!dragingView.isShown()) {
+				dragingView.setVisibility(VISIBLE);
+				dragingView = null;
+			}
+
+		}
+	};
+
 	public CircleLayout(Context context) {
 		this(context, null);
 	}
@@ -75,7 +94,6 @@ public class CircleLayout extends ViewGroup {
 	@SuppressLint("NewApi")
 	public CircleLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
 		mDividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
@@ -136,7 +154,7 @@ public class CircleLayout extends ViewGroup {
 	}
 	
 	public void getCenter(PointF p) {
-		p.set(getWidth()/2f, getHeight()/2);
+		p.set(getWidth() / 2f, getHeight() / 2);
 	}
 	
 	public void setAngleOffset(float offset) {
@@ -184,7 +202,7 @@ public class CircleLayout extends ViewGroup {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		final int count = getChildCount();
-		
+
 		int maxHeight = 0;
 		int maxWidth = 0;
 		
@@ -236,9 +254,12 @@ public class CircleLayout extends ViewGroup {
 	@SuppressWarnings("deprecation")
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		final int childs = getChildCount();
-		
+
 		float totalWeight = 0f;
-		
+
+		/**
+		 * 计算所有子view的权重总和
+		 */
 		for(int i=0; i<childs; i++) {
 			final View child = getChildAt(i);
 			LayoutParams lp = layoutParams(child);
@@ -250,15 +271,28 @@ public class CircleLayout extends ViewGroup {
 		
 		final float minDimen = width > height ? height : width;
 		final float radius = (minDimen - mInnerRadius)/2f;
-		
-		mBounds.set(width/2 - minDimen/2, height/2 - minDimen/2, width/2 + minDimen/2, height/2 + minDimen/2);
-		
+
+		//计算设置正方形
+		mBounds.set(width / 2 - minDimen / 2, height / 2 - minDimen / 2, width / 2 + minDimen / 2, height / 2 + minDimen / 2);
+
 		float startAngle = mAngleOffset;
 		
 		for(int i=0; i<childs; i++) {
 			final View child = getChildAt(i);
 			
 			final LayoutParams lp = layoutParams(child);
+
+			/**
+			 * 将第一个view绘制在圆形布局的正中间,并设置碰撞检测
+			 */
+			if(i==0){
+				int tl = (int) (mBounds.left+(mBounds.width()/2-lp.width/2));
+				int tt = (int) (mBounds.top+(mBounds.height()/2 - lp.height/2));
+				int tr = (int) (mBounds.right - (mBounds.width()/2 - lp.width/2));
+				int tb = (int) (mBounds.bottom - (mBounds.height()/2 - lp.height/2));
+				child.layout(tl, tt,tr,tb);
+				continue;
+			}
 			
 			final float angle = mAngleRange/totalWeight * lp.weight;
 			
@@ -550,7 +584,6 @@ public class CircleLayout extends ViewGroup {
 			mCached = true;
 		}
 	}
-	
 	public static class LayoutParams extends ViewGroup.LayoutParams {
 
 		private float startAngle;
@@ -566,5 +599,4 @@ public class CircleLayout extends ViewGroup {
 			super(context, attrs);
 		}
 	}
-
 }
