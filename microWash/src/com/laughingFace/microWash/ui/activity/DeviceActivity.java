@@ -20,7 +20,7 @@ public class DeviceActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mainLogo = new MainLogo(findViewById(R.id.main_logo));
+        mainLogo = new MainLogo(findViewById(R.id.device_top_container));
         intent = new Intent(this,WorkingActivity.class);
         nextPage = (ImageButton)findViewById(R.id.nextPage);
         nextPage.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,14 @@
              android:background="@drawable/main_bg">
 
     <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mask">
+
+
+
+    <LinearLayout
             android:layout_weight="240"
             android:id="@+id/main_logo"
             android:orientation="vertical"
@@ -57,12 +65,11 @@
                     >
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:background="#0f003fff"
                         android:id="@+id/checkArea"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         app:waveOnLoad="false"
-                        app:waveColor="#00ce9b"
+                        app:waveColor="#ff0000"
                         app:waveCount="8"
                         app:canDrag="false"/>
 
@@ -71,7 +78,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         app:waveCount="5"
-                        app:waveOnLoad="true"
+                        app:waveOnLoad="false"
                         app:waveColor="#00ce9b"
                         />
 
@@ -79,7 +86,7 @@
                         android:id="@+id/model_dryoff"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        app:waveOnLoad="true"
+                        app:waveOnLoad="false"
                         app:waveColor="#00ce9b"
                         app:waveCount="5"
                         />
@@ -89,7 +96,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         app:waveColor="#00ce9b"
-                        app:waveOnLoad="true"
+                        app:waveOnLoad="false"
                         app:waveCount="5"/>
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
@@ -98,7 +105,7 @@
                         android:layout_height="80dp"
                         app:waveColor="#00ce9b"
                         app:waveCount="5"
-                        app:waveOnLoad="true"/>
+                        app:waveOnLoad="false"/>
             </com.laughingFace.microWash.ui.view.CircleLayout>
 
         </FrameLayout>
@@ -133,7 +140,8 @@
             <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
         </LinearLayout>
-
         <include layout="@layout/bottom"/>
+
+    </LinearLayout>
 
 </LinearLayout>

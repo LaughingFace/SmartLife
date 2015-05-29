@@ -1,7 +1,9 @@
 package com.laughingFace.microWash.ui.activity;
 
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.ui.view.WaterRipplesView;
@@ -14,8 +16,6 @@ import java.util.List;
  */
 public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
-    private View dragingView;//正被拖着到处跑的view
-
     private View contentView;
     private TextView dragModelName;
     private String dragingModel;//视觉上正被拖拽着的模式
@@ -24,6 +24,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private WaterRipplesView model_dryoff;
     private WaterRipplesView model_timingwash;
     private WaterRipplesView model_sterilization;
+    private LinearLayout maskView;
     private boolean isRandomBreath = true;
     private List<WaterRipplesView> waterRipplesViewList;
     public MainLogo(View contentView){
@@ -47,6 +48,21 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         waterRipplesViewList.add(model_dryoff);
         waterRipplesViewList.add(model_timingwash);
         waterRipplesViewList.add(model_sterilization);
+
+        maskView = (LinearLayout)contentView.findViewById(R.id.mask);
+
+        for(WaterRipplesView wr:waterRipplesViewList){
+            wr.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                        maskView.setBackgroundResource(R.drawable.device_activity_mask);
+                    }
+                    return false;
+                }
+            });
+        }
+
         randomBreath();
     }
 
@@ -67,6 +83,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     public void onEnter(View perpetrators, View wounder) {
         checkArea.start();
         isRandomBreath = false;
+        maskView.setBackgroundResource(R.drawable.device_activity_mask);
         switch (wounder.getId()){
             case R.id.model_standard:
                 Log.i("xixi", "----------- 标准模式 ----------------");
@@ -96,8 +113,11 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         else {
             dragModelName.setText("");
         }
+
         checkArea.stop();
         isRandomBreath = true;
+        maskView.setBackgroundResource(R.drawable.tran);
+
     }
 
     /**

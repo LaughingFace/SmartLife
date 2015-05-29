@@ -2,10 +2,12 @@ package com.laughingFace.microWash.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.laughingFace.microWash.R;
 
@@ -28,6 +30,7 @@ public class SlidingMenu extends FrameLayout {
     private final int k = 3;//“劲度系数”控制菜单完全显示后继续拉动菜单的难度（参考胡克定律：f=k.x）
     private SlidingMenuListenear onMenuOpened;
     private SlidingMenuListenear onMenuClosed;
+    private ImageView menuHandle;
 
     public SlidingMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -44,6 +47,16 @@ public class SlidingMenu extends FrameLayout {
                 menu = SlidingMenu.this.findViewById(R.id.menu);
                 content = SlidingMenu.this.findViewById(R.id.content);
                 menuContent = SlidingMenu.this.findViewById(R.id.menu_content);
+                menuHandle = (ImageView) SlidingMenu.this.findViewById(R.id.menu_handle);
+                /**
+                 * 点击把手完全显示菜单
+                 */
+                menuHandle.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SlidingMenu.this.show();
+                    }
+                });
                 showingWidth = menuContent.getWidth();
                 layoutParams = (LinearLayout.LayoutParams) menuContent.getLayoutParams();
                 layoutParams.width = showingWidth;
