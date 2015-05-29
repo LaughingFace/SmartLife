@@ -6,11 +6,15 @@ import android.widget.TextView;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.ui.view.WaterRipplesView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by zihao on 15-5-27.
  */
 public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
+    private View dragingView;//正被拖着到处跑的vie
     private View contentView;
     private TextView dragModelName;
     private String dragingModel;//视觉上正被拖拽着的模式
@@ -19,12 +23,13 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private WaterRipplesView model_dryoff;
     private WaterRipplesView model_timingwash;
     private WaterRipplesView model_sterilization;
+    private List<WaterRipplesView> waterRipplesViewList;
     public MainLogo(View contentView){
         this.contentView = contentView;
         model_standard =  (WaterRipplesView)contentView.findViewById(R.id.model_standard);
         model_dryoff =  (WaterRipplesView)contentView.findViewById(R.id.model_dryoff);
         model_timingwash =  (WaterRipplesView)contentView.findViewById(R.id.model_timingwash);
-        model_sterilization =  (WaterRipplesView)contentView.findViewById(R.id.model_sterilization);
+        model_sterilization =  (WaterRipplesView)contentView.findViewById(R.id.model_sterilization_water);
 
         model_standard.setOnCollisionListener(this);
         model_dryoff.setOnCollisionListener(this);
@@ -35,21 +40,30 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         checkArea.setOnCollisionListener(this);
         dragModelName = (TextView)contentView.findViewById(R.id.tv_mode);
 
+        waterRipplesViewList = new ArrayList<WaterRipplesView>();
+        waterRipplesViewList.add(model_standard);
+        waterRipplesViewList.add(model_dryoff);
+        waterRipplesViewList.add(model_timingwash);
+        waterRipplesViewList.add(model_sterilization);
+        randomBreath();
     }
 
 
     @Override
     public void onLeave(View perpetrators, View wounder) {
         dragModelName.setText(dragingModel);
+
     }
 
     @Override
     public void onMove(View perpetrators, View wounder) {
 
+
     }
 
     @Override
     public void onEnter(View perpetrators, View wounder) {
+        checkArea.start();
         switch (wounder.getId()){
             case R.id.model_standard:
                 Log.i("xixi", "----------- 标准模式 ----------------");
@@ -79,5 +93,29 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         else {
             dragModelName.setText("");
         }
+        checkArea.stop();
+    }
+
+    private void randomBreath(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int witch = 0;
+                while (true) {
+                    try {
+                        Thread.sleep(500);
+                        long interval = (long) (Math.random() * 7000+3000);
+
+                        int rand = ((int) (Math.random()*waterRipplesViewList.size()));
+                         witch = witch==rand?((int) (Math.random()*waterRipplesViewList.size())):rand;
+
+                        waterRipplesViewList.get(witch).breath();
+                        Thread.sleep(interval);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

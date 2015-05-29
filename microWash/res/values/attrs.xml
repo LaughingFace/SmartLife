@@ -14,6 +14,15 @@
         </attr>
     </declare-styleable>
 
+    <!--带旋转动画的ImageView-->
+    <declare-styleable name="waterRipplesView">
+        <attr name="waveCount" format="integer"/>
+        <attr name="waveOnLoad" format="boolean"/>
+        <attr name="canDrag" format="boolean"/>
+       <!-- <attr name="breathing" format="boolean"/>-->
+        <attr name="waveColor" format="color"/>
+    </declare-styleable>
+
     <!--圆形布局-->
     <declare-styleable name="CircleLayout">
         <attr name="innerRadius" format="dimension" />

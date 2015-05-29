@@ -39,13 +39,9 @@ import java.util.Set;
 
 public class CircleLayout extends ViewGroup {
 
-	private View dragingView;//正被拖着到处跑的vie
-
 	public static final int LAYOUT_NORMAL = 1;
 	public static final int LAYOUT_PIE = 2;
-
 	private int mLayoutMode = LAYOUT_NORMAL;
-	
 	private Drawable mInnerCircle;
 	
 	private float mAngleOffset;
@@ -76,7 +72,7 @@ public class CircleLayout extends ViewGroup {
 	/**
 	 * 让被拖拽的view回复到可见状态的handler
 	 */
-	Handler handler = new Handler(){
+	/*Handler handler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 			if(null !=dragingView &&!dragingView.isShown()) {
@@ -85,7 +81,7 @@ public class CircleLayout extends ViewGroup {
 			}
 
 		}
-	};
+	};*/
 
 	public CircleLayout(Context context) {
 		this(context, null);
@@ -130,7 +126,6 @@ public class CircleLayout extends ViewGroup {
 			setLayerType(LAYER_TYPE_SOFTWARE, null);
 		}
 	}
-	
 
 	public void setLayoutMode(int mode) {
 		mLayoutMode = mode;
@@ -145,11 +140,8 @@ public class CircleLayout extends ViewGroup {
 	public int getRadius() {
 		final int width = getWidth();
 		final int height = getHeight();
-		
 		final float minDimen = width > height ? height : width;
-		
 		float radius = (minDimen - mInnerRadius)/2f;
-		
 		return (int) radius;
 	}
 	
