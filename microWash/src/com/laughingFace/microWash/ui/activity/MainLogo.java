@@ -14,7 +14,8 @@ import java.util.List;
  */
 public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
-    private View dragingView;//正被拖着到处跑的vie
+    private View dragingView;//正被拖着到处跑的view
+
     private View contentView;
     private TextView dragModelName;
     private String dragingModel;//视觉上正被拖拽着的模式
@@ -23,13 +24,14 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private WaterRipplesView model_dryoff;
     private WaterRipplesView model_timingwash;
     private WaterRipplesView model_sterilization;
+    private boolean isRandomBreath = true;
     private List<WaterRipplesView> waterRipplesViewList;
     public MainLogo(View contentView){
         this.contentView = contentView;
         model_standard =  (WaterRipplesView)contentView.findViewById(R.id.model_standard);
         model_dryoff =  (WaterRipplesView)contentView.findViewById(R.id.model_dryoff);
         model_timingwash =  (WaterRipplesView)contentView.findViewById(R.id.model_timingwash);
-        model_sterilization =  (WaterRipplesView)contentView.findViewById(R.id.model_sterilization_water);
+        model_sterilization =  (WaterRipplesView)contentView.findViewById(R.id.model_sterilization);
 
         model_standard.setOnCollisionListener(this);
         model_dryoff.setOnCollisionListener(this);
@@ -64,6 +66,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     @Override
     public void onEnter(View perpetrators, View wounder) {
         checkArea.start();
+        isRandomBreath = false;
         switch (wounder.getId()){
             case R.id.model_standard:
                 Log.i("xixi", "----------- 标准模式 ----------------");
@@ -94,8 +97,12 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
             dragModelName.setText("");
         }
         checkArea.stop();
+        isRandomBreath = true;
     }
 
+    /**
+     * 随机时间让随机的一个小水波呼吸显示一下
+     */
     private void randomBreath(){
         new Thread(new Runnable() {
             @Override
@@ -104,12 +111,14 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
                 while (true) {
                     try {
                         Thread.sleep(500);
-                        long interval = (long) (Math.random() * 7000+3000);
+                        long interval = (long) (Math.random() * 5000+4000);
 
                         int rand = ((int) (Math.random()*waterRipplesViewList.size()));
                          witch = witch==rand?((int) (Math.random()*waterRipplesViewList.size())):rand;
 
-                        waterRipplesViewList.get(witch).breath();
+                        if(isRandomBreath){
+                            waterRipplesViewList.get(witch).breath();
+                        }
                         Thread.sleep(interval);
                     } catch (InterruptedException e) {
                         e.printStackTrace();

@@ -71,7 +71,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         app:waveCount="5"
-                        app:waveOnLoad="false"
+                        app:waveOnLoad="true"
                         app:waveColor="#00ce9b"
                         />
 
@@ -79,7 +79,7 @@
                         android:id="@+id/model_dryoff"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        app:waveOnLoad="false"
+                        app:waveOnLoad="true"
                         app:waveColor="#00ce9b"
                         app:waveCount="5"
                         />
@@ -89,16 +89,16 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         app:waveColor="#00ce9b"
-                        app:waveOnLoad="false"
+                        app:waveOnLoad="true"
                         app:waveCount="5"/>
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:id="@+id/model_sterilization_water"
+                        android:id="@+id/model_sterilization"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         app:waveColor="#00ce9b"
                         app:waveCount="5"
-                        app:waveOnLoad="false"/>
+                        app:waveOnLoad="true"/>
             </com.laughingFace.microWash.ui.view.CircleLayout>
 
         </FrameLayout>

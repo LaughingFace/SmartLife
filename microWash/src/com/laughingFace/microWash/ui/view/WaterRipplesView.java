@@ -95,7 +95,7 @@ public class WaterRipplesView extends View {
          */
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.waterRipplesView, 0, 0);
         try {
-            waveCount = a.getColor(R.styleable.waterRipplesView_waveCount, 3);
+            waveCount = a.getInteger(R.styleable.waterRipplesView_waveCount, 3);
             isStarting = a.getBoolean(R.styleable.waterRipplesView_waveOnLoad,true);
             canDrag = a.getBoolean(R.styleable.waterRipplesView_canDrag,true);
             //isBreathing = a.getBoolean(R.styleable.waterRipplesView_breathing,true);
