@@ -1,5 +1,7 @@
 package com.laughingFace.microWash.ui.activity;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -76,7 +78,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     @Override
     public void onMove(View perpetrators, View wounder) {
 
-
     }
 
     @Override
@@ -84,6 +85,11 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         checkArea.start();
         isRandomBreath = false;
         maskView.setBackgroundResource(R.drawable.device_activity_mask);
+/**
+ *让手机震动
+ */
+        ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 70}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+
         switch (wounder.getId()){
             case R.id.model_standard:
                 Log.i("xixi", "----------- 标准模式 ----------------");

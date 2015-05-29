@@ -62,7 +62,7 @@
                         android:layout_weight="1"
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
-                        android:id="@+id/model_standard"
+                        android:id="@+id/working_model_standard"
                         android:drawableTop="@drawable/sunny"
                         android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/standard"
