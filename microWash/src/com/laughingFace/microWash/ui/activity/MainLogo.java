@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
+import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.ui.view.WaterRipplesView;
 
 import java.util.ArrayList;
@@ -126,7 +127,12 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     @Override
     public void onRealse(View perpetrators, View wounder) {
         if(null != wounder && wounder.getId() == R.id.checkArea){
-            Log.i("xixi", "----------- 模式触发 ----------------");
+
+            if(null != ModelManager.getInstance().getRunningModel()){
+               modelCode = -1;
+                Log.i("haha", "---------设备繁忙---------------");
+            }
+            Log.i("haha", "---------准备： "+modelCode+" ----------------");
             toWorkingActivityIntent = new Intent(DeviceActivity.getInstance(),WorkingActivity.class);
             toWorkingActivityIntent.putExtra(WorkingActivity.INTENT_MODEL,modelCode);
             DeviceActivity.getInstance().startActivity(toWorkingActivityIntent);

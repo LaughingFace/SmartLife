@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
+import com.laughingFace.microWash.deviceControler.model.Model;
+import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.ui.view.DeviceSpinner;
 import com.laughingFace.microWash.ui.view.WaterRipplesView;
 
@@ -25,7 +27,7 @@ public class DeviceActivity extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Log.i("xixi", "DeviceActivity onCreate...");
+        Log.i("hehe", "DeviceActivity onCreate...");
 
         mainLogo = new MainLogo(findViewById(R.id.device_top_container));
         intent = new Intent(this,WorkingActivity.class);
@@ -69,6 +71,11 @@ public class DeviceActivity extends BaseActivity{
     public void offLine() {
         super.offLine();
         deviceSpinner.getTvName().setText("add device");
+    }
+
+    @Override
+    public void onModelStart(Model model, ModelAngel.StartType type) {
+        Log.i("hehe","start.........");
     }
 
     public static Activity getInstance(){

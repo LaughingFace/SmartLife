@@ -6,7 +6,7 @@ import com.laughingFace.microWash.deviceControler.model.Progress;
 
 public interface ModelStateListener {
 
-	public abstract void onStart(Model model,ModelAngel.StartType type);
+	public abstract void onModelStart(Model model, ModelAngel.StartType type);
 
 	public abstract void onProcessing(Model model);
 

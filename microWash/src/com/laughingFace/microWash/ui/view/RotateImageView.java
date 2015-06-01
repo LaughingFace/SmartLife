@@ -55,17 +55,6 @@ public class RotateImageView extends ImageView {
         }
 
         array.recycle();
-
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    startDrag(null, new View.DragShadowBuilder(RotateImageView.this), null, 0);//按下本view即可拖动本view
-                }
-                return true;
-            }
-        });
-
     }
     public RotateImageView(Context context) {
         super(context);

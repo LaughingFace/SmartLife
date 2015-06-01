@@ -6,8 +6,10 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.ui.view.RotateImageView;
 
 /**
  * Created by zihao on 15-5-18.
@@ -19,6 +21,8 @@ public abstract class CountDownDialog extends Dialog {
     private TextView content;
     private Button changeModel;
     private final String DELAY_INFO = "倒计时%s秒开始";
+    private LinearLayout delayStart;
+    private LinearLayout waiteStart;
 
     public CountDownDialog(Context context) {
         this(context, 5, 1);
@@ -35,7 +39,8 @@ public abstract class CountDownDialog extends Dialog {
 
             @Override
             public void onFinish() {
-                dismiss();
+                waiteStart.setVisibility(View.VISIBLE);
+                delayStart.setVisibility(View.INVISIBLE);
                 onCounttingDownOver();
             }
         };
@@ -47,6 +52,9 @@ public abstract class CountDownDialog extends Dialog {
         this.title = (TextView) findViewById(R.id.countdown_dialog_title);
         this.content =  (TextView) findViewById(R.id.countdown_dialog_content);
         this.changeModel = (Button) findViewById(R.id.change_model);
+        this.waiteStart = (LinearLayout)findViewById(R.id.waite_start);
+        this.delayStart = (LinearLayout)findViewById(R.id.delay_start);
+
         this.setCanceledOnTouchOutside(false);
         this.setCancelable(false);//按返回键也不消失
         changeModel.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +69,8 @@ public abstract class CountDownDialog extends Dialog {
 
     public void start(){
         timer.start();
+        waiteStart.setVisibility(View.INVISIBLE);
+        delayStart.setVisibility(View.VISIBLE);
         this.show();
     }
 
@@ -72,7 +82,10 @@ public abstract class CountDownDialog extends Dialog {
     public  abstract void onCounttingDownOver();
     public abstract void onChangeModel();
 
-    public void switchToWaite(){
-
+    @Override
+    public void dismiss() {
+        waiteStart.setVisibility(View.INVISIBLE);
+        delayStart.setVisibility(View.VISIBLE);
+        super.dismiss();
     }
 }

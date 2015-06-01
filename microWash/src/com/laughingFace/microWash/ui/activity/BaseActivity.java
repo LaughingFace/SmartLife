@@ -39,13 +39,14 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);// 设置标题栏的布局
 //        ModelManager.getInstance().setDeviceMonitor(this);
         modelManager = ModelManager.getInstance();
-        modelManager.setDeviceMonitor(this);
+
     }
 
+
     @Override
-    public void onStart(Model model,ModelAngel.StartType type) {
+    public void onModelStart(Model model, ModelAngel.StartType type) {
         Log.i("xixi", "start"+model.getStateCode());
-        Toast.makeText(this,"start:"+type,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"start:::"+type,Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void offLine() {
-        Log.i("xixi","offline");
+        Log.i("xixi", "offline");
         Toast.makeText(this,"offline",Toast.LENGTH_SHORT).show();
 
     }
@@ -95,6 +96,9 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        Log.i("hehe", "set listener" + this.getClass().getSimpleName());
+        modelManager.setDeviceMonitor(this);
+
     }
 
     @Override

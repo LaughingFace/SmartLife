@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/tran"
-              android:gravity="center">
+              android:background="#80000000"
+              android:gravity="center"
+        android:layout_gravity="center">
 
     <LinearLayout
-            android:layout_marginTop="-150dp"
+            android:layout_marginTop="-100dp"
+            android:id="@+id/delay_start"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="vertical"
             android:layout_width="250dp"
             android:layout_height="200dp"
+            android:visibility="visible"
             android:background="@drawable/delay_start_bg">
 
         <TextView android:layout_width="match_parent"
@@ -40,7 +44,18 @@
                 android:id="@+id/change_model"
                 android:textColor="@color/delay_text"
                 android:text="更换模式"/>
-
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                    android:gravity="center"
+                  android:visibility="invisible"
+                  android:id="@+id/waite_start">
+
+        <com.laughingFace.microWash.ui.view.RotateImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/loading"/>
+    </LinearLayout>
+
+</FrameLayout>

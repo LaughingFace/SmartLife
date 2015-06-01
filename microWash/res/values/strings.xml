@@ -11,6 +11,8 @@
 <string name="timingwash">定时清洗</string>
 <string name="dryoff">烘干模式</string>
 <string name="sterilization">杀菌模式</string>
+    <string name="waiteToStart">设备启动中请等待</string>
+
 <string name="not_connect_state">未连接</string>
 <!--时间选择的滚轮中数字格式-->
 <string name="format">%02d</string>

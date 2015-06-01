@@ -2,8 +2,6 @@ package com.laughingFace.microWash.deviceControler.model;
 
 
 
-import com.laughingFace.microWash.deviceControler.device.Device;
-import com.laughingFace.microWash.deviceControler.device.DeviceAngel;
 import com.laughingFace.microWash.deviceControler.device.infc.DeviceStateListener;
 import com.laughingFace.microWash.deviceControler.model.infc.ModelStateListener;
 import com.laughingFace.microWash.deviceControler.utils.Timer;
@@ -117,7 +115,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 			hearbeatProgress.start();
 			RunningModel.getProgress().setTotal(processing*1000);
 			RunningModel.getProgress().setRemain(processing*1000);
-			modelStateListener.onStart(RunningModel, startType);
+			modelStateListener.onModelStart(RunningModel, startType);
             setRunning(true);
 			startType = StartType.Normal;
 		}

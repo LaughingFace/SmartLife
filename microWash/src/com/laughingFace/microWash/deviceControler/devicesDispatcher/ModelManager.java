@@ -32,7 +32,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
              switch(msg.what)
              {
                  case HANDLER_ON_START:
-                     deviceMonitor.onStart(getRunningModel(), (StartType) msg.obj);
+                     deviceMonitor.onModelStart(getRunningModel(), (StartType) msg.obj);
                      break;
                  case HANDLER_FAIL_ON_START:
                      deviceMonitor.faillOnStart(getRunningModel(), (StartFaillType) msg.obj);
@@ -101,6 +101,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
             if (null == getRunningModel())
             {
                 super.startModel(model);
+                Log.i("hehe","模式启动。。。。");
             }
             else
             {
@@ -133,7 +134,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     }
 
     @Override
-    public void onStart(Model model,StartType type) {
+    public void onModelStart(Model model, StartType type) {
         mHandler.obtainMessage(HANDLER_ON_START,type).sendToTarget();
         timer = new Timer(onTimingActionListener,99);
         timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
