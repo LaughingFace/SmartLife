@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.model.Model;
@@ -21,7 +22,7 @@ public class DeviceActivity extends BaseActivity{
     private Intent intent;
     private MainLogo mainLogo;
     private static Activity instance;
-    private DeviceSpinner deviceSpinner;
+    private TextView tv_device;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,25 +39,13 @@ public class DeviceActivity extends BaseActivity{
                 startActivity(intent);
             }
         });
-        deviceSpinner = (DeviceSpinner) findViewById(R.id.ds_device);
-        deviceSpinner.notifyChangeItemData(new DeviceSpinner.OnListener() {
-            @Override
-            public void onClick() {
-
-            }
-
-            @Override
-            public void changeSelect(Device text) {
-
-            }
-        });
-        deviceSpinner.setAddOnClickListener(new View.OnClickListener() {
+        tv_device = (TextView) findViewById(R.id.ds_device);
+        tv_device.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DeviceActivity.this, AddDeviceActivity.class);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-//                overridePendingTransition(0, anim_exit);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         instance = this;
@@ -65,13 +54,15 @@ public class DeviceActivity extends BaseActivity{
     @Override
     public void onLine(Device device) {
         super.onLine(device);
-        deviceSpinner.getTvName().setText(device.getName());
+        tv_device.setText(device.getName());
+        tv_device.setEnabled(false);
     }
 
     @Override
     public void offLine() {
         super.offLine();
-        deviceSpinner.getTvName().setText("add device");
+        tv_device.setText("add device");
+        tv_device.setEnabled(true);
     }
 
     @Override

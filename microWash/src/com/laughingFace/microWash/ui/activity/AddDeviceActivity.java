@@ -17,6 +17,7 @@ import android.widget.LinearLayout.LayoutParams;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.net.NetworkManager;
+import com.laughingFace.microWash.net.UdpSocket;
 import com.laughingFace.microWash.receiver.WifiStateReceiver;
 import com.laughingFace.microWash.util.DisplayUtil;
 import com.laughingFace.microWash.util.wifi.WifiAdmin;
@@ -308,11 +309,13 @@ public class AddDeviceActivity extends BaseActivity {
                     Log.i("haha", WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()));
 //                    dispatcher.sendMessage(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()), wifiAdmin.getRouterIP(), mContext.getResources().getInteger(R.integer.tcp_config_port));
 
-                    NetworkManager.getInstance().send(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()));
                             Log.i("haha", "发送配置信息");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            UdpSocket udpSocket = new UdpSocket(0,"255.255.255.255",7878);
+                            udpSocket.send(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()).getBytes());
+
                             try {
                                 Thread.sleep(3000);
                             } catch (InterruptedException e) {
