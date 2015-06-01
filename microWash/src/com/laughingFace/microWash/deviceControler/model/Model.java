@@ -2,6 +2,7 @@ package com.laughingFace.microWash.deviceControler.model;
 
 
 public class Model {
+	private String name;
 	private Model()
 	{
 		progress = new Progress();
@@ -45,5 +46,13 @@ public class Model {
 
 	public void setProgress(Progress progress) {
 		this.progress = progress;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

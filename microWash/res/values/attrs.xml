@@ -14,7 +14,7 @@
         </attr>
     </declare-styleable>
 
-    <!--带旋转动画的ImageView-->
+    <!--可呼吸水波纹-->
     <declare-styleable name="waterRipplesView">
         <attr name="waveCount" format="integer"/>
         <attr name="waveOnLoad" format="boolean"/>

@@ -1,6 +1,18 @@
 package com.laughingFace.microWash.deviceControler.model;
 
 public class ModelProvider {
+
+    public static Model standard;
+    public static Model dryoff;
+    public static Model sterilization;
+    static{
+        standard = getModelByStateCode(3);
+        standard.setName("标准模式");
+        dryoff = getModelByStateCode(4);
+        dryoff.setName("烘干模式");
+        sterilization = getModelByStateCode(4);
+        sterilization.setName("杀菌模式");
+    }
     public static Model getModelByStateCode(int i)
     {
         return new Model(i);
@@ -25,4 +37,6 @@ public class ModelProvider {
     {
         return getModelByStateCode(0);
     }
+
+
 }

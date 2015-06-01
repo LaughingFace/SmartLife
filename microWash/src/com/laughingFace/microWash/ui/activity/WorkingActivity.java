@@ -38,6 +38,8 @@ public class WorkingActivity extends BaseActivity {
 
     private CountDownDialog countDownDialog;//用于倒计时的弹出对话框
     private WaterWaveProgress process;
+    private Model readyModel;//准备在倒计时完毕后 并且在倒计时过程中没有点击过“切换模式”按钮  启动的模式
+
 
 
     @Override
@@ -53,6 +55,9 @@ public class WorkingActivity extends BaseActivity {
             @Override
             public void onCounttingDownOver() {
 
+                if(null != readyModel){
+                    ModelManager.getInstance().startModel(readyModel);
+                }
             }
 
             @Override
@@ -74,32 +79,32 @@ public class WorkingActivity extends BaseActivity {
         switch (getIntent().getIntExtra(INTENT_MODEL, -1)){
             case STANDARD:
                 Log.i("xixi", "----------- 标准模式触发 ----------------");
-                ModelManager.getInstance().startModel(ModelProvider.standard());
+               readyModel = ModelProvider.standard;
                 break;
             case TIMINGWASH:
 
                 Log.i("xixi", "----------- 定时清洗触发 ----------------");
-
                 break;
             case DRYOFF:
+                readyModel = ModelProvider.dryoff;
 
                 Log.i("xixi", "----------- 烘干模式触发 ----------------");
-
                 break;
             case STERILIZATION:
-
+                readyModel = ModelProvider.sterilization;
                 Log.i("xixi", "----------- 杀菌模式触发 ----------------");
-
                 break;
-
         }
 
         //将intent的值覆盖为无效的值避免设备锁屏后唤醒时重复启动模式
         getIntent().putExtra(INTENT_MODEL,-1);
-
-        countDownDialog.setTitle("XX模式");
-
-        //countDownDialog.start();
+        /**
+         * 启动倒计时
+         */
+        if(null != readyModel) {
+            countDownDialog.setTitle(readyModel.getName());
+            countDownDialog.start();
+        }
         super.onWindowFocusChanged(hasFocus);
     }
     @Override
@@ -134,8 +139,6 @@ public class WorkingActivity extends BaseActivity {
         Toast.makeText(this,"fail on start "+type,Toast.LENGTH_SHORT).show();
 
     }
-
-
 
     @Override
     public void onBackPressed() {

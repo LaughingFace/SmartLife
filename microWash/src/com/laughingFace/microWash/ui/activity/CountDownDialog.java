@@ -71,4 +71,8 @@ public abstract class CountDownDialog extends Dialog {
 
     public  abstract void onCounttingDownOver();
     public abstract void onChangeModel();
+
+    public void switchToWaite(){
+
+    }
 }
