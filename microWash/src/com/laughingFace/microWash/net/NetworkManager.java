@@ -19,6 +19,7 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     public static Set<String> msgQueue = new HashSet<String>();
     private ReceiverUdpPacketHandler udpHandler;
     private ModelRunningState modelStateListener;
+    private boolean isRunning = true;
     public static final class Holder{
         public static final NetworkManager SINGLE = new NetworkManager();
     }
@@ -34,13 +35,34 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
         udpSocket.startReceive();
     }
     @Override
+    public void stop()
+    {
+        udpSocket.stopReceive();
+        udpSocket = null;
+        isRunning = false;
+    }
+    @Override
+    public void start()
+    {
+        if (null == udpSocket)
+        {
+            udpSocket = new UdpSocket(1111,"255.255.255.255",4545);
+            udpSocket.setReceiveListener(this);
+            udpSocket.startReceive();
+            isRunning = true;
+        }
+    }
+    @Override
     public void send(String data) {
        send(data.getBytes());
     }
 
     @Override
     public void send(final String data, boolean isAck) {
-
+        if (!isRunning)
+        {
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -74,6 +96,10 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
 
     @Override
     public void send(final byte[] data) {
+        if (!isRunning)
+        {
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -95,6 +121,10 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
 
     @Override
     public void Receive(DatagramPacket receivePacket) {
+        if (!isRunning)
+        {
+            return;
+        }
         udpHandler.handler(receivePacket);
         if(IsDebug.Is)
             NetworkdInterfaceRetransmission.sendAppReceive(receivePacket.getData());

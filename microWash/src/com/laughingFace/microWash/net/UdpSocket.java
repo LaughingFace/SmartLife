@@ -67,6 +67,7 @@ public class UdpSocket {
     public void stopReceive()
     {
         isReceive = false;
+        socket.close();
     }
     public void send(String desAddress,byte[] data)
     {

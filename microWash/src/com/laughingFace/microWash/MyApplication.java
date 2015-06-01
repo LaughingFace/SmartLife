@@ -14,16 +14,16 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        // 注册crashHandler
-        crashHandler.init(getApplicationContext());
-        // 发送以前没发送的报告(可选)
-//        crashHandler.sendPreviousReportsToServer();\
-        String errorMessage =  FileSharePreference.LoadData(this,"errorLog");
-        if (null !=errorMessage && errorMessage.length() > 0)
-        {
-            Log.i("xixi", "send error message");
-            MobclickAgent.reportError(this,errorMessage);
-        }
+//        CrashHandler crashHandler = CrashHandler.getInstance();
+//        // 注册crashHandler
+//        crashHandler.init(getApplicationContext());
+//        // 发送以前没发送的报告(可选)
+////        crashHandler.sendPreviousReportsToServer();\
+//        String errorMessage =  FileSharePreference.LoadData(this,"errorLog");
+//        if (null !=errorMessage && errorMessage.length() > 0)
+//        {
+//            Log.i("xixi", "send error message");
+//            MobclickAgent.reportError(this,errorMessage);
+//        }
     }
 }

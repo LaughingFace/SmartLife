@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.device.DeviceAngel;
+import com.laughingFace.microWash.deviceControler.model.CmdProvider;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.deviceControler.utils.Timer;
@@ -93,7 +94,13 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         };
 
     }
-
+    public void startAngel()
+    {
+        deviceAngel.searchDevice();
+    }
+    public void stopAngel(){
+        deviceAngel.stopSearchDevice();
+    }
     @Override
     public void startModel(Model model) {
         if (null != onLineDevice)
@@ -101,7 +108,6 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
             if (null == getRunningModel())
             {
                 super.startModel(model);
-                Log.i("hehe","模式启动。。。。");
             }
             else
             {
@@ -134,10 +140,13 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     }
 
     @Override
-    public void onModelStart(Model model, StartType type) {
-        mHandler.obtainMessage(HANDLER_ON_START,type).sendToTarget();
-        timer = new Timer(onTimingActionListener,99);
-        timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
+    public void onModelStart(Model model,StartType type) {
+        mHandler.obtainMessage(HANDLER_ON_START, type).sendToTarget();
+        if (model.getStateCode() ==  CmdProvider.ModelStateCode.STANDARD || model.getStateCode() ==  CmdProvider.ModelStateCode.DRYOFF)
+        {
+            timer = new Timer(onTimingActionListener,99);
+            timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
+        }
     }
 
     @Override
@@ -167,6 +176,11 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         }
 
         mHandler.obtainMessage(HANDLER_ON_FINISH,model).sendToTarget();
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -178,5 +192,9 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     @Override
     public void faillOnStart(Model model,StartFaillType type) {
         mHandler.obtainMessage(HANDLER_FAIL_ON_START,type).sendToTarget();
+    }
+
+    public boolean isOnline() {
+        return getRunningModel() != null;
     }
 }

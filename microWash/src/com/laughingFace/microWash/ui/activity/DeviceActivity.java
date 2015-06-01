@@ -55,6 +55,7 @@ public class DeviceActivity extends BaseActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(DeviceActivity.this, AddDeviceActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 //                overridePendingTransition(0, anim_exit);
             }
         });

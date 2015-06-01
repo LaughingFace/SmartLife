@@ -15,6 +15,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.*;
 import android.widget.LinearLayout.LayoutParams;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.net.NetworkManager;
 import com.laughingFace.microWash.receiver.WifiStateReceiver;
 import com.laughingFace.microWash.util.DisplayUtil;
@@ -67,6 +68,14 @@ public class AddDeviceActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        ModelManager.getInstance().stopAngel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ModelManager.getInstance().startAngel();
+
     }
 
     private void init() {
@@ -166,8 +175,8 @@ public class AddDeviceActivity extends BaseActivity {
 //        }
 //        else
 //        {
-//            etSsid.setText(ssid);
-//            etPwd.setText("");
+            etSsid.setText(ssid);
+            etPwd.setText("");
 //            etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 //        }
 
@@ -202,7 +211,7 @@ public class AddDeviceActivity extends BaseActivity {
         lvData.setCacheColorHint(0);
         lvData.setSelector(android.R.color.transparent);
 
-        lvData.setBackground(mContext.getResources().getDrawable(R.drawable.select_item_bg));
+        lvData.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select_item_bg));
         final PopupWindow popupWindow = new PopupWindow(lvData,
                 v.getWidth(), LayoutParams.WRAP_CONTENT, true);
 
@@ -280,8 +289,17 @@ public class AddDeviceActivity extends BaseActivity {
 //                    home.setSsid(etSsid.getText().toString());
 //                    home.setPwd(etPwd.getText().toString());
 //                    DBHelper.Save(home,HomeRouteTab.class);
+                    List<String> data = wifiAdmin.getScanWifi();
+                    if(!data.contains(getResources().getString(R.string.wifi_ap_ssid)))
+                    {
+                        wifiStateListener.OnDisConnected(PROCESS_TO_AP);
+                    }
+                    else
+                    {
+                        wifiAdmin.connect(getResources().getString(R.string.wifi_ap_ssid), getResources().getString(R.string.wifi_ap_pwd),wifiStateListener,PROCESS_TO_AP);
+                    }
 
-                    wifiAdmin.connect(getResources().getString(R.string.wifi_ap_ssid), getResources().getString(R.string.wifi_ap_pwd),wifiStateListener,PROCESS_TO_AP);
+//                    wifiAdmin.connect(etSsid.getText().toString(), getResources().getString(R.string.wifi_ap_pwd),wifiStateListener,PROCESS_TO_AP);
                     break;
                 case PROCESS_TO_AP:
                     //发送ssid,pwd信息
@@ -289,6 +307,7 @@ public class AddDeviceActivity extends BaseActivity {
                     //校验wifi模块返回的配置信息。
                     Log.i("haha", WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()));
 //                    dispatcher.sendMessage(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()), wifiAdmin.getRouterIP(), mContext.getResources().getInteger(R.integer.tcp_config_port));
+
                     NetworkManager.getInstance().send(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()));
                             Log.i("haha", "发送配置信息");
                     new Thread(new Runnable() {

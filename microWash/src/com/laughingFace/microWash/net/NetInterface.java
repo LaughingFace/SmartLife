@@ -9,4 +9,6 @@ public interface NetInterface {
     void send(String data,boolean isAck);
     void setOnModelRunningState(ModelRunningState listener);
     void setOnDeviceState(DeviceState listener);
+    void start();
+    void stop();
 }

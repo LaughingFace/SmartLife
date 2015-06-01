@@ -89,6 +89,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 		{
 //			setRunningModel(null);
 			setRunning(true);
+			modelStateListener.onModelStart(RunningModel, startType);
 		}
         else if (CmdProvider.ModelStateCode.STOP == modelState) {
             if (isRunning) {

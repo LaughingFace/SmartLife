@@ -27,7 +27,21 @@ public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 	}
 
 	public void searchDevice() {
+		if (null != hearbeatRequest)
+		{
+			stopSearchDevice();
+		}
+		hearbeatRequest = new Timer(this,interval,Timer.FOREVER);
 		hearbeatRequest.start();
+		net.start();
+	}
+	public void stopSearchDevice()
+	{
+		hearbeatRequest.stop();
+		hearbeatRequest = null;
+		isMeat = false;
+		hate = 0;
+		net.stop();
 	}
 
 	public void setDeviceStateListener(DeviceStateListener listener)
