@@ -41,13 +41,6 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 			}
 			setRunning(true);
 		}
-		if (null != RunningModel)
-		{
-			modelStateListener.onStart(RunningModel, StartType.OtherRunning);
-			net.send(RunningModel.getCmdRequestState());
-			return;
-		}
-
 		setRunningModel(model);
 		net.send(model.getCmd(),true);
 	}
@@ -187,7 +180,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	public void after() {
 	}
 	public enum StartType {
-		Normal,OtherRunning,ACCIDENT
+		Normal,OtherRunning,ACCIDENT,AlreadyRunning
 	}
 	public enum StartFaillType{
 		Timeout,Offline

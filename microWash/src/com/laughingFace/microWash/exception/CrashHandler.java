@@ -120,7 +120,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 Looper.loop();
             }
         }.start();
-//        Log.i("haha",ex.getMessage());
+//        Log.i("haha",android.util.Log.getStackTraceString(ex));
 //        MobclickAgent.reportError(mContext,"aaaaaaaaaaaa");
        FileSharePreference.saveData(mContext, "errorLog","new question3\n" + Log.getLogBuffer());
 
