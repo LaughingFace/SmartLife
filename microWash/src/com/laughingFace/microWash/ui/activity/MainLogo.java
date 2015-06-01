@@ -161,7 +161,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
                 dragingModel = "杀菌模式";
                 break;
             case  R.id.checkArea:
-                ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 40,0, 40}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+                ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 40,10, 40}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
 
                 break;
         }
