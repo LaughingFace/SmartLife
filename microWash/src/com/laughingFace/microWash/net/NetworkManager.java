@@ -46,7 +46,7 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     {
         if (null == udpSocket)
         {
-            udpSocket = new UdpSocket(1111,"255.255.255.255",4545);
+            udpSocket = new UdpSocket(1111,"255.255.255.255",7878);
             udpSocket.setReceiveListener(this);
             udpSocket.startReceive();
             isRunning = true;

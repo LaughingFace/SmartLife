@@ -24,7 +24,6 @@
                 app:waterWaveBgColor="#3FFFFFFF"
                 app:progressColor="#a40ed5de"
                 app:progressBgColor="#3FFFFFFF"
-                android:visibility="visible"
                 />
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -40,7 +39,6 @@
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="fill_parent"
                   android:orientation="horizontal"
-                  android:background="@color/tran"
                   android:id="@+id/menu">
 
         <ScrollView android:layout_width="0px"

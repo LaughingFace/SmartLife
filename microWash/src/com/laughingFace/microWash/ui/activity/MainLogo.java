@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
@@ -136,7 +137,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         /**
          *让手机震动
          */
-        ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 70}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+        ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 40}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
 
         switch (wounder.getId()){
             case R.id.model_standard:
@@ -166,6 +167,10 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     @Override
     public void onRealse(View perpetrators, View wounder) {
         if(null != wounder && wounder.getId() == R.id.checkArea){
+            if(!ModelManager.getInstance().isOnline()){
+                Toast.makeText(DeviceActivity.getInstance(), "请先连接设备", Toast.LENGTH_SHORT).show();
+            return;
+            }
 
             if(null != ModelManager.getInstance().getRunningModel()){
                modelCode = -1;

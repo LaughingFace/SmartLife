@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
+import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.ui.view.DeviceSpinner;
@@ -36,6 +34,11 @@ public class DeviceActivity extends BaseActivity{
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!ModelManager.getInstance().isOnline()){
+                    Toast.makeText(DeviceActivity.getInstance(), "请先连接设备", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 startActivity(intent);
             }
         });
@@ -75,11 +78,6 @@ public class DeviceActivity extends BaseActivity{
         super.offLine();
         tv_device.setText("add device");
         tv_device.setEnabled(true);
-    }
-
-    @Override
-    public void onModelStart(Model model, ModelAngel.StartType type) {
-        Log.i("hehe","start.........");
     }
 
     public static Activity getInstance(){
