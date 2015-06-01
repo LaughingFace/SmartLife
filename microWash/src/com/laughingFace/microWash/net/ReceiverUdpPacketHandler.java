@@ -25,7 +25,10 @@ public class ReceiverUdpPacketHandler {
         if (data.length >= MIN_LEN)
         {
             if (null == device)
+            {
                 device = new Device();
+                device.setName("wei xi");
+            }
             deviceState.onLineDevice(device);
             switch(data[1])
             {

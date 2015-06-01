@@ -134,7 +134,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     @Override
     public void onStart(Model model,StartType type) {
-        mHandler.obtainMessage(HANDLER_ON_START,type);
+        mHandler.obtainMessage(HANDLER_ON_START,type).sendToTarget();
         timer = new Timer(onTimingActionListener,99);
         timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
     }
