@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.laughingFace.microWash"
           android:versionCode="1"
-          android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="11"/>
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+          android:versionName="1.3">
+    <uses-sdk android:minSdkVersion="10"/>
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
+            android:name=".MyApplication">
         <activity android:name=".ui.activity.DeviceActivity"
                   android:label="@string/app_name"
-                  android:launchMode="singleInstance"
+
                   android:theme="@style/titlebar"
                 >
             <intent-filter>
@@ -15,7 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".PostmanTest.DeviceActivityTest"
+                  android:label="@string/app_name"
 
+                  android:theme="@style/titlebar"
+                >
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
 
         <activity android:name=".ui.activity.WorkingActivity"
                   android:label="@string/app_name"
@@ -24,6 +34,18 @@
                 >
 
         </activity>
+        <meta-data
+                android:name="UMENG_APPKEY"
+                android:value="5567d93f67e58ef60d000ab3" >
+        </meta-data>
+        <meta-data
+                android:name="UMENG_CHANNEL"
+                android:value="umeng_test" >
+        </meta-data>
     </application>
-    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 </manifest>
