@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
+import com.laughingFace.microWash.deviceControler.model.ModelProvider;
 import com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress;
 import com.laughingFace.microWash.ui.view.WaterRipplesView;
 
@@ -72,7 +74,7 @@ public class WorkingActivity extends BaseActivity {
         switch (getIntent().getIntExtra(INTENT_MODEL, -1)){
             case STANDARD:
                 Log.i("xixi", "----------- 标准模式触发 ----------------");
-
+                ModelManager.getInstance().startModel(ModelProvider.standard());
                 break;
             case TIMINGWASH:
 
