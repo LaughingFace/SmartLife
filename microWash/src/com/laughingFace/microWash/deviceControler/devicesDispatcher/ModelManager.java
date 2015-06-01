@@ -1,15 +1,17 @@
 package com.laughingFace.microWash.deviceControler.devicesDispatcher;
 
 
-import android.util.Log;
 import com.laughingFace.microWash.deviceControler.device.Device;
+import com.laughingFace.microWash.deviceControler.device.DeviceAngel;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.deviceControler.utils.Timer;
+import com.laughingFace.microWash.util.Log;
 
 public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     private static ModelManager instance;
+    private DeviceAngel deviceAngel;
     private DeviceMonitor deviceMonitor;
     private Device onLineDevice;
     private Timer.OnTimingActionListener onTimingActionListener;
@@ -32,7 +34,9 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     private ModelManager(){
         setModelStateListener(this);
-        setDeviceStateListener(this);
+        deviceAngel = new DeviceAngel();
+        deviceAngel.setDeviceStateListener(this);
+        deviceAngel.searchDevice();
         onTimingActionListener = new Timer.OnTimingActionListener() {
             @Override
             public void befor() {
@@ -40,46 +44,54 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
             @Override
             public void action() {
+                Log.i("xixi", "mypro" + timer.getInterval() * timer.getCurt());
+                getRunningModel().getProgress().setRemain(getRunningModel().getProgress().getTotal()-timer.getInterval()*timer.getCurt());
+
                 deviceMonitor.onProcessing(getRunningModel());
             }
 
             @Override
             public void after() {
+                if (timer != null)
                 notifyFinish();
             }
         };
-        timer = new Timer(onTimingActionListener,99);
+
     }
 
     @Override
     public void startModel(Model model) {
-
-        if(null != onLineDevice){
+        if (null != onLineDevice)
+        {
             super.startModel(model);
         }
-        else {
-            deviceMonitor.faillOnStart( model);
+        else
+        {
+            deviceMonitor.faillOnStart(model,StartFaillType.Offline);
         }
-
     }
 
     @Override
     public void onLine(Device device) {
-        this.onLineDevice = device;
-        deviceMonitor.onLine(device);
+        if (null == onLineDevice)
+        {
+            this.onLineDevice = device;
+            deviceMonitor.onLine(device);
+        }
     }
 
     @Override
     public void offLine() {
-        onLineDevice = null;
         deviceMonitor.offLine();
+        this.onLineDevice = null;
+        super.close();
     }
 
     @Override
-    public void onStart(Model model) {
-        deviceMonitor.onStart(model);
+    public void onStart(Model model,StartType type) {
+        deviceMonitor.onStart(model,type);
+        timer = new Timer(onTimingActionListener,99);
         timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
-
     }
 
     @Override
@@ -90,7 +102,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         }
         //计算误差
         long deviation  =(model.getProgress().getTotal()-(timer.getCurt()*timer.getInterval())) - model.getProgress().getRemain();
-        Log.i("xixi", "current deviation:" + deviation + " total:" + model.getProgress().getTotal() * 1000 + " timer:" + timer.getCurt() * timer.getInterval());
+        Log.i("xixi", "current deviation:" + deviation + " total:" + model.getProgress().getTotal() + " timer:" + timer.getCurt() * timer.getInterval());
         /**
          * 修正误差
          */
@@ -101,9 +113,14 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     @Override
     public void onFinish(Model model) {
-        timer.stop();
-        deviceMonitor.onFinish(model);
+        if (null != timer)
+        {
+            Log.i("xixi","stop timer");
+            timer.stop();
+            timer = null;
+        }
 
+        deviceMonitor.onFinish(model);
     }
 
     @Override
@@ -113,7 +130,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     }
 
     @Override
-    public void faillOnStart(Model model) {
-        deviceMonitor.faillOnStart(model);
+    public void faillOnStart(Model model,StartFaillType type) {
+        deviceMonitor.faillOnStart(model,type);
     }
 }

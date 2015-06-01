@@ -6,6 +6,6 @@ package com.laughingFace.microWash.net;
 public class NetProvider {
     public static NetInterface getDefaultProduct()
     {
-        return new NetworkManager();
+        return NetworkManager.getInstance();
     }
 }

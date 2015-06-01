@@ -4,8 +4,11 @@ public class Progress {
 
 	private long total;
 	private long remain;
-	private long maxDeviation;
-
+	private long maxDeviation = 1000;
+	public float getPercentage()
+	{
+		return 1-(float)remain/(float)total;
+	}
 	public long getTotal() {
 		return total;
 	}
