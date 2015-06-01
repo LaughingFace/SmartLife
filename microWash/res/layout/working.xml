@@ -64,7 +64,7 @@
                         android:text="@string/standard"
                         android:textColor="#37ffef"/>
 
-                <Button
+                <!--<Button
                         android:layout_width="fill_parent"
                         android:layout_height="103dp"
                         android:layout_margin="7dp"
@@ -76,7 +76,7 @@
                         android:textColor="#37ffef"
                         android:drawableBottom="@drawable/line_horizontal"
                         android:layout_weight="7"
-                        />
+                        />-->
                 <Button
                         android:layout_width="fill_parent"
                         android:layout_height="103dp"
@@ -85,7 +85,7 @@
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
                         android:id="@+id/model_timingwash"
-                        android:drawableTop="@drawable/sunny"
+                        android:drawableTop="@drawable/timingwash"
                         android:text="@string/timingwash"
                         android:textColor="#37ffef"
                         android:drawableBottom="@drawable/line_horizontal"
@@ -99,7 +99,7 @@
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
                         android:id="@+id/model_dryoff"
-                        android:drawableTop="@drawable/sunny"
+                        android:drawableTop="@drawable/dryoff"
                         android:text="@string/dryoff"
                         android:textColor="#37ffef"
                         android:drawableBottom="@drawable/line_horizontal"
@@ -112,7 +112,7 @@
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
                         android:id="@+id/model_sterilization"
-                        android:drawableTop="@drawable/sunny"
+                        android:drawableTop="@drawable/sterilization"
                         android:text="@string/sterilization"
                         android:textColor="#37ffef"
                         android:drawableBottom="@drawable/line_horizontal"

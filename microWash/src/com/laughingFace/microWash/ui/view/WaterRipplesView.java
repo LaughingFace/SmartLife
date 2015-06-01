@@ -113,7 +113,6 @@ public class WaterRipplesView extends View {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         if(canDrag){
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:

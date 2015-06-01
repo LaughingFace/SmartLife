@@ -42,6 +42,17 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private Intent toWorkingActivityIntent;
     private int modelCode = -1;
 
+    private Drawable maskDrawable ;
+
+
+     Handler changeMaskAlpha = new Handler(){
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void handleMessage(Message msg) {
+            maskDrawable.setAlpha(Integer.parseInt(msg.obj.toString()));
+            maskView.setBackground(maskDrawable);
+        }
+    };
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public MainLogo(View contentView){
@@ -67,19 +78,9 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         waterRipplesViewList.add(model_sterilization);
 
         maskView = (LinearLayout)contentView.findViewById(R.id.mask);
+        maskDrawable = contentView.getResources().getDrawable(R.drawable.device_activity_mask);
+        maskDrawable.setAlpha(0);
 
-         final Drawable maskDrawable = contentView.getResources().getDrawable(R.drawable.device_activity_mask);
-            maskDrawable.setAlpha(0);
-
-         final Handler changeMaskAlpha = new Handler(){
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void handleMessage(Message msg) {
-                //Log.i("hehe","handle msg...");
-                maskDrawable.setAlpha(Integer.parseInt(msg.obj.toString()));
-                maskView.setBackground(maskDrawable);
-            }
-        };
 
         for(WaterRipplesView wr:waterRipplesViewList){
             wr.setOnTouchListener(new View.OnTouchListener() {
@@ -157,7 +158,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
                 break;
             case R.id.model_sterilization:
                 modelCode = WorkingActivity.STERILIZATION;
-               // Log.i("xixi", "----------- 杀菌模式 ----------------");
                 dragingModel = "杀菌模式";
                 break;
             case  R.id.checkArea:
@@ -170,7 +170,15 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
     @Override
     public void onRealse(View perpetrators, View wounder) {
+        Log.i("ww", "----------- onRealse ----------------");
+
+        checkArea.stop();
+        isRandomBreath = true;
+        isChangeMaskAlpha = false;
+        changeMaskAlpha.obtainMessage(1,""+0).sendToTarget();//通过让背景全透明消除遮罩
+
         if(null != wounder && wounder.getId() == R.id.checkArea){
+
             if(!ModelManager.getInstance().isOnline()){
                 Toast.makeText(DeviceActivity.getInstance(), "请先连接设备", Toast.LENGTH_SHORT).show();
             return;
@@ -188,11 +196,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         else {
             dragModelName.setText("");
         }
-
-        checkArea.stop();
-        isChangeMaskAlpha = false;
-        isRandomBreath = true;
-        maskView.getBackground().setAlpha(0);//通过让背景全透明消除遮罩
 
     }
 
@@ -215,7 +218,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
             @Override
             public void run() {
                     try {
-
                         while (true) {
                             Thread.sleep(500);
                             if(!waterRipplesViewList.get(witch).isStarting()){
