@@ -1,6 +1,7 @@
 package com.laughingFace.microWash.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.PersistableBundle;
@@ -51,12 +52,14 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     public void onLine(Device device) {
         Log.i("xixi", "online");
         Toast.makeText(this,"online",Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void offLine() {
         Log.i("xixi","offline");
         Toast.makeText(this,"offline",Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

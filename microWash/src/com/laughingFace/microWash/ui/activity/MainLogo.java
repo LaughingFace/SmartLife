@@ -34,6 +34,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private boolean isRandomBreath = true;
     private List<WaterRipplesView> waterRipplesViewList;
     private Intent toWorkingActivityIntent;
+    private int modelCode = -1;
 
 
     public MainLogo(View contentView){
@@ -99,19 +100,23 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
         switch (wounder.getId()){
             case R.id.model_standard:
-                Log.i("xixi", "----------- 标准模式 ----------------");
+                //Log.i("xixi", "----------- 标准模式 ----------------");
+                modelCode = WorkingActivity.STANDARD;
                 dragingModel = "标准模式";
                 break;
             case R.id.model_dryoff:
-                Log.i("xixi", "----------- 烘干模式 ----------------");
+                modelCode = WorkingActivity.DRYOFF;
+                //Log.i("xixi", "----------- 烘干模式 ----------------");
                 dragingModel = "烘干模式";
                 break;
             case R.id.model_timingwash:
-                Log.i("xixi", "----------- 定时清洗 ----------------");
+                modelCode = WorkingActivity.TIMINGWASH;
+               // Log.i("xixi", "----------- 定时清洗 ----------------");
                 dragingModel = "定时清洗";
                 break;
             case R.id.model_sterilization:
-                Log.i("xixi", "----------- 杀菌模式 ----------------");
+                modelCode = WorkingActivity.STERILIZATION;
+               // Log.i("xixi", "----------- 杀菌模式 ----------------");
                 dragingModel = "杀菌模式";
                 break;
         }
@@ -123,6 +128,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         if(null != wounder && wounder.getId() == R.id.checkArea){
             Log.i("xixi", "----------- 模式触发 ----------------");
             toWorkingActivityIntent = new Intent(DeviceActivity.getInstance(),WorkingActivity.class);
+            toWorkingActivityIntent.putExtra(WorkingActivity.INTENT_MODEL,modelCode);
             DeviceActivity.getInstance().startActivity(toWorkingActivityIntent);
         }
         else {
@@ -138,7 +144,7 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     Handler breathHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            Log.i("xixi", "handleMessage..............");
+            //Log.i("xixi", "handleMessage..............");
 
             int witch = 0;
             int rand = ((int) (Math.random()*waterRipplesViewList.size()));

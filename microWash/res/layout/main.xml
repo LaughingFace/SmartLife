@@ -2,12 +2,12 @@
 <!--suppress ALL -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res/com.laughingFace.microWash"
-             android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res/com.laughingFace.microWash"
+              android:orientation="vertical"
               android:id="@+id/device_top_container"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@drawable/main_bg">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/main_bg">
 
     <LinearLayout
             android:orientation="vertical"
@@ -15,100 +15,99 @@
             android:layout_height="match_parent"
             android:id="@+id/mask">
 
-    <LinearLayout
-            android:layout_weight="240"
-            android:id="@+id/main_logo"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-        <TextView
+        <FrameLayout
+                android:layout_weight="240"
+                android:id="@+id/main_logo"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:id="@+id/tv_mode"
-                android:textSize="20sp"
-                android:textColor="@color/main_text"
-                android:focusableInTouchMode="false"
-                android:focusable="false"
-                android:text=""/>
+                android:layout_height="0dp">
 
-        <FrameLayout android:layout_width="match_parent"
-                     android:layout_height="match_parent">
-
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:gravity="center">
-                <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
-                <ImageView
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/mianFlag"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="270dp"
-                        android:maxWidth="270dp"
-                        android:src="@drawable/main_flag"
-                        />
-                <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
-            </LinearLayout>
-
-            <com.laughingFace.microWash.ui.view.CircleLayout
+            <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
-                    app:angleOffset="160"
-                    app:angleRange="270"
-                    >
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="center"
+                    android:id="@+id/tv_mode"
+                    android:textSize="20sp"
+                    android:textColor="@color/main_text"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
+                    android:text=""/>
 
-                <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:id="@+id/checkArea"
-                        android:layout_width="130dp"
-                        android:layout_height="130dp"
-                        app:waveOnLoad="false"
-                        app:waveColor="#ff0000"
-                        app:waveCount="8"
-                        app:canDrag="false"/>
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_height="match_parent">
 
-                <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:id="@+id/model_standard"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:waveCount="5"
-                        app:waveOnLoad="false"
-                        app:waveColor="#00ce9b"
-                        />
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:gravity="center">
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+                    <ImageView
+                            android:layout_weight="2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mianFlag"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="270dp"
+                            android:maxWidth="270dp"
+                            android:src="@drawable/main_flag"
+                            />
+                    <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+                </LinearLayout>
 
-                <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:id="@+id/model_dryoff"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:waveColor="#00ce9b"
-                        app:waveOnLoad="false"
-                        app:waveCount="5"
-                        />
+                <com.laughingFace.microWash.ui.view.CircleLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        app:angleOffset="160"
+                        app:angleRange="270"
+                        >
 
-                <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:id="@+id/model_timingwash"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:waveColor="#00ce9b"
-                        app:waveOnLoad="false"
-                        app:waveCount="5"/>
+                    <com.laughingFace.microWash.ui.view.WaterRipplesView
+                            android:id="@+id/checkArea"
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            app:waveOnLoad="false"
+                            app:waveColor="#ff0000"
+                            app:waveCount="8"
+                            app:canDrag="false"/>
 
-                <com.laughingFace.microWash.ui.view.WaterRipplesView
-                        android:id="@+id/model_sterilization"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:waveColor="#00ce9b"
-                        app:waveOnLoad="false"/>
-                app:waveCount="5"
-            </com.laughingFace.microWash.ui.view.CircleLayout>
+                    <com.laughingFace.microWash.ui.view.WaterRipplesView
+                            android:id="@+id/model_standard"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:waveCount="5"
+                            app:waveOnLoad="false"
+                            app:waveColor="#00ce9b"
+                            />
 
+                    <com.laughingFace.microWash.ui.view.WaterRipplesView
+                            android:id="@+id/model_dryoff"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:waveColor="#00ce9b"
+                            app:waveOnLoad="false"
+                            app:waveCount="5"
+                            />
+
+                    <com.laughingFace.microWash.ui.view.WaterRipplesView
+                            android:id="@+id/model_timingwash"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:waveColor="#00ce9b"
+                            app:waveOnLoad="false"
+                            app:waveCount="5"/>
+
+                    <com.laughingFace.microWash.ui.view.WaterRipplesView
+                            android:id="@+id/model_sterilization"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:waveColor="#00ce9b"
+                            app:waveOnLoad="false"/>
+                    app:waveCount="5"
+                </com.laughingFace.microWash.ui.view.CircleLayout>
+
+            </FrameLayout>
         </FrameLayout>
-
-    </LinearLayout>
 
         <ImageView
                 android:id="@+id/mainText"
