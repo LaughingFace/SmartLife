@@ -71,7 +71,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     @Override
     public void onFinish(Model model) {
         Log.i("xixi","finsish");
-        Toast.makeText(this,"online",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"finish",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -98,7 +98,6 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         MobclickAgent.onResume(this);
         Log.i("hehe", "set listener" + this.getClass().getSimpleName());
         modelManager.setDeviceMonitor(this);
-
     }
 
     @Override

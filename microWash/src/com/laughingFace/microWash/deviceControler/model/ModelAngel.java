@@ -94,7 +94,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
         else if (CmdProvider.ModelStateCode.STOP == modelState) {
             if (isRunning) {
                 modelStateListener.onFinish(RunningModel);
-                endModel();
+
             } else {
                 Log.e("xixi", "don't know device state but state = 0");
             }

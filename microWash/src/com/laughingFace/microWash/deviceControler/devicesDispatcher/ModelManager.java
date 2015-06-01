@@ -40,6 +40,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
                      break;
                  case HANDLER_ON_FINISH:
                      deviceMonitor.onFinish(getRunningModel());
+                     close();
                      break;
                  case HANDLER_PROCEING:
                      deviceMonitor.onProcessing(getRunningModel());
@@ -112,7 +113,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
             else
             {
                 mHandler.obtainMessage(HANDLER_ON_START,
-                        model == getRunningModel()?
+                        model.getStateCode() ==  getRunningModel().getStateCode()?
                                 StartType.AlreadyRunning:StartType.OtherRunning
                         ).sendToTarget();
             }
@@ -195,6 +196,6 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     }
 
     public boolean isOnline() {
-        return getRunningModel() != null;
+        return onLineDevice != null;
     }
 }

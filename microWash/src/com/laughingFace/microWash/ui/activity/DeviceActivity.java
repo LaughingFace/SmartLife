@@ -43,9 +43,22 @@ public class DeviceActivity extends BaseActivity{
         tv_device.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (modelManager.isOnline())
+                {
+                    return;
+                }
                 Intent intent = new Intent(DeviceActivity.this, AddDeviceActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+        tv_device.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(DeviceActivity.this, AddDeviceActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                return true;
             }
         });
         instance = this;
@@ -55,7 +68,6 @@ public class DeviceActivity extends BaseActivity{
     public void onLine(Device device) {
         super.onLine(device);
         tv_device.setText(device.getName());
-        tv_device.setEnabled(false);
     }
 
     @Override

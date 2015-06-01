@@ -12,7 +12,7 @@ import java.net.*;
 public class WifiVM {
     public static void main(String[] args)
     {
-        WifiVM wifi = new WifiVM(7878);
+        WifiVM wifi = new WifiVM(4545);
         wifi.start();
     }
     boolean isSencond = false;
@@ -72,7 +72,7 @@ public class WifiVM {
                                 @Override
                                 public void run() {
                                     progress = Stand_Progress;
-                                    while(progress > 1)
+                                    while(progress > -2)
                                     {
                                         try {
                                             Thread.sleep(1000);
@@ -101,7 +101,7 @@ public class WifiVM {
                                 @Override
                                 public void run() {
                                     progress = Dy_Progress;
-                                    while(progress > 1)
+                                    while(progress > -2)
                                     {
                                         try {
                                             Thread.sleep(1000);
