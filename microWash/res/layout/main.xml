@@ -15,8 +15,6 @@
             android:layout_height="match_parent"
             android:id="@+id/mask">
 
-
-
     <LinearLayout
             android:layout_weight="240"
             android:id="@+id/main_logo"
@@ -75,8 +73,8 @@
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
                         android:id="@+id/model_standard"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         app:waveCount="5"
                         app:waveOnLoad="false"
                         app:waveColor="#00ce9b"
@@ -84,28 +82,28 @@
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
                         android:id="@+id/model_dryoff"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        app:waveOnLoad="false"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         app:waveColor="#00ce9b"
+                        app:waveOnLoad="false"
                         app:waveCount="5"
                         />
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
                         android:id="@+id/model_timingwash"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         app:waveColor="#00ce9b"
                         app:waveOnLoad="false"
                         app:waveCount="5"/>
 
                 <com.laughingFace.microWash.ui.view.WaterRipplesView
                         android:id="@+id/model_sterilization"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         app:waveColor="#00ce9b"
-                        app:waveCount="5"
                         app:waveOnLoad="false"/>
+                app:waveCount="5"
             </com.laughingFace.microWash.ui.view.CircleLayout>
 
         </FrameLayout>

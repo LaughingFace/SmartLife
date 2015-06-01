@@ -1,6 +1,9 @@
 package com.laughingFace.microWash.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.ui.view.WaterRipplesView;
 
 import java.util.ArrayList;
@@ -29,6 +33,9 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private LinearLayout maskView;
     private boolean isRandomBreath = true;
     private List<WaterRipplesView> waterRipplesViewList;
+    private Intent toWorkingActivityIntent;
+
+
     public MainLogo(View contentView){
         this.contentView = contentView;
         model_standard =  (WaterRipplesView)contentView.findViewById(R.id.model_standard);
@@ -64,7 +71,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
                 }
             });
         }
-
         randomBreath();
     }
 
@@ -85,9 +91,10 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         checkArea.start();
         isRandomBreath = false;
         maskView.setBackgroundResource(R.drawable.device_activity_mask);
-/**
- *让手机震动
- */
+
+        /**
+         *让手机震动
+         */
         ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 70}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
 
         switch (wounder.getId()){
@@ -115,6 +122,8 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     public void onRealse(View perpetrators, View wounder) {
         if(null != wounder && wounder.getId() == R.id.checkArea){
             Log.i("xixi", "----------- 模式触发 ----------------");
+            toWorkingActivityIntent = new Intent(DeviceActivity.getInstance(),WorkingActivity.class);
+            DeviceActivity.getInstance().startActivity(toWorkingActivityIntent);
         }
         else {
             dragModelName.setText("");
@@ -126,6 +135,20 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
     }
 
+    Handler breathHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            Log.i("xixi", "handleMessage..............");
+
+            int witch = 0;
+            int rand = ((int) (Math.random()*waterRipplesViewList.size()));
+            witch = witch==rand?((int) (Math.random()*waterRipplesViewList.size())):rand;
+            if(isRandomBreath){
+                waterRipplesViewList.get(witch).breath();
+            }
+        }
+    };
+
     /**
      * 随机时间让随机的一个小水波呼吸显示一下
      */
@@ -133,18 +156,12 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int witch = 0;
+
                 while (true) {
                     try {
                         Thread.sleep(500);
-                        long interval = (long) (Math.random() * 5000+4000);
-
-                        int rand = ((int) (Math.random()*waterRipplesViewList.size()));
-                         witch = witch==rand?((int) (Math.random()*waterRipplesViewList.size())):rand;
-
-                        if(isRandomBreath){
-                            waterRipplesViewList.get(witch).breath();
-                        }
+                        long interval = (long) (Math.random() * 7000+4000);
+                        breathHandler.obtainMessage().sendToTarget();
                         Thread.sleep(interval);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -153,4 +170,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
             }
         }).start();
     }
+
+
 }

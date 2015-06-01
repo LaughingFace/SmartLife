@@ -1,11 +1,8 @@
 package com.laughingFace.microWash.ui.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import com.laughingFace.microWash.R;
 
 /**
@@ -13,15 +10,42 @@ import com.laughingFace.microWash.R;
  */
 public class WorkingActivity extends BaseActivity {
 
+    private CountDownDialog countDownDialog;//用于倒计时的弹出对话框
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.working);
-        findViewById(R.id.working_model_standard).setOnClickListener(new View.OnClickListener() {
+
+        Log.i("xixi", "WorkingActivity onCreate...");
+
+        countDownDialog  = new CountDownDialog(this){
             @Override
-            public void onClick(View v) {
+            public void onCounttingDownOver() {
 
             }
-        });
+
+            @Override
+            public void onChangeModel() {
+                Log.i("xixi", "更换模式......");
+
+            }
+        };
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+        countDownDialog.setTitle("XX模式");
+
+        //countDownDialog.start();
+        super.onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
