@@ -32,7 +32,6 @@
                   android:layout_marginTop="10dp"
                   android:textSize="37sp"
                   android:textColor="#37ffef"/>
-
     </LinearLayout>
     <!--=================================菜单与主内容部分的分割线===================================-->
 
@@ -59,9 +58,8 @@
                         android:layout_margin="7dp"
                         android:layout_weight="1"
                         android:paddingTop="20dp"
-                        android:background="@drawable/module_item_btn"
                         android:id="@+id/working_model_standard"
-                        android:drawableTop="@drawable/sunny"
+                        android:drawableTop="@drawable/standard"
                         android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/standard"
                         android:textColor="#37ffef"/>
