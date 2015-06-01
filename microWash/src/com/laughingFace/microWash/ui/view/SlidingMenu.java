@@ -28,8 +28,8 @@ public class SlidingMenu extends FrameLayout {
     private final long MINALPHA = 0x80;//透明度的最低值（值越高越透明 八位十六进制的最高两位代表透明度）
     private long maskColor =0x202020 ;//菜单出现后周围遮罩颜色
     private final int k = 3;//“劲度系数”控制菜单完全显示后继续拉动菜单的难度（参考胡克定律：f=k.x）
-    private SlidingMenuListenear onMenuOpened;
-    private SlidingMenuListenear onMenuClosed;
+    private SlidingMenuListenear slidingMenuListenear;
+
     private ImageView menuHandle;
 
     public SlidingMenu(Context context, AttributeSet attrs) {
@@ -129,8 +129,8 @@ public class SlidingMenu extends FrameLayout {
                 offsetX = showingWidth;
                 menu.scrollTo(offsetX, 0);
                 menu.setBackgroundColor(0x00000000);
-                if(null != onMenuClosed){
-                    onMenuClosed.action();
+                if(null != slidingMenuListenear){
+                    slidingMenuListenear.onClosed();
                 }
             }
             content.setVisibility(VISIBLE);
@@ -138,28 +138,12 @@ public class SlidingMenu extends FrameLayout {
         }
     }
 
-    public SlidingMenuListenear getOnMenuOpened() {
-        return onMenuOpened;
-    }
-
-    public void setOnMenuOpened(SlidingMenuListenear onMenuOpened) {
-        this.onMenuOpened = onMenuOpened;
-    }
-
-    public SlidingMenuListenear getOnMenuClosed() {
-        return onMenuClosed;
-    }
-
-    public void setOnMenuClosed(SlidingMenuListenear onMenuClosed) {
-        this.onMenuClosed = onMenuClosed;
-    }
-
     public void show(){
         offsetX = 0;//完全显示菜单
         menu.setBackgroundColor((int) (MINALPHA * 0x01000000 + maskColor));//背景设置为半透明
         content.setVisibility(INVISIBLE);
-        if (null != onMenuOpened) {
-            onMenuOpened.action();
+        if (null != slidingMenuListenear) {
+            slidingMenuListenear.onOpened();
         }
 
         layoutParams.width = showingWidth;
@@ -179,11 +163,20 @@ public class SlidingMenu extends FrameLayout {
         isShowing = false;
     }
 
+    public SlidingMenuListenear getSlidingMenuListenear() {
+        return slidingMenuListenear;
+    }
+
+    public void setSlidingMenuListenear(SlidingMenuListenear slidingMenuListenear) {
+        this.slidingMenuListenear = slidingMenuListenear;
+    }
+
     public boolean isShowing() {
         return isShowing;
     }
 
     public interface SlidingMenuListenear{
-        public void action();
+        void onClosed();
+        void onOpened();
     }
 }

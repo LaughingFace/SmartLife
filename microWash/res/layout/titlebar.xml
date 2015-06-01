@@ -19,18 +19,7 @@
         android:layout_width="104dp"
         android:layout_height="32dp"
         android:background="@drawable/title_conn_bg"
-
-        android:drawableStart="@drawable/title_conn_state"
-        android:text="@string/noConnect"
-        android:textColor="#a7aeb3"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="7dp"
-        android:id="@+id/btn_connect"
-        android:paddingLeft="10dp"
-        android:paddingEnd="3dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/droo_state"
         />
 
     <!--<ImageView

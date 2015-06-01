@@ -1,7 +1,10 @@
 package com.laughingFace.microWash.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -33,11 +36,13 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     private WaterRipplesView model_sterilization;
     private LinearLayout maskView;
     private boolean isRandomBreath = true;
+    private boolean isChangeMaskAlpha = false;//是否让遮罩透明度渐变
     private List<WaterRipplesView> waterRipplesViewList;
     private Intent toWorkingActivityIntent;
     private int modelCode = -1;
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public MainLogo(View contentView){
         this.contentView = contentView;
         model_standard =  (WaterRipplesView)contentView.findViewById(R.id.model_standard);
@@ -62,12 +67,49 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
         maskView = (LinearLayout)contentView.findViewById(R.id.mask);
 
+         final Drawable maskDrawable = contentView.getResources().getDrawable(R.drawable.device_activity_mask);
+            maskDrawable.setAlpha(0);
+
+         final Handler changeMaskAlpha = new Handler(){
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void handleMessage(Message msg) {
+                //Log.i("hehe","handle msg...");
+                maskDrawable.setAlpha(Integer.parseInt(msg.obj.toString()));
+                maskView.setBackground(maskDrawable);
+            }
+        };
+
         for(WaterRipplesView wr:waterRipplesViewList){
             wr.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+
                     if(event.getAction() == MotionEvent.ACTION_DOWN){
-                        maskView.setBackgroundResource(R.drawable.device_activity_mask);
+                        checkArea.breath();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                isChangeMaskAlpha = true;
+                                int i = 0;
+                                while (isChangeMaskAlpha){
+                                    i++;
+                                    try {
+                                            changeMaskAlpha.obtainMessage(1,""+i).sendToTarget();
+                                        Thread.sleep(2);
+                                        if(i>=255){
+                                            isChangeMaskAlpha = false;
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            }
+                        }).start();
+
+                        isRandomBreath = false;
+                        waterRipplesViewList.get(witch).stop();
                     }
                     return false;
                 }
@@ -91,9 +133,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
     @Override
     public void onEnter(View perpetrators, View wounder) {
         checkArea.start();
-        isRandomBreath = false;
-        maskView.setBackgroundResource(R.drawable.device_activity_mask);
-
         /**
          *让手机震动
          */
@@ -142,21 +181,19 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         }
 
         checkArea.stop();
+        isChangeMaskAlpha = false;
         isRandomBreath = true;
-        maskView.setBackgroundResource(R.drawable.tran);
+        maskView.getBackground().setAlpha(0);//通过让背景全透明消除遮罩
 
     }
+
+    private  int witch = 0;
 
     Handler breathHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            //Log.i("xixi", "handleMessage..............");
-
-            int witch = 0;
-            int rand = ((int) (Math.random()*waterRipplesViewList.size()));
-            witch = witch==rand?((int) (Math.random()*waterRipplesViewList.size())):rand;
             if(isRandomBreath){
-                waterRipplesViewList.get(witch).breath();
+                    waterRipplesViewList.get(witch).breath();
             }
         }
     };
@@ -168,17 +205,22 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                while (true) {
                     try {
-                        Thread.sleep(500);
-                        long interval = (long) (Math.random() * 7000+4000);
-                        breathHandler.obtainMessage().sendToTarget();
-                        Thread.sleep(interval);
+
+                        while (true) {
+                            Thread.sleep(500);
+                            if(!waterRipplesViewList.get(witch).isStarting()){
+                                long interval = (long) (Math.random() * 7000);
+                                Thread.sleep(interval);
+                                int rand = ((int) (Math.random()*waterRipplesViewList.size()));
+                                witch = witch==rand?((int) (Math.random()*waterRipplesViewList.size())):rand;
+                                breathHandler.obtainMessage().sendToTarget();
+                            }
+
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
             }
         }).start();
     }

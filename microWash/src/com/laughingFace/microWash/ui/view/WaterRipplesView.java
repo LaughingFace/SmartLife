@@ -1,8 +1,10 @@
 package com.laughingFace.microWash.ui.view;
+        import android.annotation.TargetApi;
         import android.content.Context;
         import android.content.res.TypedArray;
         import android.graphics.Canvas;
         import android.graphics.Paint;
+        import android.os.Build;
         import android.util.AttributeSet;
         import android.util.Log;
         import android.view.DragEvent;
@@ -32,6 +34,7 @@ public class WaterRipplesView extends View {
     private float breathDirection = 1;//呼吸方向（+1为变亮，-1为变暗）
     private float breathSpeed = 0.02f;//呼吸速度
     private boolean isBreathing = false;
+    private int inner = 30;//内圈大小
 
     private OnCollisionListener onCollisionListener;
 
@@ -51,6 +54,7 @@ public class WaterRipplesView extends View {
         init(context,attrs);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void init(Context context, AttributeSet attrs) {
         paint = new Paint();
         viewUtil = new ViewUtil(this);
@@ -106,13 +110,16 @@ public class WaterRipplesView extends View {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         if(canDrag){
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
-
+                    if(null != onCollisionListener){
+                        onCollisionListener.onEnter(this,this);
+                    }
                     start();
                     this.startDrag(null, new DragShadowBuilder(this), null, 0);//按下本view即可拖动本view
                     stop();
@@ -134,7 +141,7 @@ public class WaterRipplesView extends View {
 
         float alphaSpeed;
         float radiusSpeed;
-        float hw = getWidth()/2f;
+        float hw = getWidth()/2f - inner;
 
         /**
          * 根据view的宽度计算半径和透明度的变化速度，（为了尽力保证半径和透明度同时达到最值）
@@ -178,7 +185,7 @@ public class WaterRipplesView extends View {
         if (++a>= (hw/waveCount) || circles.size()<1){
             a = 0;
         Circle c = new Circle();
-        c.setX(getWidth() / 2).setY(getHeight() / 2).setColor(color).setAlpha(255).setRadius(1);
+        c.setX(getWidth() / 2).setY(getHeight() / 2).setColor(color).setAlpha(255).setRadius(inner);
         circles.add(c);
         }
 

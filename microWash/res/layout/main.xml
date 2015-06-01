@@ -67,16 +67,16 @@
                             android:layout_width="130dp"
                             android:layout_height="130dp"
                             app:waveOnLoad="false"
-                            app:waveColor="#ff0000"
-                            app:waveCount="8"
+                            app:waveColor="#80ff0000"
+                            app:waveCount="3"
                             app:canDrag="false"/>
 
                     <com.laughingFace.microWash.ui.view.WaterRipplesView
                             android:id="@+id/model_standard"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            app:waveCount="5"
-                            app:waveOnLoad="false"
+                            app:waveCount="2"
+                            app:waveOnLoad="true"
                             app:waveColor="#00ce9b"
                             />
 
@@ -86,7 +86,7 @@
                             android:layout_height="100dp"
                             app:waveColor="#00ce9b"
                             app:waveOnLoad="false"
-                            app:waveCount="5"
+                            app:waveCount="2"
                             />
 
                     <com.laughingFace.microWash.ui.view.WaterRipplesView
@@ -95,15 +95,16 @@
                             android:layout_height="100dp"
                             app:waveColor="#00ce9b"
                             app:waveOnLoad="false"
-                            app:waveCount="5"/>
+                            app:waveCount="2"/>
 
                     <com.laughingFace.microWash.ui.view.WaterRipplesView
                             android:id="@+id/model_sterilization"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             app:waveColor="#00ce9b"
-                            app:waveOnLoad="false"/>
-                    app:waveCount="5"
+                            app:waveOnLoad="false"
+                            app:waveCount="2"/>
+
                 </com.laughingFace.microWash.ui.view.CircleLayout>
 
             </FrameLayout>

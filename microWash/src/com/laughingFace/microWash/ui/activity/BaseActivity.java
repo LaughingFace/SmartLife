@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.PersistableBundle;
 
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
@@ -24,6 +25,7 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class BaseActivity extends Activity implements DeviceMonitor {
     protected ModelManager modelManager;
+    private Button droo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,6 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        Log.i("hehe", "set listener" + this.getClass().getSimpleName());
         modelManager.setDeviceMonitor(this);
     }
 

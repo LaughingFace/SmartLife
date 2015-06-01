@@ -21,8 +21,6 @@ public class WorkingActivity extends BaseActivity {
 
     public static final String INTENT_MODEL = "model";
 
-    //只是进行页面跳转不开启某个模式
-    public static final int NEXTPAGE = 0;
     //标准模式
     public static final int STANDARD = 1;
     //定时烘干
@@ -57,6 +55,18 @@ public class WorkingActivity extends BaseActivity {
         slidingMenu = (SlidingMenu) findViewById(R.id.slideMenuLayout);
         runningModelName = (TextView)findViewById(R.id.runningModelName);
 
+        slidingMenu.setSlidingMenuListenear(new SlidingMenu.SlidingMenuListenear() {
+            @Override
+            public void onClosed() {
+                showProgress();
+            }
+
+            @Override
+            public void onOpened() {
+                hideProgress();
+            }
+        });
+
         countDownDialog  = new CountDownDialog(this){
             @Override
             public void onCounttingDownOver() {
@@ -70,6 +80,8 @@ public class WorkingActivity extends BaseActivity {
             @Override
             public void onChangeModel() {
                 Log.i("xixi", "更换模式......");
+                readyModel = null;
+                slidingMenu.show();
 
             }
         };
@@ -110,7 +122,6 @@ public class WorkingActivity extends BaseActivity {
             hideProgress();
             countDownDialog.start();
         }
-
     }
 
     @Override
@@ -159,13 +170,13 @@ super.onInterupt(model);
         process.setProgress(0);
         com.laughingFace.microWash.util.Log.i("xixi", "faillonstart" + type);
         Toast.makeText(this,"fail on start "+type,Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
         startActivity(new Intent(this, DeviceActivity.class));
+        dismissDia();
     }
 
     private void dismissDia(){
@@ -195,5 +206,15 @@ super.onInterupt(model);
     private void showProgress(){
         process.setVisibility(View.VISIBLE);
         runningModelName.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * activity被销毁前让所有显示的弹出窗口消失
+     */
+    @Override
+    protected void onDestroy() {
+        dismissDia();
+        super.onDestroy();
+
     }
 }
