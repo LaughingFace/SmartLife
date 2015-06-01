@@ -12,7 +12,7 @@ import java.net.*;
 public class WifiVM {
     public static void main(String[] args)
     {
-        WifiVM wifi = new WifiVM(7878);
+        WifiVM wifi = new WifiVM(4546);
         wifi.start();
     }
     boolean isSencond = false;
@@ -23,7 +23,7 @@ public class WifiVM {
     }
     int currentState = 0;
     byte progress = 0;
-    final byte Stand_Progress = 20;
+    final byte Stand_Progress = 10;
     final byte Dy_Progress = 30;
     DatagramPacket receivePacket;
     DatagramPacket sendPacket ;
@@ -51,10 +51,10 @@ public class WifiVM {
                     sendPacket = new DatagramPacket(bid,9,receivePacket.getAddress(),receivePacket.getPort());
                     socket.send(sendPacket);
                 }
-//                else if (str.contains("{A:P}")){
-//                    sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,receivePacket.getAddress(),receivePacket.getPort());
-//                    socket.send(sendPacket);
-//                }
+                else if (str.contains("{A:P}")){
+                    sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,receivePacket.getAddress(),receivePacket.getPort());
+                    socket.send(sendPacket);
+                }
                 else if (str.length()>4 && str.getBytes()[1] == 'A')
                 {
                     int tempstate = str.getBytes()[3]-'0';
@@ -82,6 +82,7 @@ public class WifiVM {
                                         progress--;
                                     }
                                     currentState = 0;
+                                    System.out.println("currentModelState : " + currentState);
                                     try {
                                         sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,InetAddress.getByName(host),port);
                                     } catch (UnknownHostException e) {

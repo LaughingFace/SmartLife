@@ -83,14 +83,15 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
             public void action() {
                 Log.i("xixi", "mypro" + timer.getInterval() * timer.getCurt());
                 getRunningModel().getProgress().setRemain(getRunningModel().getProgress().getTotal()-timer.getInterval()*timer.getCurt());
-
                 mHandler.obtainMessage(HANDLER_PROCEING).sendToTarget();
             }
 
             @Override
             public void after() {
-                if (timer != null)
-                notifyFinish();
+                if (timer != null) {
+                    Log.i("xixi","processing----after");
+                    notifyFinish();
+                }
             }
         };
 
@@ -106,7 +107,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     public void startModel(Model model) {
         if (null != onLineDevice)
         {
-            if (null == getRunningModel())
+            if (null == getRunningModel() || model.getStateCode() == CmdProvider.ModelStateCode.STOP)
             {
                 super.startModel(model);
             }
@@ -116,6 +117,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
                         model.getStateCode() ==  getRunningModel().getStateCode()?
                                 StartType.AlreadyRunning:StartType.OtherRunning
                         ).sendToTarget();
+                requestState(model);
             }
         }
         else

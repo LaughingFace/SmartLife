@@ -33,17 +33,27 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	public void startModel(Model model) {
 		if (model.getStateCode() == CmdProvider.ModelStateCode.STOP)
 		{
-			if (null != RunningModel)
-			{
-			endModel();
-			}
-			setRunning(true);
+//			if (null != RunningModel)
+//			{
+//				if (isRunning) {
+//					modelStateListener.onFinish(RunningModel);
+//				}
+//			}
+//			setRunning(true);
+			net.send(model.getCmd());
+			return;
 		}
 		setRunningModel(model);
 		net.send(model.getCmd(),true);
 	}
 	protected void notifyFinish() {
-		net.send(RunningModel.getCmdRequestProgress());
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if (null != RunningModel)
+		net.send(RunningModel.getCmdRequestState());
 	}
 
 
@@ -71,15 +81,24 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 		{
 			cmd = RunningModel.getCmd();
 		}
+
         if (modelState ==  CmdProvider.ModelStateCode.STANDARD || modelState ==  CmdProvider.ModelStateCode.DRYOFF) {
-            if (null == RunningModel || RunningModel.getStateCode() != modelState) {
+			if (isRunning)
+			{
+				if (RunningModel.getStateCode() == modelState)
+				{
+					return cmd;
+				}
+			}
+			if (null == RunningModel || RunningModel.getStateCode() != modelState) {
 					if (null == RunningModel){
 						startType = StartType.ACCIDENT;
-					}else{
+					}
+					else{
 						startType = StartType.OtherRunning;
 					}
                 setRunningModel(ModelProvider.getModelByStateCode(modelState));
-            }else
+			}else
 			{
 				startType = StartType.Normal;
 			}
@@ -94,7 +113,6 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
         else if (CmdProvider.ModelStateCode.STOP == modelState) {
             if (isRunning) {
                 modelStateListener.onFinish(RunningModel);
-
             } else {
                 Log.e("xixi", "don't know device state but state = 0");
             }
@@ -147,10 +165,11 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 			hearbeatProgress = null;
 		}
 		setRunningModel(null);
-
-
 	}
-
+	protected void requestState(Model model)
+	{
+		net.send(model.getCmdRequestState());
+	}
 	public Model getRunningModel() {
 		return RunningModel;
 	}

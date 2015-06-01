@@ -20,6 +20,8 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     private ReceiverUdpPacketHandler udpHandler;
     private ModelRunningState modelStateListener;
     private boolean isRunning = true;
+    public int srcPort = 2222;
+    public int desPort = 4546;
     public static final class Holder{
         public static final NetworkManager SINGLE = new NetworkManager();
     }
@@ -29,7 +31,7 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     }
     private NetworkManager()
     {
-        udpSocket = new UdpSocket(1111,"255.255.255.255",7878);
+        udpSocket = new UdpSocket(srcPort,"255.255.255.255",desPort);
         udpSocket.setReceiveListener(this);
         udpHandler = new ReceiverUdpPacketHandler();
         udpSocket.startReceive();
@@ -46,7 +48,7 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     {
         if (null == udpSocket)
         {
-            udpSocket = new UdpSocket(1111,"255.255.255.255",7878);
+            udpSocket = new UdpSocket(srcPort,"255.255.255.255",desPort);
             udpSocket.setReceiveListener(this);
             udpSocket.startReceive();
             isRunning = true;
