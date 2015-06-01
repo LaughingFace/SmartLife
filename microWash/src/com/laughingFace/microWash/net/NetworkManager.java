@@ -1,31 +1,102 @@
 package com.laughingFace.microWash.net;
 
+import android.util.Log;
+import com.laughingFace.microWash.debugTest.IsDebug;
+import com.laughingFace.microWash.debugTest.NetworkdInterfaceRetransmission;
+import com.laughingFace.microWash.deviceControler.model.infc.ModelStateListener;
+
+import java.net.DatagramPacket;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Created by mathcoder23 on 15-5-25.
  */
-public class NetworkManager implements NetInterface{
+public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
+    private UdpSocket udpSocket;
+    public static Set<String> msgQueue = new HashSet<String>();
+    private ReceiverUdpPacketHandler udpHandler;
+    private ModelRunningState modelStateListener;
+    public static final class Holder{
+        public static final NetworkManager SINGLE = new NetworkManager();
+    }
+    public static NetworkManager getInstance()
+    {
+        return Holder.SINGLE;
+    }
+    private NetworkManager()
+    {
+        udpSocket = new UdpSocket(1111,"255.255.255.255",7878);
+        udpSocket.setReceiveListener(this);
+        udpHandler = new ReceiverUdpPacketHandler();
+        udpSocket.startReceive();
+    }
     @Override
     public void send(String data) {
+       send(data.getBytes());
+    }
+
+    @Override
+    public void send(final String data, boolean isAck) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                udpSocket.send(data.getBytes());
+                try {
+//                    Thread.sleep(1000);
+//                    udpSocket.send("{A:P}".getBytes());
+                    msgQueue.add(data);
+                    Thread.sleep(2000);
+                    if (msgQueue.contains(data))
+                    {
+                        Log.e("xixi","resend:"+data);
+                        udpSocket.send(data.getBytes());
+//                        Thread.sleep(500);
+//                        udpSocket.send("{A:P}".getBytes());
+                        Thread.sleep(2000);
+                        if (msgQueue.contains(data))
+                        {
+                            modelStateListener.onModelState(-1);
+                            msgQueue.remove(data);
+                        }
+
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
     }
 
     @Override
-    public void send(byte[] data) {
-
+    public void send(final byte[] data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                udpSocket.send(data);
+            }
+        }).start();
     }
 
     @Override
-    public void setOnModelState() {
-
+    public void setOnModelRunningState(ModelRunningState listener) {
+        udpHandler.setOnModelRunningState(listener);
+        modelStateListener = listener;
     }
 
     @Override
-    public void setOnProcessingState() {
-
+    public void setOnDeviceState(DeviceState listener) {
+        udpHandler.setOnDeviceState(listener);
     }
 
     @Override
-    public void setOnDeviceState() {
-
+    public void Receive(DatagramPacket receivePacket) {
+        udpHandler.handler(receivePacket);
+        if(IsDebug.Is)
+            NetworkdInterfaceRetransmission.sendAppReceive(receivePacket.getData());
     }
 }

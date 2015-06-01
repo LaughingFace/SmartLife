@@ -6,6 +6,7 @@ package com.laughingFace.microWash.deviceControler.utils;
  * 周期性的执行某些代码
  */
 public class Timer implements Runnable{
+	public static final int FOREVER = -2;
 	private long interval = 0;//时间间隔
 	private int repeatCount = 0;//重复次数
 	private int curt = 0;//当前进行到第几次
@@ -53,6 +54,9 @@ public class Timer implements Runnable{
 	}
 	public void stop(){
 		flg = -1;
+		if(null != action ){
+			action.after();
+		}
 	}
 
 	public long getInterval() {
@@ -90,10 +94,14 @@ public class Timer implements Runnable{
 			li = interval;
 		}
 
-		for(int i = 1;i<= flg;i++){
+		for(int i = 1;i<= flg || flg == FOREVER;i++){
 			try {
 
 				Thread.sleep((interval+=puase)<0?50:interval);
+				if (flg == -1)
+				{
+					break;
+				}
 				curt++;
 				if(interval<li){
 					interval+=li;
@@ -115,7 +123,7 @@ public class Timer implements Runnable{
 				e.printStackTrace();
 			}
 		}
-		if(null != action){
+		if(null != action && flg != -1){
 			action.after();
 		}
 	}

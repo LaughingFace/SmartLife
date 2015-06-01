@@ -1,20 +1,57 @@
 package com.laughingFace.microWash.deviceControler.devicesDispatcher;
 
 
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import com.laughingFace.microWash.deviceControler.device.Device;
+import com.laughingFace.microWash.deviceControler.device.DeviceAngel;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.deviceControler.utils.Timer;
+import com.laughingFace.microWash.util.Log;
 
 public class ModelManager extends ModelAngel implements DeviceMonitor {
+    private final static int HANDLER_ON_START = 1;
+    private final static int HANDLER_FAIL_ON_START  = 2;
+    private final static int HANDLER_ON_FINISH = 3;
+    private final static int HANDLER_PROCEING = 4;
+    private final static int HANDLER_ONLINE = 5;
+    private final static int HANDLER_OFFLINE = 6;
+    private static final int HANDLER_ON_INTERUPT = 7;
 
     private static ModelManager instance;
+    private DeviceAngel deviceAngel;
     private DeviceMonitor deviceMonitor;
     private Device onLineDevice;
     private Timer.OnTimingActionListener onTimingActionListener;
     private Timer timer;
-
+    private Handler mHandler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+             switch(msg.what)
+             {
+                 case HANDLER_ON_START:
+                     deviceMonitor.onStart(getRunningModel(), (StartType) msg.obj);
+                     break;
+                 case HANDLER_FAIL_ON_START:
+                     deviceMonitor.faillOnStart(getRunningModel(), (StartFaillType) msg.obj);
+                     break;
+                 case HANDLER_ON_FINISH:
+                     deviceMonitor.onFinish(getRunningModel());
+                     break;
+                 case HANDLER_PROCEING:
+                     deviceMonitor.onProcessing(getRunningModel());
+                     break;
+                 case HANDLER_OFFLINE:
+                     deviceMonitor.offLine();
+                     break;
+                 case HANDLER_ONLINE:
+                     deviceMonitor.onLine((Device) msg.obj);
+                     break;
+             }
+        }
+    };
     public DeviceMonitor getDeviceMonitor() {
         return deviceMonitor;
     }
@@ -32,7 +69,9 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     private ModelManager(){
         setModelStateListener(this);
-        setDeviceStateListener(this);
+        deviceAngel = new DeviceAngel();
+        deviceAngel.setDeviceStateListener(this);
+        deviceAngel.searchDevice();
         onTimingActionListener = new Timer.OnTimingActionListener() {
             @Override
             public void befor() {
@@ -40,46 +79,64 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
             @Override
             public void action() {
-                deviceMonitor.onProcessing(getRunningModel());
+                Log.i("xixi", "mypro" + timer.getInterval() * timer.getCurt());
+                getRunningModel().getProgress().setRemain(getRunningModel().getProgress().getTotal()-timer.getInterval()*timer.getCurt());
+
+                mHandler.obtainMessage(HANDLER_PROCEING).sendToTarget();
             }
 
             @Override
             public void after() {
+                if (timer != null)
                 notifyFinish();
             }
         };
-        timer = new Timer(onTimingActionListener,99);
+
     }
 
     @Override
     public void startModel(Model model) {
-
-        if(null != onLineDevice){
-            super.startModel(model);
+        if (null != onLineDevice)
+        {
+            if (null == getRunningModel())
+            {
+                super.startModel(model);
+            }
+            else
+            {
+                mHandler.obtainMessage(HANDLER_ON_START,
+                        model == getRunningModel()?
+                                StartType.AlreadyRunning:StartType.OtherRunning
+                        ).sendToTarget();
+            }
         }
-        else {
-            deviceMonitor.faillOnStart( model);
+        else
+        {
+            mHandler.obtainMessage(HANDLER_FAIL_ON_START,StartFaillType.Offline).sendToTarget();
         }
-
     }
 
     @Override
     public void onLine(Device device) {
-        this.onLineDevice = device;
-        deviceMonitor.onLine(device);
+        if (null == onLineDevice)
+        {
+            this.onLineDevice = device;
+            mHandler.obtainMessage(HANDLER_ONLINE,device).sendToTarget();
+        }
     }
 
     @Override
     public void offLine() {
-        onLineDevice = null;
-        deviceMonitor.offLine();
+        mHandler.obtainMessage(HANDLER_OFFLINE).sendToTarget();
+        this.onLineDevice = null;
+        super.close();
     }
 
     @Override
-    public void onStart(Model model) {
-        deviceMonitor.onStart(model);
+    public void onStart(Model model,StartType type) {
+        mHandler.obtainMessage(HANDLER_ON_START,type);
+        timer = new Timer(onTimingActionListener,99);
         timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
-
     }
 
     @Override
@@ -90,7 +147,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         }
         //计算误差
         long deviation  =(model.getProgress().getTotal()-(timer.getCurt()*timer.getInterval())) - model.getProgress().getRemain();
-        Log.i("xixi", "current deviation:" + deviation + " total:" + model.getProgress().getTotal() * 1000 + " timer:" + timer.getCurt() * timer.getInterval());
+        Log.i("xixi", "current deviation:" + deviation + " total:" + model.getProgress().getTotal() + " timer:" + timer.getCurt() * timer.getInterval());
         /**
          * 修正误差
          */
@@ -101,19 +158,24 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
     @Override
     public void onFinish(Model model) {
-        timer.stop();
-        deviceMonitor.onFinish(model);
+        if (null != timer)
+        {
+            Log.i("xixi","stop timer");
+            timer.stop();
+            timer = null;
+        }
 
+        mHandler.obtainMessage(HANDLER_ON_FINISH,model).sendToTarget();
     }
 
     @Override
     public void onInterupt(Model model) {
         timer.stop();
-        deviceMonitor.onInterupt(model);
+        mHandler.obtainMessage(HANDLER_ON_INTERUPT,model).sendToTarget();
     }
 
     @Override
-    public void faillOnStart(Model model) {
-        deviceMonitor.faillOnStart(model);
+    public void faillOnStart(Model model,StartFaillType type) {
+        mHandler.obtainMessage(HANDLER_FAIL_ON_START,type).sendToTarget();
     }
 }
