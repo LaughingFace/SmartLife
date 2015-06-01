@@ -54,9 +54,7 @@ public class Timer implements Runnable{
 	}
 	public void stop(){
 		flg = -1;
-		if(null != action ){
-			action.after();
-		}
+
 	}
 
 	public long getInterval() {
