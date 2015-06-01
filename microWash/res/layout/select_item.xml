@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp"
+              android:descendantFocusability="blocksDescendants"
+        >
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:id="@+id/btn_item_name"
+                android:text="洗袜机"
+                android:gravity="center"
+                android:paddingTop="9dp"
+                android:paddingBottom="9dp"
+                android:textSize="18sp"
+                />
+        <ImageView
+
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/select_item_split"/>
+</LinearLayout>
