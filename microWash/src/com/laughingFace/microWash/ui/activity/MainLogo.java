@@ -160,6 +160,10 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
                // Log.i("xixi", "----------- 杀菌模式 ----------------");
                 dragingModel = "杀菌模式";
                 break;
+            case  R.id.checkArea:
+                ( (Vibrator)contentView.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 40}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+
+                break;
         }
         dragModelName.setText(dragingModel);
     }

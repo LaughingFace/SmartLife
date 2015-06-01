@@ -112,9 +112,7 @@ public class SlidingMenu extends FrameLayout {
              * 通过scale这个比例计算出当前背景的透明度
              */
             float scale = ((float)showingWidth - (float)offsetX) / (float)showingWidth;//菜单显示出来部分宽度与总宽度之比
-
             SlidingMenu.this.setAlpha(0.5f+scale);
-
             return super.onScroll(e1, e2, distanceX, distanceY);
         }
 
@@ -127,15 +125,6 @@ public class SlidingMenu extends FrameLayout {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             hide();
-            /*if(offsetX <= 0){
-                layoutParams.width= showingWidth;
-                menuContent.setLayoutParams(layoutParams);
-                offsetX = showingWidth;
-                menu.scrollTo(offsetX, 0);
-                if(null != slidingMenuListenear){
-                    slidingMenuListenear.onClosed();
-                }
-            }*/
             return true;
         }
     }
@@ -152,7 +141,7 @@ public class SlidingMenu extends FrameLayout {
 
         layoutParams.width = showingWidth;
         menuContent.setLayoutParams(layoutParams);
-        menu.scrollTo(offsetX, 0);
+        menu.scrollTo(offsetX,0);
         isShowing = true;
     }
 
