@@ -16,7 +16,7 @@
         <com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                app:maxProgress="100"
+                app:maxProgress="1000"
                 app:showProgress="true"
                 app:progress="0"
                 android:id="@+id/process"

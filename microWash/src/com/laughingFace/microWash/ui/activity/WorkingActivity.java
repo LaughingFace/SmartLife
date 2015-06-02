@@ -147,16 +147,14 @@ public class WorkingActivity extends BaseActivity {
     @Override
     public void onProcessing(Model model) {
         super.onProcessing(model);
-        process.setProgress((int) (model.getProgress().getPercentage() * 100));
+        process.setProgress((int) (model.getProgress().getPercentage() * 1000));
         com.laughingFace.microWash.util.Log.i("xixi", "processing-----" + model.getProgress().getPercentage());
     }
 
     @Override
     public void onFinish(Model model) {
         super.onFinish(model);
-        process.setProgress(100);
-        com.laughingFace.microWash.util.Log.i("xixi", "finsish");
-        Toast.makeText(this,"online",Toast.LENGTH_SHORT).show();
+        process.setProgress(1000);
     }
 
     @Override

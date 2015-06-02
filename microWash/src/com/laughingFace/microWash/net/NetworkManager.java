@@ -20,8 +20,8 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     private ReceiverUdpPacketHandler udpHandler;
     private ModelRunningState modelStateListener;
     private boolean isRunning = true;
-    public int srcPort = 2222;
-    public int desPort = 4546;
+    public int srcPort = 8989;
+    public int desPort = 7878;
     public static final class Holder{
         public static final NetworkManager SINGLE = new NetworkManager();
     }

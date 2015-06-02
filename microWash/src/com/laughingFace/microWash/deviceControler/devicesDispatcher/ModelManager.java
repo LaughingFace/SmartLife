@@ -74,6 +74,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         deviceAngel = new DeviceAngel();
         deviceAngel.setDeviceStateListener(this);
         deviceAngel.searchDevice();
+        requestState();
         onTimingActionListener = new Timer.OnTimingActionListener() {
             @Override
             public void befor() {
@@ -147,7 +148,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         mHandler.obtainMessage(HANDLER_ON_START, type).sendToTarget();
         if (model.getStateCode() ==  CmdProvider.ModelStateCode.STANDARD || model.getStateCode() ==  CmdProvider.ModelStateCode.DRYOFF)
         {
-            timer = new Timer(onTimingActionListener,99);
+            timer = new Timer(onTimingActionListener,985);
             timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
         }
     }

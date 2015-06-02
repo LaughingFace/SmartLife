@@ -12,7 +12,7 @@ public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 	private DeviceStateListener deviceStateListener;
 	private NetInterface net = NetProvider.getDefaultProduct();
 	private Timer hearbeatRequest;
-	private int interval = 1000;
+	private int interval = 2000;
 	private boolean isMeat = false;
 	private int hate = 0;
 	public DeviceAngel()

@@ -1,11 +1,14 @@
 package com.laughingFace.microWash.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.PersistableBundle;
 
+import android.os.Vibrator;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
@@ -25,13 +28,14 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class BaseActivity extends Activity implements DeviceMonitor {
     protected ModelManager modelManager;
-    private Button droo;
+    private Button btnConnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MobclickAgent.setDebugMode(true);
         MobclickAgent.updateOnlineConfig(this);
+
     }
 
     @Override
@@ -47,7 +51,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void onModelStart(Model model, ModelAngel.StartType type) {
-        Log.i("xixi", "start"+model.getStateCode());
+        Log.i("xixi", "start" + model.getStateCode());
         Toast.makeText(this,"start:::"+type,Toast.LENGTH_SHORT).show();
     }
 
@@ -67,7 +71,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void onProcessing(Model model) {
-        Log.i("xixi","processing-----"+model.getProgress().getPercentage());
+        Log.i("xixi", "processing-----" + model.getProgress().getPercentage());
     }
 
     @Override
@@ -99,8 +103,26 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         super.onResume();
         MobclickAgent.onResume(this);
         modelManager.setDeviceMonitor(this);
+        initView();
     }
+    public void initView()
+    {
+        btnConnect = (Button) findViewById(R.id.btn_connect);
+        btnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        btnConnect.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                modelManager.startModel(ModelProvider.stop());
+                ( (Vibrator)BaseActivity.this.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 270}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+                return true;
+            }
+        });
+    }
     @Override
     protected void onPause() {
         super.onPause();
