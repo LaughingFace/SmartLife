@@ -205,7 +205,7 @@ public class WaterWaveProgress extends View {
 				+ waterPadding - mRingWidth / 2, mRingPaint);
 		mRingPaint.setColor(mRingColor);
 		// 100为 总进度
-		canvas.drawArc(oval, -90, (mProgress*1f) / mMaxProgress * 360f, false,
+		canvas.drawArc(oval, -90, (mProgress * 1f) / mMaxProgress * 360f, false,
 				mRingPaint);
 
 		// 计算出水的高度
@@ -306,7 +306,7 @@ public class WaterWaveProgress extends View {
 	 * 设置当前进度
 	 */
 	public void setProgress(int progress) {
-		progress = progress > 100 ? 100 : progress < 0 ? 0 : progress;
+		progress = progress > mMaxProgress ? mMaxProgress : progress < 0 ? 0 : progress;
 		mProgress = progress;
 		invalidate();
 	}

@@ -23,8 +23,8 @@ public class WifiVM {
     }
     int currentState = 0;
     byte progress = 0;
-    final byte Stand_Progress = 10;
-    final byte Dy_Progress = 30;
+    final byte Stand_Progress = 60;
+    final byte Dy_Progress = 100;
     DatagramPacket receivePacket;
     DatagramPacket sendPacket ;
     String host = "";

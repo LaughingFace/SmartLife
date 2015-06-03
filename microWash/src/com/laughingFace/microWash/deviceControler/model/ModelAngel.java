@@ -45,6 +45,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 		}
 		setRunningModel(model);
 		net.send(model.getCmd(),true);
+		requestState();
 	}
 	protected void notifyFinish() {
 		try {
@@ -169,6 +170,10 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	protected void requestState(Model model)
 	{
 		net.send(model.getCmdRequestState());
+	}
+	protected void requestState()
+	{
+		net.send(CmdProvider.Model.REQUEST_STATE);
 	}
 	public Model getRunningModel() {
 		return RunningModel;
