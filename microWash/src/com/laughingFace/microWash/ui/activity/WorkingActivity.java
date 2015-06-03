@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.laughingFace.microWash.R;
@@ -13,6 +14,7 @@ import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.deviceControler.model.ModelProvider;
 import com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress;
 import com.laughingFace.microWash.ui.view.SlidingMenu;
+import com.laughingFace.microWash.ui.view.WheelTimePicker;
 
 /**
  * Created by zihao on 15-5-25.
@@ -42,6 +44,8 @@ public class WorkingActivity extends BaseActivity {
     private SlidingMenu slidingMenu;
     private TextView runningModelName;
 
+    private Button timingWash;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,16 @@ public class WorkingActivity extends BaseActivity {
         setContentView(R.layout.working);
 
         Log.i("hehe", "WorkingActivity onCreate...");
+
+        timingWash = (Button)findViewById(R.id.model_timingwash);
+        timingWash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDia();
+                //hideProgress();
+                new WheelTimePicker(WorkingActivity.this).show();
+            }
+        });
 
         process  = (WaterWaveProgress)findViewById(R.id.process);
 

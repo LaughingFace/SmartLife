@@ -1,7 +1,9 @@
 package com.laughingFace.microWash.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -201,6 +203,7 @@ public class AddDeviceActivity extends BaseActivity {
 //        llCfgWifi.setVisibility(View.INVISIBLE);
 //        rivLoading.setVisibility(View.VISIBLE);
     }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void showItem(final List<String> data,final View v)
     {
 
@@ -212,7 +215,7 @@ public class AddDeviceActivity extends BaseActivity {
         lvData.setCacheColorHint(0);
         lvData.setSelector(android.R.color.transparent);
 
-        lvData.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select_item_bg));
+        lvData.setBackground(mContext.getResources().getDrawable(R.drawable.select_item_bg));
         final PopupWindow popupWindow = new PopupWindow(lvData,
                 v.getWidth(), LayoutParams.WRAP_CONTENT, true);
 
