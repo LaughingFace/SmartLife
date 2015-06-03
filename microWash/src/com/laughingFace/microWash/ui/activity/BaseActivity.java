@@ -1,10 +1,7 @@
 package com.laughingFace.microWash.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
-import android.os.PersistableBundle;
 
 import android.view.Window;
 import android.widget.Button;
@@ -15,8 +12,6 @@ import com.laughingFace.microWash.deviceControler.devicesDispatcher.DeviceMonito
 import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
-import com.laughingFace.microWash.deviceControler.model.ModelProvider;
-import com.laughingFace.microWash.deviceControler.model.Progress;
 import com.laughingFace.microWash.util.Log;
 import com.umeng.analytics.MobclickAgent;
 
