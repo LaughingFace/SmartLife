@@ -27,6 +27,8 @@ public class WheelTimePicker extends Dialog {
     private ImageView ok;
     private ImageView cancel;
 
+    private TimePickerListener timePickerListener;
+
     public WheelTimePicker(Context context) {
         super(context, R.style.MyDialog);
         this.setContentView(R.layout.wheel_tim_picker);
@@ -40,6 +42,9 @@ public class WheelTimePicker extends Dialog {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(null != timePickerListener){
+                    timePickerListener.onSelected(getTotalMinute());
+                }
                 pickTime.setVisibility(View.INVISIBLE);
                 waitStart.setVisibility(View.VISIBLE);
             }
@@ -50,6 +55,9 @@ public class WheelTimePicker extends Dialog {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if(null != timePickerListener){
+                    timePickerListener.onCancel();
+                }
             }
         });
 
@@ -108,8 +116,21 @@ public class WheelTimePicker extends Dialog {
         this.currentMinute = currentMinute;
     }
 
-    public long totalMinute(){
+    public TimePickerListener getTimePickerListener() {
+        return timePickerListener;
+    }
+
+    public void setTimePickerListener(TimePickerListener timePickerListener) {
+        this.timePickerListener = timePickerListener;
+    }
+
+    public long getTotalMinute(){
         long total = currentHour*60 + currentMinute;
         return total;
+    }
+
+    public interface TimePickerListener{
+        void onSelected(long minutes);
+        void onCancel();
     }
 }

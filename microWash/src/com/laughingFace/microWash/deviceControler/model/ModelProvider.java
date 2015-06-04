@@ -5,6 +5,7 @@ public class ModelProvider {
     public static Model standard;
     public static Model dryoff;
     public static Model sterilization;
+    public static Model timingWash;
     static{
         standard = getModelByStateCode(3);
         standard.setName("标准模式");
@@ -12,6 +13,9 @@ public class ModelProvider {
         dryoff.setName("烘干模式");
         sterilization = getModelByStateCode(4);
         sterilization.setName("杀菌模式");
+        timingWash  = getModelByStateCode(3);
+        timingWash.setName("定时清洗");
+
     }
     public static Model getModelByStateCode(int i)
     {

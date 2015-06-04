@@ -41,15 +41,14 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     public static final int RESUME = 8;
 
     private CountDownDialog countDownDialog;//用于倒计时的弹出对话框
-    private WaterWaveProgress process;
+    private WheelTimePicker timePicker;
+    private WaterWaveProgress process;//显示进度或倒计时
     private Model readyModel;//准备在倒计时完毕后 并且在倒计时过程中没有点击过“切换模式”按钮  启动的模式
 
     private SlidingMenu slidingMenu;
-    private TextView runningModelName;
+    private TextView runningModelName;//显示当前正在运行的模式名称
 
-    private List<Button> modelBtns;
-
-    private Button lastSelectedBtn;//上一次在侧滑菜单中点击过的按钮
+    private List<Button> modelBtns;//侧滑菜单中的所有按钮
 
 
     @Override
@@ -63,7 +62,20 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     private void init(){
 
-        modelBtns = new ArrayList<Button>();
+        timePicker = new WheelTimePicker(this);
+        timePicker.setTimePickerListener(new WheelTimePicker.TimePickerListener() {
+            @Override
+            public void onSelected(long minutes) {
+                ModelManager.getInstance().startModel(readyModel);
+            }
+
+            @Override
+            public void onCancel() {
+                readyModel = null;
+
+            }
+        });
+        modelBtns = new ArrayList<>();
 
         modelBtns.add(((Button)findViewById(R.id.working_model_standard)));
         modelBtns.add(((Button)findViewById(R.id.working_model_dryoff)));
@@ -119,7 +131,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
                 readyModel = ModelProvider.standard;
                 break;
             case TIMINGWASH:
-
+//                readyModel = ModelProvider;
                 Log.i("xixi", "----------- 定时清洗触发 ----------------");
                 break;
             case DRYOFF:
@@ -293,7 +305,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        lastSelectedBtn = (Button) v;
+
         switch (v.getId()){
             case R.id.working_model_standard:
                 readyModel = ModelProvider.standard;
@@ -306,8 +318,8 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.working_model_timingwash:
                 dismissDia();
-                //hideProgress();
-                new WheelTimePicker(WorkingActivity.this).show();
+                timePicker.show();
+
                 break;
         }
         prepareStart();

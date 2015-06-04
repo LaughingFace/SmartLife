@@ -11,12 +11,12 @@ public class Model {
 	private Progress delayStartProgress;
 	private String cmdRequestState = CmdProvider.Model.REQUEST_STATE;
 	private int id;
-	private boolean isDelay = false;
+	private long delay  =0;
 
 
 
 	public int getId() {
-		return id+(isDelay?DELAY_OFFSET:0);
+		return id+(delay>0?DELAY_OFFSET:0);
 	}
 
 	public Model(String cmd,int stateCode)
@@ -70,11 +70,11 @@ public class Model {
 		return delayStartProgress;
 	}
 
-	public boolean isDelay() {
-		return isDelay;
-	}
+    public long getDelay() {
+        return delay;
+    }
 
-	public void setIsDelay(boolean isDelay) {
-		this.isDelay = isDelay;
-	}
+    public void setDelay(long delay) {
+        this.delay = delay;
+    }
 }
