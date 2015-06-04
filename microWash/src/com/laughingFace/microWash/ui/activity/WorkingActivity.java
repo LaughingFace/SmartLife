@@ -183,17 +183,17 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
         int witch =-1;
-        if(readyModel.getId() == ModelProvider.standard.getId()){
+        if(model.getId() == ModelProvider.standard.getId()){
             process.setMaxProgress(1000);
             witch = R.id.working_model_standard;
             process.setProgress(0);
         }
-        else if(readyModel.getId()== ModelProvider.dryoff.getId()){
+        else if(model.getId()== ModelProvider.dryoff.getId()){
             process.setMaxProgress(1000);
             witch = R.id.working_model_dryoff;
             process.setProgress(0);
         }
-        else if(readyModel.getId()== ModelProvider.timingWash.getId()){
+        else if(model.getId()== ModelProvider.timingWash.getId()){
             process.setMaxProgress((int) model.getDelay());
             witch = R.id.working_model_timingwash;
             process.setModel(2);
@@ -233,15 +233,15 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onFinish(Model model) {
         int witch =-1;
-        if(readyModel.getId() == ModelProvider.standard.getId()){
+        if(model.getId() == ModelProvider.standard.getId()){
             witch = R.id.working_model_standard;
             process.setProgress(process.getMaxProgress());
         }
-        else if(readyModel.getId()== ModelProvider.dryoff.getId()){
+        else if(model.getId()== ModelProvider.dryoff.getId()){
             witch = R.id.working_model_dryoff;
             process.setProgress(process.getMaxProgress());
         }
-        else if(readyModel.getId()== ModelProvider.timingWash.getId()){
+        else if(model.getId()== ModelProvider.timingWash.getId()){
             witch = R.id.working_model_timingwash;
             process.setProgress(0);
         }
