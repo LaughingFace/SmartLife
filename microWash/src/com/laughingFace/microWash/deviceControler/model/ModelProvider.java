@@ -15,7 +15,15 @@ public class ModelProvider {
     }
     public static Model getModelByStateCode(int i)
     {
-        return new Model(i);
+        switch(i)
+        {
+            case 3:
+                return standard;
+            case 4:
+                return dryoff;
+            default:
+                return new Model(i);
+        }
     }
     public static Model openDoor()
     {

@@ -13,11 +13,7 @@ public class Model {
 	private int id;
 	private boolean isDelay = false;
 
-	private Model()
-	{
-		progress = new Progress();
-		delayStartProgress = new Progress();
-	}
+
 
 	public int getId() {
 		return id+(isDelay?DELAY_OFFSET:0);
@@ -25,13 +21,14 @@ public class Model {
 
 	public Model(String cmd,int stateCode)
 	{
-		this();
+		progress = new Progress();
+		delayStartProgress = new Progress();
 		this.cmd = cmd;
 		this.stateCode = stateCode;
 	}
 	public Model(int stateCode)
 	{
-		this();
+
 		this.cmd = CmdProvider.Model.setState(stateCode);
 		this.stateCode = stateCode;
 		this.id = stateCode;
