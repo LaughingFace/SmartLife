@@ -75,7 +75,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
             }
         });
-        modelBtns = new ArrayList<>();
+        modelBtns = new ArrayList<Button>();
 
         modelBtns.add(((Button)findViewById(R.id.working_model_standard)));
         modelBtns.add(((Button)findViewById(R.id.working_model_dryoff)));
