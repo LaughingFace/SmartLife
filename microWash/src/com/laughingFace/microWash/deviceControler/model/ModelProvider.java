@@ -15,8 +15,8 @@ public class ModelProvider {
         sterilization.setName("杀菌模式");
         timingWash  = getModelByStateCode(3);
         timingWash.setName("定时清洗");
-
     }
+
     public static Model getModelByStateCode(int i)
     {
         switch(i)

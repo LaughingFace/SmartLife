@@ -8,7 +8,6 @@ public class Model {
 	private String cmdRequestProgress = CmdProvider.Model.REQUEST_PROCESSING;
 	private int stateCode;
 	private Progress progress;
-	private Progress delayStartProgress;
 	private String cmdRequestState = CmdProvider.Model.REQUEST_STATE;
 	private int id;
 	private long delay  =0;
@@ -22,7 +21,6 @@ public class Model {
 	public Model(String cmd,int stateCode)
 	{
 		progress = new Progress();
-		delayStartProgress = new Progress();
 		this.cmd = cmd;
 		this.stateCode = stateCode;
 	}
@@ -66,9 +64,6 @@ public class Model {
 		this.name = name;
 	}
 
-	public Progress getDelayStartProgress() {
-		return delayStartProgress;
-	}
 
     public long getDelay() {
         return delay;
@@ -76,5 +71,7 @@ public class Model {
 
     public void setDelay(long delay) {
         this.delay = delay;
+		progress.setTotal(delay);
+		progress.setRemain(delay);
     }
 }

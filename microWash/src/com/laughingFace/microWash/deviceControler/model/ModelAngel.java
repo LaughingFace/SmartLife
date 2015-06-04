@@ -30,14 +30,11 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	{
 		this.deviceStateListener = deviceStateListener;
 	}
-	public void startModel(Model model,int dealy) {
-		if (dealy > 0)
+	public void startModel(Model model) {
+		if (model.getDelay() > 0)
 		{
-			model.getDelayStartProgress().setTotal(dealy);
-			model.getDelayStartProgress().setRemain(dealy);
-			model.setIsDelay(true);
 			setRunningModel(model);
-			modelStateListener.onModelStart(model,StartType.Delay_Start);
+			modelStateListener.onModelStart(model,StartType.Normal);
 			return;
 		}
 		if (model.getStateCode() == CmdProvider.ModelStateCode.STOP)

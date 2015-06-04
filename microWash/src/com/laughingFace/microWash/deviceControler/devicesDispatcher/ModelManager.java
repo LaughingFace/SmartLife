@@ -55,7 +55,6 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
                      break;
                  case HANDLER_ON_FINISH+HANDLER_DELAY:
                      deviceMonitor.onFinish(getRunningModel());
-                     getRunningModel().setIsDelay(false);
                      int i = getRunningModel().getStateCode();
                      close();
                      timer.stop();
@@ -118,7 +117,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
             @Override
             public void action() {
-                Progress p = getRunningModel().getDelayStartProgress();
+                Progress p = getRunningModel().getProgress();
                 long remain = p.getRemain()-timer.getInterval()/1000;
                 p.setRemain(remain);
                 Log.i("xixi","remain:"+remain+"toto:");
@@ -147,13 +146,13 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     public void stopAngel(){
         deviceAngel.stopSearchDevice();
     }
-    public void startModel(Model model,int delay)
+    public void startModel(Model model)
     {
         if (null != onLineDevice)
         {
-            if (null == getRunningModel() || (model.getStateCode() == CmdProvider.ModelStateCode.STOP && delay <= 0))
+            if (null == getRunningModel() || (model.getStateCode() == CmdProvider.ModelStateCode.STOP && model.getDelay() <= 0))
             {
-                super.startModel(model,delay);
+                super.startModel(model);
             }
             else
             {
@@ -168,9 +167,6 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         {
             mHandler.obtainMessage(HANDLER_FAIL_ON_START,StartFaillType.Offline).sendToTarget();
         }
-    }
-    public void startModel(Model model) {
-        startModel(model,0);
     }
 
     @Override
@@ -192,7 +188,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     @Override
     public void onModelStart(Model model,StartType type) {
         mHandler.obtainMessage(HANDLER_ON_START, type).sendToTarget();
-        if (model.isDelay())
+        if (model.getDelay() > 0)
         {
             timer = new Timer(onTimingDelayStartListener, Timer.FOREVER);
             timer.setInterval(1000).start();
