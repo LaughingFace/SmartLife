@@ -1,6 +1,7 @@
 package com.laughingFace.microWash.ui.plug.waterWaveProgress;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.Path.Direction;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import com.laughingFace.microWash.util.Log;
 
 import java.lang.ref.WeakReference;
 
@@ -19,6 +21,15 @@ import java.lang.ref.WeakReference;
  * 
  */
 public class WaterWaveProgress extends View {
+
+	public final int PROGRESS_MODEL = 1;
+	public final int TIMER_MODEL = 2;
+	/**
+	 * 模式  1：进度模式
+	 * 		 2：计时器模式
+	 */
+	private int model = 1;
+
 	// 水的画笔 // 画圆环的画笔// 进度百分比的画笔
 	private Paint mPaintWater = null, mRingPaint = null, mTextPaint = null;
 
@@ -48,6 +59,11 @@ public class WaterWaveProgress extends View {
 	private float mWaveSpeed = 0.070F; // 0.020F
 	/** 水的透明度 */
 	private int mWaterAlpha = 255; // 255
+	/** 是否显示水波*/
+	private boolean isShowWater = true;
+
+
+
 	WaterWaveAttrInit attrInit;
 
 	private MyHandler mHandler = null;
@@ -137,6 +153,7 @@ public class WaterWaveProgress extends View {
 		}
 	}
 
+	@TargetApi(VERSION_CODES.HONEYCOMB)
 	@SuppressLint({ "DrawAllocation", "NewApi" })
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -153,7 +170,8 @@ public class WaterWaveProgress extends View {
 			mProgress2WaterWidth = mProgress2WaterWidth == 0 ? mRingWidth * 0.6f
 					: mProgress2WaterWidth;
 			mRingPaint.setStrokeWidth(mRingWidth);
-			mTextPaint.setTextSize(mFontSize == 0 ? width / 5 : mFontSize);
+			mFontSize = mFontSize == 0 ? width / 5 : mFontSize;
+			mTextPaint.setTextSize(mFontSize);
 			if (VERSION.SDK_INT== VERSION_CODES.JELLY_BEAN) {
 				setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 			}else {
@@ -228,47 +246,69 @@ public class WaterWaveProgress extends View {
 		// 绘制背景
 		canvas.drawRect(waterPadding, waterPadding, waterHeightCount
 				+ waterPadding, waterHeightCount + waterPadding, bgPaint);
-		// 绘制静止的水
-		canvas.drawRect(waterPadding, staticHeight, waterHeightCount
-				+ waterPadding, waterHeightCount + waterPadding, mPaintWater);
+		if(isShowWater) {
+			// 绘制静止的水
+			canvas.drawRect(waterPadding, staticHeight, waterHeightCount
+					+ waterPadding, waterHeightCount + waterPadding, mPaintWater);
 
-		// 待绘制的波浪线的x坐标
-		int xToBeDrawed = (int) waterPadding;
-		int waveHeight = (int) (waterHeight - mAmplitude
-				* Math.sin(Math.PI
-				* (2.0F * (xToBeDrawed + (mWaveFactor * width)
-				* mWaveSpeed)) / width));
-		// 波浪线新的高度
-		int newWaveHeight = waveHeight;
-		while (true) {
-			if (xToBeDrawed >= waterHeightCount + waterPadding) {
+			// 待绘制的波浪线的x坐标
+			int xToBeDrawed = (int) waterPadding;
+			int waveHeight = (int) (waterHeight - mAmplitude
+					* Math.sin(Math.PI
+					* (2.0F * (xToBeDrawed + (mWaveFactor * width)
+					* mWaveSpeed)) / width));
+
+			// 波浪线新的高度
+			int newWaveHeight;
+			while (true) {
+				if (xToBeDrawed >= waterHeightCount + waterPadding) {
+					break;
+				}
+				// 根据当前x值计算波浪线新的高度
+				newWaveHeight = (int) (waterHeight - mAmplitude
+						* Math.sin(Math.PI
+						* (crestCount * (xToBeDrawed + (mWaveFactor * waterHeightCount)
+						* mWaveSpeed)) / waterHeightCount));
+
+				// 先画出梯形的顶边
+				canvas.drawLine(xToBeDrawed, waveHeight, xToBeDrawed + 1,
+						newWaveHeight, mPaintWater);
+
+				// 画出动态变化的柱子部分
+				canvas.drawLine(xToBeDrawed, newWaveHeight, xToBeDrawed + 1,
+						staticHeight, mPaintWater);
+				xToBeDrawed++;
+				waveHeight = newWaveHeight;
+			}
+		}
+
+		if (mShowNumerical) {
+			String progressTxt;
+			float mTxtWidth;
+			switch (model){
+				/** 进度模式*/
+				case 1:
+				{
+					mTextPaint.setTextSize(mFontSize);
+					 progressTxt = String.format("%.0f", (mProgress * 1f) / mMaxProgress * 100f) + "%";
+					 mTxtWidth = mTextPaint.measureText(progressTxt, 0, progressTxt.length());
+					canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2, mCenterPoint.x * 1.5f - mFontSize / 2, mTextPaint);
+
+				}
+				break;
+				/** 计时器模式*/
+				case 2:
+				{
+					mTextPaint.setTextSize(70);
+					progressTxt = mProgress+ " 分钟后启动！";
+					mTxtWidth = mTextPaint.measureText(progressTxt, 0, progressTxt.length());
+					canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2, mCenterPoint.x*1.3f - mFontSize / 2, mTextPaint);
+
+				}
 				break;
 			}
-			// 根据当前x值计算波浪线新的高度
-			newWaveHeight = (int) (waterHeight - mAmplitude
-					* Math.sin(Math.PI
-					* (crestCount * (xToBeDrawed + (mWaveFactor * waterHeightCount)
-					* mWaveSpeed)) / waterHeightCount));
 
-			// 先画出梯形的顶边
-			canvas.drawLine(xToBeDrawed, waveHeight, xToBeDrawed + 1,
-					newWaveHeight, mPaintWater);
-
-			// 画出动态变化的柱子部分
-			canvas.drawLine(xToBeDrawed, newWaveHeight, xToBeDrawed + 1,
-					staticHeight, mPaintWater);
-			xToBeDrawed++;
-			waveHeight = newWaveHeight;
-		}
-		if (mShowNumerical) {
-			String progressTxt = String.format("%.0f", (mProgress * 1f) / mMaxProgress
-					* 100f)
-					+ "%";
-			float mTxtWidth = mTextPaint.measureText(progressTxt, 0,
-					progressTxt.length());
-			canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2,
-					mCenterPoint.x * 1.5f - mFontSize / 2, mTextPaint);
-		}
+			}
 	}
 
 	@Override
@@ -326,7 +366,7 @@ public class WaterWaveProgress extends View {
 	/**
 	 * 是否显示进度条
 	 * 
-	 * @param boolean
+	 * @param b
 	 */
 	public void setShowProgress(boolean b) {
 		mShowProgress = b;
@@ -335,7 +375,7 @@ public class WaterWaveProgress extends View {
 	/**
 	 * 是否显示进度值
 	 * 
-	 * @param boolean
+	 * @param b
 	 */
 	public void setShowNumerical(boolean b) {
 		mShowNumerical = b;
@@ -431,4 +471,31 @@ public class WaterWaveProgress extends View {
 		this.mProgress2WaterWidth = mProgress2WaterWidth;
 	}
 
+	public void showWater(){
+		isShowWater = true;
+	}
+
+	public void hideWater(){
+		isShowWater = false;
+	}
+
+	public int getModel() {
+		return model;
+	}
+
+	public void setModel(int model) {
+		switch( model){
+			case 1:
+			{
+				showWater();
+			}
+			break;
+			case 2:
+			{
+				hideWater();
+			}
+			break;
+		}
+		this.model = model;
+	}
 }

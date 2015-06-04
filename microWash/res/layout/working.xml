@@ -19,7 +19,7 @@
                 android:layout_height="300dp"
                 app:maxProgress="1000"
                 app:showProgress="true"
-                app:progress="0"
+                app:progress="200"
                 android:id="@+id/process"
                 app:waterWaveColor="#a40ed5de"
                 app:waterWaveBgColor="#3FFFFFFF"
@@ -61,23 +61,10 @@
                         android:paddingTop="20dp"
                         android:id="@+id/working_model_standard"
                         android:drawableTop="@drawable/standard"
-                        android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/standard"
                         android:textColor="#37ffef"/>
 
-                <!--<Button
-                        android:layout_width="fill_parent"
-                        android:layout_height="103dp"
-                        android:layout_margin="7dp"
-                        android:paddingTop="20dp"
-                        android:background="@drawable/module_item_btn"
-                        android:id="@+id/model_timingdryoff"
-                        android:drawableTop="@drawable/sunny"
-                        android:text="@string/timingdryoff"
-                        android:textColor="#37ffef"
-                        android:drawableBottom="@drawable/line_horizontal"
-                        android:layout_weight="7"
-                        />-->
+
                 <Button
                         android:layout_width="fill_parent"
                         android:layout_height="103dp"
@@ -85,11 +72,11 @@
                         android:layout_margin="7dp"
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
-                        android:id="@+id/model_timingwash"
+                        android:id="@+id/working_timingwash"
                         android:drawableTop="@drawable/timingwash"
                         android:text="@string/timingwash"
                         android:textColor="#37ffef"
-                        android:drawableBottom="@drawable/line_horizontal"
+
                         />
 
                 <Button
@@ -103,7 +90,7 @@
                         android:drawableTop="@drawable/dryoff"
                         android:text="@string/dryoff"
                         android:textColor="#37ffef"
-                        android:drawableBottom="@drawable/line_horizontal"
+
                         />
                 <Button
                         android:layout_width="fill_parent"
@@ -116,7 +103,6 @@
                         android:drawableTop="@drawable/sterilization"
                         android:text="@string/sterilization"
                         android:textColor="#37ffef"
-                        android:drawableBottom="@drawable/line_horizontal"
                         />
 
             </LinearLayout>

@@ -12,7 +12,7 @@ import java.net.*;
 public class WifiVM {
     public static void main(String[] args)
     {
-        WifiVM wifi = new WifiVM(4546);
+        WifiVM wifi = new WifiVM(7878);
         wifi.start();
     }
     boolean isSencond = false;

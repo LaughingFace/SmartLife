@@ -54,7 +54,7 @@ public class WorkingActivity extends BaseActivity {
 
         Log.i("hehe", "WorkingActivity onCreate...");
 
-        timingWash = (Button)findViewById(R.id.model_timingwash);
+        timingWash = (Button)findViewById(R.id.working_timingwash);
         timingWash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
