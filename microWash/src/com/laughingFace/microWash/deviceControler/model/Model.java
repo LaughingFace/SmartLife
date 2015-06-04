@@ -23,7 +23,6 @@ public class Model {
 		this.id = (long) (System.currentTimeMillis()+Math.random()*10);
 		this.cmd = CmdProvider.Model.setState(stateCode);
 		this.stateCode = stateCode;
-		this.id = stateCode;
 	}
 
 	public String getCmd() {
