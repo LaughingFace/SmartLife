@@ -12,7 +12,7 @@
             android:layout_width="250dp"
             android:layout_height="230dp"
             android:layout_gravity="center"
-            android:background="@drawable/delay_start_bg">
+            android:background="@drawable/dialog_bg">
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"

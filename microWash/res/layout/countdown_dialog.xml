@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#40000000"
+              android:background="@drawable/main_bg"
               android:gravity="center"
               android:layout_gravity="center">
 
@@ -13,9 +13,9 @@
             android:gravity="center"
             android:orientation="vertical"
             android:layout_width="250dp"
-            android:layout_height="200dp"
+            android:layout_height="230dp"
             android:visibility="visible"
-            android:background="@drawable/delay_start_bg">
+            android:background="@drawable/dialog_bg">
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="0dp"

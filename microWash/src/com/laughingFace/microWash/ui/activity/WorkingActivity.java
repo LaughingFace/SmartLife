@@ -16,10 +16,13 @@ import com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress;
 import com.laughingFace.microWash.ui.view.SlidingMenu;
 import com.laughingFace.microWash.ui.view.WheelTimePicker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by zihao on 15-5-25.
  */
-public class WorkingActivity extends BaseActivity {
+public class WorkingActivity extends BaseActivity implements View.OnClickListener{
 
     public static final String INTENT_MODEL = "model";
 
@@ -44,7 +47,9 @@ public class WorkingActivity extends BaseActivity {
     private SlidingMenu slidingMenu;
     private TextView runningModelName;
 
-    private Button timingWash;
+    private List<Button> modelBtns;
+
+    private Button lastSelectedBtn;//上一次在侧滑菜单中点击过的按钮
 
 
     @Override
@@ -54,15 +59,19 @@ public class WorkingActivity extends BaseActivity {
 
         Log.i("hehe", "WorkingActivity onCreate...");
 
-        timingWash = (Button)findViewById(R.id.working_timingwash);
-        timingWash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismissDia();
-                //hideProgress();
-                new WheelTimePicker(WorkingActivity.this).show();
-            }
-        });
+    }
+
+    private void init(){
+
+        modelBtns = new ArrayList<Button>();
+
+        modelBtns.add(((Button)findViewById(R.id.working_model_standard)));
+        modelBtns.add(((Button)findViewById(R.id.working_model_dryoff)));
+        modelBtns.add(((Button)findViewById(R.id.working_model_sterilization)));
+        modelBtns.add( ((Button)findViewById(R.id.working_model_timingwash)));
+        for(Button btn:modelBtns){
+            btn.setOnClickListener(this);
+        }
 
         process  = (WaterWaveProgress)findViewById(R.id.process);
 
@@ -88,7 +97,6 @@ public class WorkingActivity extends BaseActivity {
                     ModelManager.getInstance().startModel(readyModel);
                     readyModel = null;
                 }
-
             }
 
             @Override
@@ -99,12 +107,14 @@ public class WorkingActivity extends BaseActivity {
 
             }
         };
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        init();
         Log.i("haha", "----------- 模式触发: " + getIntent().getIntExtra(INTENT_MODEL, -1) + "--------------");
         switch (getIntent().getIntExtra(INTENT_MODEL, -1)){
             case STANDARD:
@@ -128,12 +138,17 @@ public class WorkingActivity extends BaseActivity {
 
         //将intent的值覆盖为无效的值避免设备锁屏后唤醒时重复启动模式
         getIntent().putExtra(INTENT_MODEL, -1);
+        prepareStart();
+    }
+
+    private void prepareStart(){
         /**
          * 启动倒计时
          */
         if(null != readyModel) {
             countDownDialog.setTitle(readyModel.getName());
             hideProgress();
+            slidingMenu.hide();
             countDownDialog.start();
         }
     }
@@ -150,7 +165,10 @@ public class WorkingActivity extends BaseActivity {
     public void onModelStart(Model model, ModelAngel.StartType type) {
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
-
+        lastSelectedBtn.setBackgroundResource(R.drawable.round_btn_bg);
+        for (Button btn:modelBtns){
+            btn.setEnabled(false);
+        }
         process.setProgress(0);
         dismissDia();
         runningModelName.setText(model.getName());
@@ -169,6 +187,14 @@ public class WorkingActivity extends BaseActivity {
     public void onFinish(Model model) {
         super.onFinish(model);
         process.setProgress(1000);
+
+        for (Button btn:modelBtns){
+            btn.setEnabled(true);
+        }
+
+        if(null != lastSelectedBtn){
+            lastSelectedBtn.setBackgroundResource(R.drawable.tran);
+        }
     }
 
     @Override
@@ -228,5 +254,27 @@ super.onInterupt(model);
         dismissDia();
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        lastSelectedBtn = (Button) v;
+        switch (v.getId()){
+            case R.id.working_model_standard:
+                readyModel = ModelProvider.standard;
+                break;
+            case R.id.working_model_dryoff:
+                readyModel = ModelProvider.dryoff;
+                break;
+            case R.id.working_model_sterilization:
+                readyModel = ModelProvider.sterilization;
+                break;
+            case R.id.working_model_timingwash:
+                dismissDia();
+                //hideProgress();
+                new WheelTimePicker(WorkingActivity.this).show();
+                break;
+        }
+        prepareStart();
     }
 }

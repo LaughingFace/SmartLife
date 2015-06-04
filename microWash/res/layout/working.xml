@@ -19,7 +19,7 @@
                 android:layout_height="300dp"
                 app:maxProgress="1000"
                 app:showProgress="true"
-                app:progress="200"
+                app:progress="0"
                 android:id="@+id/process"
                 app:waterWaveColor="#a40ed5de"
                 app:waterWaveBgColor="#3FFFFFFF"
@@ -59,8 +59,10 @@
                         android:layout_margin="7dp"
                         android:layout_weight="1"
                         android:paddingTop="20dp"
+                        android:background="@drawable/module_item_btn"
                         android:id="@+id/working_model_standard"
                         android:drawableTop="@drawable/standard"
+                        android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/standard"
                         android:textColor="#37ffef"/>
 
@@ -72,8 +74,9 @@
                         android:layout_margin="7dp"
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
-                        android:id="@+id/working_timingwash"
+                        android:id="@+id/working_model_timingwash"
                         android:drawableTop="@drawable/timingwash"
+                        android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/timingwash"
                         android:textColor="#37ffef"
 
@@ -86,8 +89,9 @@
                         android:layout_margin="7dp"
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
-                        android:id="@+id/model_dryoff"
+                        android:id="@+id/working_model_dryoff"
                         android:drawableTop="@drawable/dryoff"
+                        android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/dryoff"
                         android:textColor="#37ffef"
 
@@ -99,8 +103,9 @@
                         android:layout_margin="7dp"
                         android:paddingTop="20dp"
                         android:background="@drawable/module_item_btn"
-                        android:id="@+id/model_sterilization"
+                        android:id="@+id/working_model_sterilization"
                         android:drawableTop="@drawable/sterilization"
+                        android:drawableBottom="@drawable/line_horizontal"
                         android:text="@string/sterilization"
                         android:textColor="#37ffef"
                         />
