@@ -154,22 +154,18 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     private void prepareStart(){
 
         if(null == readyModel) return;
-        switch (readyModel.getId()){
-            case ModelProvider.ID_STANDARD:
-            case ModelProvider.ID_DRYOFF:
-                    /**
-                     * 启动倒计时
-                     */
-                    countDownDialog.setTitle(readyModel.getName());
-                    hideProgress();
-                    slidingMenu.hide();
-                    countDownDialog.start();
-                break;
 
-            case ModelProvider.ID_TIMINGWASH:
-            case ModelProvider.ID_TIMINGDRYOFF:
-                timePicker.show();
-                break;
+        if(readyModel.getId() == ModelProvider.standard.getId() || readyModel.getId() == ModelProvider.dryoff.getId()){
+            /**
+             * 启动倒计时
+             */
+            countDownDialog.setTitle(readyModel.getName());
+            hideProgress();
+            slidingMenu.hide();
+            countDownDialog.start();
+        }
+        else if(readyModel.getId() == ModelProvider.timingWash.getId()) {
+            timePicker.show();
         }
 
     }
@@ -187,31 +183,23 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
         int witch =-1;
-        switch (model.getId()){
-            case ModelProvider.ID_STANDARD:
-                process.setMaxProgress(1000);
-                witch = R.id.working_model_standard;
-                process.setProgress(0);
-                break;
-            case ModelProvider.ID_DRYOFF:
-                process.setMaxProgress(1000);
-                witch = R.id.working_model_dryoff;
-                process.setProgress(0);
-                break;
-
-            case ModelProvider.ID_TIMINGWASH:
-                process.setMaxProgress((int) model.getDelay());
-                witch = R.id.working_model_timingwash;
-                process.setModel(2);
-                process.setProgress(process.getMaxProgress());
-                break;
-            case ModelProvider.ID_TIMINGDRYOFF:
-                process.setMaxProgress((int) model.getDelay());
-                process.setModel(2);
-                process.setProgress(process.getMaxProgress());
-                break;
-
+        if(readyModel.getId() == ModelProvider.standard.getId()){
+            process.setMaxProgress(1000);
+            witch = R.id.working_model_standard;
+            process.setProgress(0);
         }
+        else if(readyModel.getId()== ModelProvider.dryoff.getId()){
+            process.setMaxProgress(1000);
+            witch = R.id.working_model_dryoff;
+            process.setProgress(0);
+        }
+        else if(readyModel.getId()== ModelProvider.timingWash.getId()){
+            process.setMaxProgress((int) model.getDelay());
+            witch = R.id.working_model_timingwash;
+            process.setModel(2);
+            process.setProgress(process.getMaxProgress());
+        }
+
         /**
          * 将侧滑菜单中的按钮全部禁用并将与当前正在进行的模式对于的按钮背景改变
          */
@@ -245,23 +233,19 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onFinish(Model model) {
         int witch =-1;
-        switch (model.getId()){
-            case ModelProvider.ID_STANDARD:
-                witch = R.id.working_model_standard;
-                process.setProgress(process.getMaxProgress());
-                break;
-            case ModelProvider.ID_DRYOFF:
-                witch = R.id.working_model_dryoff;
-                process.setProgress(process.getMaxProgress());
-                break;
-            case ModelProvider.ID_TIMINGWASH:
-                witch = R.id.working_model_timingwash;
-                process.setProgress(0);
-                break;
-            case ModelProvider.ID_TIMINGDRYOFF:
-                process.setProgress(0);
-                break;
+        if(readyModel.getId() == ModelProvider.standard.getId()){
+            witch = R.id.working_model_standard;
+            process.setProgress(process.getMaxProgress());
         }
+        else if(readyModel.getId()== ModelProvider.dryoff.getId()){
+            witch = R.id.working_model_dryoff;
+            process.setProgress(process.getMaxProgress());
+        }
+        else if(readyModel.getId()== ModelProvider.timingWash.getId()){
+            witch = R.id.working_model_timingwash;
+            process.setProgress(0);
+        }
+
         if(-1 != witch){
             for (Button btn:modelBtns){
                 if (btn.getId() == witch){

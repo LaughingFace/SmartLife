@@ -113,7 +113,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         btnConnect.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                modelManager.startModel(ModelProvider.stop());
+                modelManager.startModel(ModelProvider.stop);
                 ( (Vibrator)BaseActivity.this.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(new long[]{0, 270}, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
                 return true;
             }
