@@ -7,13 +7,13 @@ public class ModelProvider {
     public static Model sterilization;
     public static Model timingWash;
     static{
-        standard = getModelByStateCode(3);
+        standard = new Model(3);
         standard.setName("标准模式");
-        dryoff = getModelByStateCode(4);
+        dryoff = new Model(4);
         dryoff.setName("烘干模式");
-        sterilization = getModelByStateCode(4);
+        sterilization = new Model(4);
         sterilization.setName("杀菌模式");
-        timingWash  = getModelByStateCode(3);
+        timingWash  = new Model(3);
         timingWash.setName("定时清洗");
     }
 
@@ -50,6 +50,7 @@ public class ModelProvider {
         return getModelByStateCode(0);
     }
     public static final int ID_STANDARD = CmdProvider.ModelStateCode.STANDARD;
+   // public static final int ID_STERILIZATION = CmdProvider.ModelStateCode.STANDARD;
     public static final int ID_DRYOFF = CmdProvider.ModelStateCode.DRYOFF;
     public static final int ID_TIMINGWASH = ID_STANDARD + Model.DELAY_OFFSET;
     public static final int ID_TIMINGDRYOFF = ID_DRYOFF + Model.DELAY_OFFSET;

@@ -138,10 +138,10 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
                 readyModel = ModelProvider.dryoff;
                 Log.i("xixi", "----------- 烘干模式触发 ----------------");
                 break;
-            case STERILIZATION:
+            /*case STERILIZATION:
                 readyModel = ModelProvider.sterilization;
                 Log.i("xixi", "----------- 杀菌模式触发 ----------------");
-                break;
+                break;*/
         }
 
         //将intent的值覆盖为无效的值避免设备锁屏后唤醒时重复启动模式
@@ -152,15 +152,26 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void prepareStart(){
-        /**
-         * 启动倒计时
-         */
-        if(null != readyModel) {
-            countDownDialog.setTitle(readyModel.getName());
-            hideProgress();
-            slidingMenu.hide();
-            countDownDialog.start();
+
+        if(null == readyModel) return;
+        switch (readyModel.getId()){
+            case ModelProvider.ID_STANDARD:
+            case ModelProvider.ID_DRYOFF:
+                    /**
+                     * 启动倒计时
+                     */
+                    countDownDialog.setTitle(readyModel.getName());
+                    hideProgress();
+                    slidingMenu.hide();
+                    countDownDialog.start();
+                break;
+
+            case ModelProvider.ID_TIMINGWASH:
+            case ModelProvider.ID_TIMINGDRYOFF:
+                timePicker.show();
+                break;
         }
+
     }
 
     @Override
@@ -178,18 +189,32 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         int witch =-1;
         switch (model.getId()){
             case ModelProvider.ID_STANDARD:
+                process.setMaxProgress(1000);
                 witch = R.id.working_model_standard;
+                process.setProgress(0);
                 break;
             case ModelProvider.ID_DRYOFF:
+                process.setMaxProgress(1000);
                 witch = R.id.working_model_dryoff;
+                process.setProgress(0);
                 break;
-            case ModelProvider.ID_STANDARD_DELAY:
+
+            case ModelProvider.ID_TIMINGWASH:
+                process.setMaxProgress((int) model.getDelay());
                 witch = R.id.working_model_timingwash;
+                process.setModel(2);
+                process.setProgress(process.getMaxProgress());
                 break;
-            case ModelProvider.ID_DRYOFF_DELAY:
+            case ModelProvider.ID_TIMINGDRYOFF:
+                process.setMaxProgress((int) model.getDelay());
+                process.setModel(2);
+                process.setProgress(process.getMaxProgress());
                 break;
 
         }
+        /**
+         * 将侧滑菜单中的按钮全部禁用并将与当前正在进行的模式对于的按钮背景改变
+         */
         if(-1 != witch){
             for (Button btn:modelBtns){
                 if (btn.getId() == witch){
@@ -198,7 +223,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
                 btn.setEnabled(false);
             }
         }
-        process.setProgress(0);
+
         dismissDia();
         runningModelName.setText(model.getName());
         showProgress();
@@ -207,30 +232,35 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onProcessing(Model model) {
+
+        if(model.getDelay() >0){
+            process.setProgress((int) model.getDelay());
+        }
+        else {
+            process.setProgress((int) (model.getProgress().getPercentage() * 1000));
+        }
         super.onProcessing(model);
-        process.setProgress((int) (model.getProgress().getPercentage() * 1000));
-        com.laughingFace.microWash.util.Log.i("xixi", "processing-----" + model.getProgress().getPercentage());
     }
 
     @Override
     public void onFinish(Model model) {
-        super.onFinish(model);
-        process.setProgress(process.getMaxProgress());
-
         int witch =-1;
         switch (model.getId()){
             case ModelProvider.ID_STANDARD:
                 witch = R.id.working_model_standard;
+                process.setProgress(process.getMaxProgress());
                 break;
             case ModelProvider.ID_DRYOFF:
                 witch = R.id.working_model_dryoff;
+                process.setProgress(process.getMaxProgress());
                 break;
-            case ModelProvider.ID_STANDARD_DELAY:
+            case ModelProvider.ID_TIMINGWASH:
                 witch = R.id.working_model_timingwash;
+                process.setProgress(0);
                 break;
-            case ModelProvider.ID_DRYOFF_DELAY:
+            case ModelProvider.ID_TIMINGDRYOFF:
+                process.setProgress(0);
                 break;
-
         }
         if(-1 != witch){
             for (Button btn:modelBtns){
@@ -240,7 +270,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
                 btn.setEnabled(true);
             }
         }
-
+        super.onFinish(model);
     }
 
     @Override
@@ -312,13 +342,11 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             case R.id.working_model_dryoff:
                 readyModel = ModelProvider.dryoff;
                 break;
-            case R.id.working_model_sterilization:
+            /*case R.id.working_model_sterilization:
                 readyModel = ModelProvider.sterilization;
-                break;
+                break;*/
             case R.id.working_model_timingwash:
-                dismissDia();
-                timePicker.show();
-
+                readyModel = ModelProvider.timingWash;
                 break;
         }
         prepareStart();
