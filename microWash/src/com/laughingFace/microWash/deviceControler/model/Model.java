@@ -2,11 +2,27 @@ package com.laughingFace.microWash.deviceControler.model;
 
 
 public class Model {
+	public static final int DELAY_OFFSET = 10;
 	private String name;
+	private String cmd;
+	private String cmdRequestProgress = CmdProvider.Model.REQUEST_PROCESSING;
+	private int stateCode;
+	private Progress progress;
+	private Progress delayStartProgress;
+	private String cmdRequestState = CmdProvider.Model.REQUEST_STATE;
+	private int id;
+	private boolean isDelay = false;
+
 	private Model()
 	{
 		progress = new Progress();
+		delayStartProgress = new Progress();
 	}
+
+	public int getId() {
+		return id+(isDelay?DELAY_OFFSET:0);
+	}
+
 	public Model(String cmd,int stateCode)
 	{
 		this();
@@ -18,12 +34,9 @@ public class Model {
 		this();
 		this.cmd = CmdProvider.Model.setState(stateCode);
 		this.stateCode = stateCode;
+		this.id = stateCode;
 	}
-	private String cmd;
-	private String cmdRequestProgress = CmdProvider.Model.REQUEST_PROCESSING;
-	private int stateCode;
-	private Progress progress;
-	private String cmdRequestState = CmdProvider.Model.REQUEST_STATE;
+
 	public String getCmd() {
 		return cmd;
 	}
@@ -54,5 +67,17 @@ public class Model {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Progress getDelayStartProgress() {
+		return delayStartProgress;
+	}
+
+	public boolean isDelay() {
+		return isDelay;
+	}
+
+	public void setIsDelay(boolean isDelay) {
+		this.isDelay = isDelay;
 	}
 }

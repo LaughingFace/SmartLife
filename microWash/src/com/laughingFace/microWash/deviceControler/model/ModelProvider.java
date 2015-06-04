@@ -37,6 +37,10 @@ public class ModelProvider {
     {
         return getModelByStateCode(0);
     }
+    public static final int ID_STANDARD = CmdProvider.ModelStateCode.STANDARD;
+    public static final int ID_DRYOFF = CmdProvider.ModelStateCode.DRYOFF;
+    public static final int ID_STANDARD_DELAY = ID_STANDARD + Model.DELAY_OFFSET;
+    public static final int ID_DRYOFF_DELAY = ID_DRYOFF + Model.DELAY_OFFSET;
 
 
 }

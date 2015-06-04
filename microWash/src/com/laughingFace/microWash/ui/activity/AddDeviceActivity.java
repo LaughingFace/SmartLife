@@ -1,9 +1,8 @@
 package com.laughingFace.microWash.ui.activity;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -21,6 +20,7 @@ import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager
 import com.laughingFace.microWash.net.NetworkManager;
 import com.laughingFace.microWash.net.UdpSocket;
 import com.laughingFace.microWash.receiver.WifiStateReceiver;
+import com.laughingFace.microWash.smartConnect.IoTManagerNative;
 import com.laughingFace.microWash.util.DisplayUtil;
 import com.laughingFace.microWash.util.wifi.WifiAdmin;
 import com.laughingFace.microWash.util.wifi.WifiCfg;
@@ -203,7 +203,6 @@ public class AddDeviceActivity extends BaseActivity {
 //        llCfgWifi.setVisibility(View.INVISIBLE);
 //        rivLoading.setVisibility(View.VISIBLE);
     }
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void showItem(final List<String> data,final View v)
     {
 
@@ -215,7 +214,7 @@ public class AddDeviceActivity extends BaseActivity {
         lvData.setCacheColorHint(0);
         lvData.setSelector(android.R.color.transparent);
 
-        lvData.setBackground(mContext.getResources().getDrawable(R.drawable.select_item_bg));
+        lvData.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.select_item_bg));
         final PopupWindow popupWindow = new PopupWindow(lvData,
                 v.getWidth(), LayoutParams.WRAP_CONTENT, true);
 
@@ -294,42 +293,69 @@ public class AddDeviceActivity extends BaseActivity {
 //                    home.setPwd(etPwd.getText().toString());
 //                    DBHelper.Save(home,HomeRouteTab.class);
                     List<String> data = wifiAdmin.getScanWifi();
-                    if(!data.contains(getResources().getString(R.string.wifi_ap_ssid)))
+//                    if(!data.contains(getResources().getString(R.string.wifi_ap_ssid)))
+//                    {
+//                        wifiStateListener.OnDisConnected(PROCESS_TO_AP);
+//                    }
+//                    else
+//                    {
+//                        wifiAdmin.connect(getResources().getString(R.string.wifi_ap_ssid), getResources().getString(R.string.wifi_ap_pwd),wifiStateListener,PROCESS_TO_AP);
+//                    }
+                    if(!data.contains(etSsid.getText().toString()))
                     {
                         wifiStateListener.OnDisConnected(PROCESS_TO_AP);
                     }
                     else
                     {
-                        wifiAdmin.connect(getResources().getString(R.string.wifi_ap_ssid), getResources().getString(R.string.wifi_ap_pwd),wifiStateListener,PROCESS_TO_AP);
+                        wifiAdmin.connect(etSsid.getText().toString(), etPwd.getText().toString(),wifiStateListener,PROCESS_TO_AP);
                     }
-
 //                    wifiAdmin.connect(etSsid.getText().toString(), getResources().getString(R.string.wifi_ap_pwd),wifiStateListener,PROCESS_TO_AP);
                     break;
                 case PROCESS_TO_AP:
-                    //发送ssid,pwd信息
-                    Log.i("haha", "成功连接至wifi_ap");
-                    //校验wifi模块返回的配置信息。
-                    Log.i("haha", WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()));
-//                    dispatcher.sendMessage(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()), wifiAdmin.getRouterIP(), mContext.getResources().getInteger(R.integer.tcp_config_port));
+//                    //发送ssid,pwd信息
+//                    Log.i("haha", "成功连接至wifi_ap");
+//                    //校验wifi模块返回的配置信息。
+//                    Log.i("haha", WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()));
+////                    dispatcher.sendMessage(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()), wifiAdmin.getRouterIP(), mContext.getResources().getInteger(R.integer.tcp_config_port));
+//
+//                            Log.i("haha", "发送配置信息");
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            UdpSocket udpSocket = new UdpSocket(0,"255.255.255.255",7878);
+//                            udpSocket.send(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()).getBytes());
+//
+//                            try {
+//                                Thread.sleep(3000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                            wifiAdmin.connect(etSsid.getText().toString(), etPwd.getText().toString(), wifiStateListener, PROCESS_FINISH);
+//                            Log.i("haha", "重新连接原ap");
+//                        }
+//                    }).start();
+                    IoTManagerNative iot = new IoTManagerNative();
+                    iot.InitSmartConnection();
 
-                            Log.i("haha", "发送配置信息");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            UdpSocket udpSocket = new UdpSocket(0,"255.255.255.255",7878);
-                            udpSocket.send(WifiCfg.getJson(etSsid.getText().toString(), etPwd.getText().toString()).getBytes());
-
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            wifiAdmin.connect(etSsid.getText().toString(), etPwd.getText().toString(), wifiStateListener, PROCESS_FINISH);
-                            Log.i("haha", "重新连接原ap");
+                    String mac = "";
+                    for (ScanResult wifi : wifiAdmin.getWifiList())
+                    {
+                        if (wifi.SSID.equals(etSsid.getText().toString()))
+                        {
+                            mac = wifi.BSSID;
                         }
-                    }).start();
-
-
+                    }
+                    Log.i("xixi", etSsid.getText().toString() +",pwd:"+
+                            etPwd.getText().toString()+",mac:"+mac);
+                    iot.StartSmartConnection(etSsid.getText().toString(),
+                            etPwd.getText().toString(), "", (byte) 0);
+                    try {
+                        Thread.sleep(5000);
+                        iot.StopSmartConnection();
+                        wifiStateListener.OnConnected(PROCESS_FINISH);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case PROCESS_FINISH:
