@@ -56,7 +56,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.working);
-
+        init();
         Log.i("hehe", "WorkingActivity onCreate...");
 
     }
@@ -73,11 +73,10 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             btn.setOnClickListener(this);
         }
 
+        runningModelName = (TextView)findViewById(R.id.runningModelName);
         process  = (WaterWaveProgress)findViewById(R.id.process);
 
         slidingMenu = (SlidingMenu) findViewById(R.id.slideMenuLayout);
-        runningModelName = (TextView)findViewById(R.id.runningModelName);
-
         slidingMenu.setSlidingMenuListenear(new SlidingMenu.SlidingMenuListenear() {
             @Override
             public void onClosed() {
@@ -112,9 +111,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onResume() {
-        super.onResume();
 
-        init();
         Log.i("haha", "----------- 模式触发: " + getIntent().getIntExtra(INTENT_MODEL, -1) + "--------------");
         switch (getIntent().getIntExtra(INTENT_MODEL, -1)){
             case STANDARD:
@@ -139,6 +136,8 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         //将intent的值覆盖为无效的值避免设备锁屏后唤醒时重复启动模式
         getIntent().putExtra(INTENT_MODEL, -1);
         prepareStart();
+
+        super.onResume();
     }
 
     private void prepareStart(){
@@ -165,9 +164,28 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     public void onModelStart(Model model, ModelAngel.StartType type) {
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
-        lastSelectedBtn.setBackgroundResource(R.drawable.round_btn_bg);
-        for (Button btn:modelBtns){
-            btn.setEnabled(false);
+        int witch =-1;
+        switch (model.getId()){
+            case ModelProvider.ID_STANDARD:
+                witch = R.id.working_model_standard;
+                break;
+            case ModelProvider.ID_DRYOFF:
+                witch = R.id.working_model_dryoff;
+                break;
+            case ModelProvider.ID_STANDARD_DELAY:
+                witch = R.id.working_model_timingwash;
+                break;
+            case ModelProvider.ID_DRYOFF_DELAY:
+                break;
+
+        }
+        if(-1 != witch){
+            for (Button btn:modelBtns){
+                if (btn.getId() == witch){
+                    btn.setBackgroundResource(R.drawable.round_btn_bg);
+                }
+                btn.setEnabled(false);
+            }
         }
         process.setProgress(0);
         dismissDia();
@@ -186,25 +204,42 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onFinish(Model model) {
         super.onFinish(model);
-        process.setProgress(1000);
+        process.setProgress(process.getMaxProgress());
 
-        for (Button btn:modelBtns){
-            btn.setEnabled(true);
+        int witch =-1;
+        switch (model.getId()){
+            case ModelProvider.ID_STANDARD:
+                witch = R.id.working_model_standard;
+                break;
+            case ModelProvider.ID_DRYOFF:
+                witch = R.id.working_model_dryoff;
+                break;
+            case ModelProvider.ID_STANDARD_DELAY:
+                witch = R.id.working_model_timingwash;
+                break;
+            case ModelProvider.ID_DRYOFF_DELAY:
+                break;
+
+        }
+        if(-1 != witch){
+            for (Button btn:modelBtns){
+                if (btn.getId() == witch){
+                    btn.setBackgroundResource(R.drawable.tran);
+                }
+                btn.setEnabled(true);
+            }
         }
 
-        if(null != lastSelectedBtn){
-            lastSelectedBtn.setBackgroundResource(R.drawable.tran);
-        }
     }
 
     @Override
     public void onInterupt(Model model) {
-super.onInterupt(model);
+        super.onInterupt(model);
     }
 
     @Override
     public void faillOnStart(Model model,ModelAngel.StartFaillType type) {
-        super.faillOnStart(model,type);
+        super.faillOnStart(model, type);
         process.setProgress(0);
         com.laughingFace.microWash.util.Log.i("xixi", "faillonstart" + type);
         Toast.makeText(this,"fail on start "+type,Toast.LENGTH_SHORT).show();

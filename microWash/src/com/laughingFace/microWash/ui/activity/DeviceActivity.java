@@ -80,6 +80,13 @@ public class DeviceActivity extends BaseActivity{
         tv_device.setEnabled(true);
     }
 
+    @Override
+    public void onModelStart(Model model, ModelAngel.StartType type) {
+        Log.i("hehe", "-----------deviceActivity: " + model.getName() + " 启动----stateCode:"+model.getStateCode()+"------------");
+
+        super.onModelStart(model, type);
+    }
+
     public static Activity getInstance(){
         return instance;
     }

@@ -436,8 +436,16 @@ public class WaterWaveProgress extends View {
 	}
 
 	/**
+	 * 获取进度条最大值
+	 *
+	 */
+	public int getMaxProgress() {
+		return this.mMaxProgress;
+	}
+
+	/**
 	 * 设置进度条最大值
-	 * 
+	 *
 	 * @param mMaxProgress
 	 */
 	public void setMaxProgress(int mMaxProgress) {

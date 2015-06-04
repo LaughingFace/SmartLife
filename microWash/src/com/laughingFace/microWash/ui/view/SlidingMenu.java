@@ -29,6 +29,7 @@ public class SlidingMenu extends FrameLayout {
     private final int k = 3;//“劲度系数”控制菜单完全显示后继续拉动菜单的难度（参考胡克定律：f=k.x）
     private SlidingMenuListenear slidingMenuListenear;
     private ImageView menuHandle;
+    private boolean isInited = false;
 
     public SlidingMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,6 +65,7 @@ public class SlidingMenu extends FrameLayout {
                 layoutParams.weight = 0;
                 offsetX = showingWidth;
                 menu.scrollTo(offsetX, 0);
+                isInited = true;
             }
         });
 
@@ -144,17 +146,18 @@ public class SlidingMenu extends FrameLayout {
     }
 
     public void hide(){
-        offsetX = showingWidth;//隐藏菜单
-        menu.setBackgroundColor(0x00000000);//背景设置为全透明
-        content.setVisibility(VISIBLE);
+        if(isInited) {
+            offsetX = showingWidth;//隐藏菜单
+            menu.setBackgroundColor(0x00000000);//背景设置为全透明
+            content.setVisibility(VISIBLE);
 
-        layoutParams.width = showingWidth;
-        menuContent.setLayoutParams(layoutParams);
-        menu.scrollTo(offsetX, 0);
-        isShowing = false;
-        if(null != slidingMenuListenear){
-
-            slidingMenuListenear.onClosed();
+            layoutParams.width = showingWidth;
+            menuContent.setLayoutParams(layoutParams);
+            menu.scrollTo(offsetX, 0);
+            isShowing = false;
+            if (null != slidingMenuListenear) {
+                slidingMenuListenear.onClosed();
+            }
         }
     }
 
