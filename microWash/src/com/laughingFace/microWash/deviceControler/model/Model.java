@@ -9,24 +9,18 @@ public class Model {
 	private int stateCode;
 	private Progress progress;
 	private String cmdRequestState = CmdProvider.Model.REQUEST_STATE;
-	private int id;
+	private long id;
 	private long delay  =0;
 
 
 
-	public int getId() {
-		return id+(delay>0?DELAY_OFFSET:0);
+	public long getId() {
+		return id;
 	}
 
-	public Model(String cmd,int stateCode)
-	{
-		progress = new Progress();
-		this.cmd = cmd;
-		this.stateCode = stateCode;
-	}
 	public Model(int stateCode)
 	{
-
+		this.id = (long) (System.currentTimeMillis()+Math.random()*10);
 		this.cmd = CmdProvider.Model.setState(stateCode);
 		this.stateCode = stateCode;
 		this.id = stateCode;
