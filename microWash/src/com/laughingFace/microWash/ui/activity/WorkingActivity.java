@@ -131,12 +131,11 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
                 readyModel = ModelProvider.standard;
                 break;
             case TIMINGWASH:
-//                readyModel = ModelProvider;
+                readyModel = ModelProvider.timingWash;
                 Log.i("xixi", "----------- 定时清洗触发 ----------------");
                 break;
             case DRYOFF:
                 readyModel = ModelProvider.dryoff;
-
                 Log.i("xixi", "----------- 烘干模式触发 ----------------");
                 break;
             case STERILIZATION:
