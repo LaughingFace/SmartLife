@@ -30,16 +30,18 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	{
 		this.deviceStateListener = deviceStateListener;
 	}
-	public void startModel(Model model) {
+	public void startModel(Model model,int dealy) {
+		if (dealy > 0)
+		{
+			model.getDelayStartProgress().setTotal(dealy);
+			model.getDelayStartProgress().setRemain(dealy);
+			model.setIsDelay(true);
+			setRunningModel(model);
+			modelStateListener.onModelStart(model,StartType.Delay_Start);
+			return;
+		}
 		if (model.getStateCode() == CmdProvider.ModelStateCode.STOP)
 		{
-//			if (null != RunningModel)
-//			{
-//				if (isRunning) {
-//					modelStateListener.onFinish(RunningModel);
-//				}
-//			}
-//			setRunning(true);
 			net.send(model.getCmd());
 			return;
 		}
@@ -203,7 +205,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	public void after() {
 	}
 	public enum StartType {
-		Normal,OtherRunning,ACCIDENT,AlreadyRunning
+		Normal,OtherRunning,ACCIDENT,AlreadyRunning, Delay_Start
 	}
 	public enum StartFaillType{
 		Timeout,Offline

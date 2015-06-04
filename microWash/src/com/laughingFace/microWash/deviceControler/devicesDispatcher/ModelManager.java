@@ -5,9 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.device.DeviceAngel;
-import com.laughingFace.microWash.deviceControler.model.CmdProvider;
-import com.laughingFace.microWash.deviceControler.model.Model;
-import com.laughingFace.microWash.deviceControler.model.ModelAngel;
+import com.laughingFace.microWash.deviceControler.model.*;
 import com.laughingFace.microWash.deviceControler.utils.Timer;
 import com.laughingFace.microWash.util.Log;
 
@@ -19,14 +17,18 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     private final static int HANDLER_ONLINE = 5;
     private final static int HANDLER_OFFLINE = 6;
     private static final int HANDLER_ON_INTERUPT = 7;
+    private static final int HANDLER_DELAY = 100;
 
     private static ModelManager instance;
     private DeviceAngel deviceAngel;
     private DeviceMonitor deviceMonitor;
     private Device onLineDevice;
     private Timer.OnTimingActionListener onTimingActionListener;
+    private Timer.OnTimingActionListener onTimingDelayStartListener;
     private Timer timer;
-    private Handler mHandler = new Handler()
+    private CallBackHandler mHandler;
+
+    private class CallBackHandler extends Handler
     {
         @Override
         public void handleMessage(Message msg) {
@@ -51,6 +53,18 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
                  case HANDLER_ONLINE:
                      deviceMonitor.onLine((Device) msg.obj);
                      break;
+                 case HANDLER_ON_FINISH+HANDLER_DELAY:
+                     deviceMonitor.onFinish(getRunningModel());
+                     getRunningModel().setIsDelay(false);
+                     int i = getRunningModel().getStateCode();
+                     close();
+                     timer.stop();
+                     timer = null;
+                     startModel(ModelProvider.getModelByStateCode(i));
+                     break;
+                 case HANDLER_DELAY+HANDLER_PROCEING:
+                     deviceMonitor.onProcessing(getRunningModel());
+                     break;
              }
         }
     };
@@ -70,6 +84,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     }
 
     private ModelManager(){
+        mHandler = new CallBackHandler();
         setModelStateListener(this);
         deviceAngel = new DeviceAngel();
         deviceAngel.setDeviceStateListener(this);
@@ -95,7 +110,35 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
                 }
             }
         };
+        onTimingDelayStartListener = new Timer.OnTimingActionListener(){
+            @Override
+            public void befor() {
 
+            }
+
+            @Override
+            public void action() {
+                Progress p = getRunningModel().getDelayStartProgress();
+                long remain = p.getRemain()-timer.getInterval()/1000;
+                p.setRemain(remain);
+                Log.i("xixi","remain:"+remain+"toto:");
+                if(remain <= 0)
+                {
+                   mHandler.obtainMessage(HANDLER_DELAY+HANDLER_ON_FINISH).sendToTarget();
+                }else
+                {
+                    mHandler.obtainMessage(HANDLER_DELAY+HANDLER_PROCEING).sendToTarget();
+                }
+            }
+
+            @Override
+            public void after() {
+                if (timer != null) {
+                    Log.i("xixi","processing----after");
+
+                }
+            }
+        };
     }
     public void startAngel()
     {
@@ -104,20 +147,20 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     public void stopAngel(){
         deviceAngel.stopSearchDevice();
     }
-    @Override
-    public void startModel(Model model) {
+    public void startModel(Model model,int delay)
+    {
         if (null != onLineDevice)
         {
-            if (null == getRunningModel() || model.getStateCode() == CmdProvider.ModelStateCode.STOP)
+            if (null == getRunningModel() || (model.getStateCode() == CmdProvider.ModelStateCode.STOP && delay <= 0))
             {
-                super.startModel(model);
+                super.startModel(model,delay);
             }
             else
             {
                 mHandler.obtainMessage(HANDLER_ON_START,
                         model.getStateCode() ==  getRunningModel().getStateCode()?
                                 StartType.AlreadyRunning:StartType.OtherRunning
-                        ).sendToTarget();
+                ).sendToTarget();
                 requestState(model);
             }
         }
@@ -125,6 +168,9 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
         {
             mHandler.obtainMessage(HANDLER_FAIL_ON_START,StartFaillType.Offline).sendToTarget();
         }
+    }
+    public void startModel(Model model) {
+        startModel(model,0);
     }
 
     @Override
@@ -146,9 +192,16 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     @Override
     public void onModelStart(Model model,StartType type) {
         mHandler.obtainMessage(HANDLER_ON_START, type).sendToTarget();
+        if (model.isDelay())
+        {
+            timer = new Timer(onTimingDelayStartListener, Timer.FOREVER);
+            timer.setInterval(1000).start();
+            return;
+        }
+
         if (model.getStateCode() ==  CmdProvider.ModelStateCode.STANDARD || model.getStateCode() ==  CmdProvider.ModelStateCode.DRYOFF)
         {
-            timer = new Timer(onTimingActionListener,985);
+            timer = new Timer(onTimingActionListener, 985);
             timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
         }
     }
