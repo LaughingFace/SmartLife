@@ -47,7 +47,7 @@ public class SlidingMenu extends FrameLayout {
                 content = SlidingMenu.this.findViewById(R.id.content);
                 menuContent = SlidingMenu.this.findViewById(R.id.menu_content);
                 menuHandle = (ImageView) SlidingMenu.this.findViewById(R.id.menu_handle);
-                menuHandle.setOnClickListener(new OnClickListener() {
+                /*menuHandle.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (isShowing()) {
@@ -57,6 +57,21 @@ public class SlidingMenu extends FrameLayout {
 
                             SlidingMenu.this.show();
                         }
+                    }
+                });*/
+                menuHandle.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        /*switch (event.getAction()) {
+                            case MotionEvent.ACTION_UP:
+                                if (offsetX < showingWidth / 2) {
+                                    show();//完全显示菜单
+                                } else {
+                                    hide();
+                                }
+                                break;
+                        }*/
+                        return mGestureDetector.onTouchEvent(event);
                     }
                 });
                 showingWidth = menuContent.getWidth();
@@ -127,6 +142,7 @@ public class SlidingMenu extends FrameLayout {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             hide();
+
             return true;
         }
     }
