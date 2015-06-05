@@ -63,13 +63,14 @@ public class WheelTimePicker extends Dialog {
 
         hour = (PickerView) findViewById(R.id.hour);
          List<String> hours = new ArrayList<String>();
-        for (int i = 1; i < 13; i++)
-        {
 
-            hours.add(i < 10 ? "0" + i : "" + i);
-        }
+
+        /**
+         * 为了让0排在中间
+         */
+        for(int i = 7;i<=12;i++)  hours.add(i < 10 ? "0" + i : "" + i);
+        for(int i = 0;i<=6;i++)  hours.add("0" + i);
         hour.setData(hours);
-      //  hour.setSelected(0);
         hour.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
@@ -79,10 +80,10 @@ public class WheelTimePicker extends Dialog {
 
         minute = (PickerView) findViewById(R.id.minute);
         List<String> minutes = new ArrayList<String>();
-        for (int i = 0; i < 60; i++)
-        {
-            minutes.add(i < 10 ? "0" + i : "" + i);
-        }
+
+        for(int i = 31;i<=60;i++)  minutes.add(i < 10 ? "0" + i : "" + i);
+        for(int i = 0;i<=30;i++)  minutes.add(i < 10 ? "0" + i : "" + i);
+
         minute.setData(minutes);
        // minute.setSelected(0);
         minute.setOnSelectListener(new PickerView.onSelectListener() {

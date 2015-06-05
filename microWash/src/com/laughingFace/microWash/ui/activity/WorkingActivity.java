@@ -1,10 +1,14 @@
 package com.laughingFace.microWash.ui.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.laughingFace.microWash.R;
@@ -49,7 +53,11 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     private TextView runningModelName;//显示当前正在运行的模式名称
 
     private List<Button> modelBtns;//侧滑菜单中的所有按钮
+    private Notification notification;//用于在通知栏中显示进度
+    private NotificationManager notificationManager;
 
+   // Intent intent;
+    //PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +74,11 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         timePicker.setTimePickerListener(new WheelTimePicker.TimePickerListener() {
             @Override
             public void onSelected(long minutes) {
+                Log.i("qq","onSelected delay:"+minutes);
+
+                readyModel.setDelay(minutes);
                 ModelManager.getInstance().startModel(readyModel);
+                readyModel = null;
             }
 
             @Override
@@ -80,7 +92,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         modelBtns.add(((Button)findViewById(R.id.working_model_standard)));
         modelBtns.add(((Button)findViewById(R.id.working_model_dryoff)));
         modelBtns.add(((Button)findViewById(R.id.working_model_sterilization)));
-        modelBtns.add( ((Button)findViewById(R.id.working_model_timingwash)));
+        modelBtns.add(((Button) findViewById(R.id.working_model_timingwash)));
         for(Button btn:modelBtns){
             btn.setOnClickListener(this);
         }
@@ -119,6 +131,15 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             }
         };
 
+
+        /**
+         * 初始化通知栏通知对象（用于显示进度）
+         */
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notification = new Notification();
+        notification.icon= R.drawable.ic_launcher;
+        notification.contentView = new RemoteViews(getPackageName(),R.layout.process_notification);
+        notification.contentIntent = PendingIntent.getActivity(this, 0, new Intent(this,WorkingActivity.class), 0);
     }
 
     @Override
@@ -152,7 +173,6 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void prepareStart(){
-
         if(null == readyModel) return;
 
         if(readyModel.getId() == ModelProvider.standard.getId() || readyModel.getId() == ModelProvider.dryoff.getId()){
@@ -182,22 +202,27 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     public void onModelStart(Model model, ModelAngel.StartType type) {
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
+        notification.tickerText=model.getName();
         int witch =-1;
         if(model.getId() == ModelProvider.standard.getId()){
+            process.setModel(1);
             process.setMaxProgress(1000);
             witch = R.id.working_model_standard;
             process.setProgress(0);
         }
         else if(model.getId()== ModelProvider.dryoff.getId()){
+            process.setModel(1);
             process.setMaxProgress(1000);
             witch = R.id.working_model_dryoff;
             process.setProgress(0);
         }
         else if(model.getId()== ModelProvider.timingWash.getId()){
+            Log.i("qq","onmodelstart delay:"+model.getDelay());
             process.setMaxProgress((int) model.getDelay());
             witch = R.id.working_model_timingwash;
             process.setModel(2);
             process.setProgress(process.getMaxProgress());
+            timePicker.dismiss();
         }
 
         /**
@@ -222,11 +247,17 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     public void onProcessing(Model model) {
 
         if(model.getDelay() >0){
-            process.setProgress((int) model.getDelay());
+            process.setProgress((int) model.getProgress().getRemain());
+            notification.contentView.setTextViewText(R.id.content_view_text1, model.getProgress().getRemain() + " 分钟后启动！");
+            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) model.getProgress().getRemain(), false);
         }
         else {
             process.setProgress((int) (model.getProgress().getPercentage() * 1000));
+            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+" "+(int) (model.getProgress().getPercentage() * 100) + "%");
+            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) (model.getProgress().getTotal() - model.getProgress().getRemain()), false);
         }
+
+        notificationManager.notify(0, notification);
         super.onProcessing(model);
     }
 
@@ -236,14 +267,22 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         if(model.getId() == ModelProvider.standard.getId()){
             witch = R.id.working_model_standard;
             process.setProgress(process.getMaxProgress());
+            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+" "+100+ "%");
+            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) (model.getProgress().getTotal() - model.getProgress().getRemain()), false);
+
         }
         else if(model.getId()== ModelProvider.dryoff.getId()){
             witch = R.id.working_model_dryoff;
             process.setProgress(process.getMaxProgress());
+            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+" "+100+ "%");
+            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) (model.getProgress().getTotal() - model.getProgress().getRemain()), false);
+
         }
         else if(model.getId()== ModelProvider.timingWash.getId()){
             witch = R.id.working_model_timingwash;
             process.setProgress(0);
+            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName());
+            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) model.getProgress().getRemain(), false);
         }
 
         if(-1 != witch){
