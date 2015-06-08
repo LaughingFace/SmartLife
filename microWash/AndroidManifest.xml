@@ -22,6 +22,7 @@
         <activity
                 android:name="com.laughingFace.microWash.ui.activity.WelcomGuideActivity"
                 android:label="@string/app_name"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

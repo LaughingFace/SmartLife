@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -44,6 +45,7 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
     private Button begin;
 
     private SharedPreferences preferences;
+     SharedPreferences.Editor editor;
 
     final String SETTING_NAME = "microWashSettings";
     final String SETTING_ISFIRST = "isFirst";
@@ -52,7 +54,7 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         preferences = getSharedPreferences(SETTING_NAME,MODE_APPEND);
-        final SharedPreferences.Editor editor = preferences.edit();
+         editor = preferences.edit();
         boolean isFirst = true;
         isFirst = preferences.getBoolean(SETTING_ISFIRST,true);
         Log.i("gg","isFirst:"+isFirst);
@@ -66,19 +68,7 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
         }
         setContentView(R.layout.welcom_guide);
 
-        begin = (Button)findViewById(R.id.begin);
-        begin.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
-                WelcomGuideActivity.this.finish();
-                /**
-                 * 保存软件设置-已经不是第一次启动了以后不再显示欢迎界面了
-                 */
-                editor.putBoolean(SETTING_ISFIRST,false);
-                editor.commit();
-            }
-        });
+
 		initView();
 		initData();
 	}
@@ -104,19 +94,32 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
 	 * 初始化数据
 	 */
 	private void initData(){
+
+        LayoutInflater inflater = getLayoutInflater();
+        View v1 = inflater.inflate(R.layout.welcom_first, null);
+        View v2 = inflater.inflate(R.layout.welcom_second, null);
+        View v3 = inflater.inflate(R.layout.welcom_third, null);
+
+        views.add(v1);
+        views.add(v2);
+        views.add(v3);
+
+        begin = (Button)v3.findViewById(R.id.begin);
+        begin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
+                WelcomGuideActivity.this.finish();
+                /**
+                 * 保存软件设置-已经不是第一次启动了以后不再显示欢迎界面了
+                 */
+                editor.putBoolean(SETTING_ISFIRST, false);
+                editor.commit();
+            }
+        });
 		//定义一个布局并设置参数
 		LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 														  LinearLayout.LayoutParams.MATCH_PARENT);
-       
-        //初始化引导图片列表
-        for(int i=0; i<pics.length; i++) {
-            ImageView iv = new ImageView(this);
-            iv.setLayoutParams(mParams);
-            iv.setImageResource(pics[i]);
-            LinearLayout li = new LinearLayout(this);
-            li.addView(iv);
-            views.add(li);
-        }
         //设置数据
         viewPager.setAdapter(vpAdapter);
         //设置监听
@@ -132,10 +135,10 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
 	private void initPoint(){
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll);       
 		
-        points = new ImageView[pics.length];
+        points = new ImageView[views.size()];
 
         //循环取得小点图片
-        for (int i = 0; i < pics.length; i++) {
+        for (int i = 0; i < views.size(); i++) {
         	//得到一个LinearLayout下面的每一个子元素
         	points[i] = (ImageView) linearLayout.getChildAt(i);
         	//默认都设为灰色

@@ -46,20 +46,13 @@
                 android:padding="15.0dip"
                 android:src="@drawable/point"/>
 
-        <ImageView
+        <!--<ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:padding="15.0dip"
-                android:src="@drawable/point"/>
+                android:src="@drawable/point"/>-->
     </LinearLayout>
-
-    <Button android:layout_width="170dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:id="@+id/begin"
-            android:visibility="invisible"
-            />
 
 </FrameLayout>
