@@ -3,6 +3,7 @@ package com.laughingFace.microWash.ui.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 
 /**
  * @author dwtedx
- *	功能描述：主程序入口类
+ *	功能描述：主程序入口类,欢迎界面
  */
 public class WelcomGuideActivity extends Activity implements OnClickListener,OnPageChangeListener {
 	//定义ViewPager对象
@@ -41,16 +42,28 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
     private int currentIndex;
 
     private Button begin;
-    
+
+    private SharedPreferences preferences;
+
+    final String SETTING_NAME = "microWashSettings";
+    final String SETTING_ISFIRST = "isFirst";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        /*startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
-        this.finish();
-        if(true){
-
+        preferences = getSharedPreferences(SETTING_NAME,MODE_APPEND);
+        final SharedPreferences.Editor editor = preferences.edit();
+        boolean isFirst = true;
+        isFirst = preferences.getBoolean(SETTING_ISFIRST,true);
+        Log.i("gg","isFirst:"+isFirst);
+        /**
+         * 不是第一次启动软件直接跳到设备界面
+         */
+        if(!isFirst){
+            startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
+            this.finish();
             return;
-        }*/
+        }
         setContentView(R.layout.welcom_guide);
 
         begin = (Button)findViewById(R.id.begin);
@@ -59,6 +72,11 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
             public void onClick(View v) {
                 startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
                 WelcomGuideActivity.this.finish();
+                /**
+                 * 保存软件设置-已经不是第一次启动了以后不再显示欢迎界面了
+                 */
+                editor.putBoolean(SETTING_ISFIRST,false);
+                editor.commit();
             }
         });
 		initView();

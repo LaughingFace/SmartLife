@@ -28,7 +28,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:padding="15.0dip"
-                android:src="@drawable/point2"/>
+                android:src="@drawable/point"/>
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:padding="15.0dip"
-                android:src="@drawable/point2"/>
+                android:src="@drawable/point"/>
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:padding="15.0dip"
-                android:src="@drawable/point2"/>
+                android:src="@drawable/point"/>
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:padding="15.0dip"
-                android:src="@drawable/point2"/>
+                android:src="@drawable/point"/>
     </LinearLayout>
 
     <Button android:layout_width="170dp"
