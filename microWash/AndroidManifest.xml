@@ -12,6 +12,7 @@
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:theme="@style/titlebar"
+                  android:screenOrientation="portrait"
                 >
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,6 +24,8 @@
                 android:name="com.laughingFace.microWash.ui.activity.WelcomGuideActivity"
                 android:label="@string/app_name"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                android:screenOrientation="portrait"
+
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -32,7 +35,6 @@
 
         <activity android:name=".PostmanTest.DeviceActivityTest"
                   android:label="@string/app_name"
-
                   android:theme="@style/titlebar"
                 >
            <!-- <intent-filter>
@@ -45,15 +47,14 @@
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:theme="@style/titlebar"
+                  android:screenOrientation="portrait"
                 >
 
         </activity>
         <activity android:name=".ui.activity.AddDeviceActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
-                  android:theme="@style/titlebar"
-
-                >
+                  android:theme="@style/titlebar">
 
         </activity>
 

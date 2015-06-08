@@ -57,7 +57,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); //设置标题栏为自定义模式
         super.setContentView(layoutResID);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);// 设置标题栏的布局
-//        ModelManager.getInstance().setDeviceMonitor(this);
+        ModelManager.getInstance().setDeviceMonitor(this);
         modelManager = ModelManager.getInstance();
 
     }
@@ -65,7 +65,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void onModelStart(Model model, ModelAngel.StartType type) {
-        //Log.i("xixi", "start" + model.getStateCode());
+        Log.i("xixi", "start" + model.getStateCode());
         Toast.makeText(this,"start:::"+type,Toast.LENGTH_SHORT).show();
         notification.tickerText=model.getName();
     }
@@ -86,7 +86,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void onProcessing(Model model) {
-        //Log.i("xixi", "processing-----" + model.getProgress().getPercentage());
+        Log.i("xixi", "processing-----" + model.getProgress().getPercentage());
 
         /**
          * 定时类型
@@ -105,7 +105,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void onFinish(Model model) {
-       // Log.i("xixi","finsish");
+ Log.i("xixi","finsish");
         Toast.makeText(this,model.getName()+" finish",Toast.LENGTH_SHORT).show();
         if(model.getId() == ModelProvider.standard.getId()){
             notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+"完成！");
