@@ -36,6 +36,16 @@ public class SlidingMenu extends FrameLayout {
         this.init(context, attrs);
     }
 
+    public SlidingMenu(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        this.init(context, attrs);
+    }
+
+    public SlidingMenu(Context context) {
+        super(context);
+        this.init(context, null);
+    }
+
     private void init( Context context,AttributeSet attrs){
 
         mGestureDetector = new GestureDetector(context,new MySimpleGL());

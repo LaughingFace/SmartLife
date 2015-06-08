@@ -69,19 +69,7 @@ public class CircleLayout extends ViewGroup {
 	private Set<View> mDirtyViews = new HashSet<View>();
 	private boolean mCached = false;
 
-	/**
-	 * 让被拖拽的view回复到可见状态的handler
-	 */
-	/*Handler handler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			if(null !=dragingView &&!dragingView.isShown()) {
-				dragingView.setVisibility(VISIBLE);
-				dragingView = null;
-			}
 
-		}
-	};*/
 
 	public CircleLayout(Context context) {
 		this(context, null);
@@ -227,15 +215,15 @@ public class CircleLayout extends ViewGroup {
 			mDrawingCache = null;
 		}
 		
-		if(mSrc == null) {
+		/*if(mSrc == null) {
 			mSrc = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 			mDst = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 			mDrawingCache = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			
+
 			mSrcCanvas = new Canvas(mSrc);
 			mDstCanvas = new Canvas(mDst);
 			mCachedCanvas = new Canvas(mDrawingCache);
-		}
+		}*/
 	}
 	
 	private LayoutParams layoutParams(View child) {

@@ -4,18 +4,31 @@
           android:versionCode="1"
           android:versionName="1.3">
     <uses-sdk android:minSdkVersion="10"/>
+
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
             android:name=".MyApplication">
+
         <activity android:name=".ui.activity.DeviceActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:theme="@style/titlebar"
+                >
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+
+        <activity
+                android:name="com.laughingFace.microWash.ui.activity.WelcomGuideActivity"
+                android:label="@string/app_name"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".PostmanTest.DeviceActivityTest"
                   android:label="@string/app_name"
 
@@ -38,9 +51,13 @@
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:theme="@style/titlebar"
+
                 >
 
         </activity>
+        <activity android:name=".ui.activity.act"/>
+
+
         <meta-data
                 android:name="UMENG_APPKEY"
                 android:value="5567d93f67e58ef60d000ab3" >

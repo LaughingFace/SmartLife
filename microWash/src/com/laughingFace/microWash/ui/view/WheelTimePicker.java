@@ -29,10 +29,23 @@ public class WheelTimePicker extends Dialog {
 
     private TimePickerListener timePickerListener;
 
+    public WheelTimePicker(Context context, int theme) {
+        super(context, theme);
+        init();
+    }
+
+    public WheelTimePicker(Context context, boolean cancelable, OnCancelListener cancelListener) {
+        super(context, cancelable, cancelListener);
+        init();
+    }
+
     public WheelTimePicker(Context context) {
         super(context, R.style.MyDialog);
-        this.setContentView(R.layout.wheel_tim_picker);
+        init();
+    }
 
+    private void init(){
+        this.setContentView(R.layout.wheel_tim_picker);
         pickTime = (LinearLayout)findViewById(R.id.pick_time);
         waitStart = (LinearLayout)findViewById(R.id.waite_start);
         pickTime.setVisibility(View.VISIBLE);
@@ -62,8 +75,7 @@ public class WheelTimePicker extends Dialog {
         });
 
         hour = (PickerView) findViewById(R.id.hour);
-         List<String> hours = new ArrayList<String>();
-
+        List<String> hours = new ArrayList<String>();
 
         /**
          * 为了让0排在中间
@@ -85,7 +97,6 @@ public class WheelTimePicker extends Dialog {
         for(int i = 0;i<=30;i++)  minutes.add(i < 10 ? "0" + i : "" + i);
 
         minute.setData(minutes);
-       // minute.setSelected(0);
         minute.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
