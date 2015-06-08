@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
 
     <android.support.v4.view.ViewPager
@@ -13,46 +13,46 @@
             />
 
 
-     <LinearLayout
-        android:id="@+id/ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
- 
-        <ImageView
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="15.0dip"
-            android:src="@drawable/point"/>
- 
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="15.0dip"
-            android:src="@drawable/point"/>
- 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:padding="15.0dip"
+                android:src="@drawable/point2"/>
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="15.0dip"
-            android:src="@drawable/point"/>
- 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:padding="15.0dip"
+                android:src="@drawable/point2"/>
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="15.0dip"
-            android:src="@drawable/point"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:padding="15.0dip"
+                android:src="@drawable/point2"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:padding="15.0dip"
+                android:src="@drawable/point2"/>
     </LinearLayout>
 
     <Button android:layout_width="170dp"
