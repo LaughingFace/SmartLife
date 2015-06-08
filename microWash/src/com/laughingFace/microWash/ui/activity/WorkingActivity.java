@@ -53,11 +53,8 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     private TextView runningModelName;//显示当前正在运行的模式名称
 
     private List<Button> modelBtns;//侧滑菜单中的所有按钮
-    private Notification notification;//用于在通知栏中显示进度
-    private NotificationManager notificationManager;
 
-   // Intent intent;
-    //PendingIntent pendingIntent;
+    private TextView timingText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +94,8 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             btn.setOnClickListener(this);
         }
 
+        timingText = (TextView)findViewById(R.id.timing_text);
+
         runningModelName = (TextView)findViewById(R.id.runningModelName);
         process  = (WaterWaveProgress)findViewById(R.id.process);
 
@@ -130,17 +129,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
             }
         };
-
-
-        /**
-         * 初始化通知栏通知对象（用于显示进度）
-         */
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notification = new Notification();
-        notification.icon= R.drawable.ic_launcher;
-        notification.contentView = new RemoteViews(getPackageName(),R.layout.process_notification);
-        notification.contentIntent = PendingIntent.getActivity(this, 0, new Intent(this,WorkingActivity.class), 0);
-    }
+         }
 
     @Override
     protected void onResume() {
@@ -202,27 +191,29 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     public void onModelStart(Model model, ModelAngel.StartType type) {
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
-        notification.tickerText=model.getName();
         int witch =-1;
         if(model.getId() == ModelProvider.standard.getId()){
-            process.setModel(1);
-            process.setMaxProgress(1000);
+            process.showWater();
             witch = R.id.working_model_standard;
             process.setProgress(0);
+            process.setShowNumerical(true);
+
         }
         else if(model.getId()== ModelProvider.dryoff.getId()){
-            process.setModel(1);
-            process.setMaxProgress(1000);
+            process.showWater();
             witch = R.id.working_model_dryoff;
             process.setProgress(0);
+            process.setShowNumerical(true);
+
         }
         else if(model.getId()== ModelProvider.timingWash.getId()){
-            Log.i("qq","onmodelstart delay:"+model.getDelay());
-            process.setMaxProgress((int) model.getDelay());
             witch = R.id.working_model_timingwash;
-            process.setModel(2);
+            timingText.setVisibility(View.VISIBLE);
+            process.hideWater();
+            process.setShowNumerical(false);
             process.setProgress(process.getMaxProgress());
             timePicker.dismiss();
+            timingText.setText( String.format(getString(R.string.timing_text),model.getProgress().getRemain()) );
         }
 
         /**
@@ -246,18 +237,16 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onProcessing(Model model) {
 
+        /**
+         * 定时类型
+         */
         if(model.getDelay() >0){
-            process.setProgress((int) model.getProgress().getRemain());
-            notification.contentView.setTextViewText(R.id.content_view_text1, model.getProgress().getRemain() + " 分钟后启动！");
-            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) model.getProgress().getRemain(), false);
+            process.setProgress((int) ((1-model.getProgress().getPercentage()) * process.getMaxProgress()));
+            timingText.setText(String.format(getString(R.string.timing_text), model.getProgress().getRemain()));
         }
         else {
-            process.setProgress((int) (model.getProgress().getPercentage() * 1000));
-            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+" "+(int) (model.getProgress().getPercentage() * 100) + "%");
-            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) (model.getProgress().getTotal() - model.getProgress().getRemain()), false);
+            process.setProgress((int) (model.getProgress().getPercentage() * process.getMaxProgress()));
         }
-
-        notificationManager.notify(0, notification);
         super.onProcessing(model);
     }
 
@@ -267,22 +256,18 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         if(model.getId() == ModelProvider.standard.getId()){
             witch = R.id.working_model_standard;
             process.setProgress(process.getMaxProgress());
-            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+" "+100+ "%");
-            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) (model.getProgress().getTotal() - model.getProgress().getRemain()), false);
 
         }
         else if(model.getId()== ModelProvider.dryoff.getId()){
             witch = R.id.working_model_dryoff;
             process.setProgress(process.getMaxProgress());
-            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+" "+100+ "%");
-            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) (model.getProgress().getTotal() - model.getProgress().getRemain()), false);
-
         }
         else if(model.getId()== ModelProvider.timingWash.getId()){
+            timingText.setVisibility(View.INVISIBLE);
             witch = R.id.working_model_timingwash;
             process.setProgress(0);
-            notification.contentView.setTextViewText(R.id.content_view_text1, model.getName());
-            notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) model.getProgress().getRemain(), false);
+            process.showWater();
+            process.setShowNumerical(true);
         }
 
         if(-1 != witch){
@@ -352,7 +337,6 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     protected void onDestroy() {
         dismissDia();
         super.onDestroy();
-
     }
 
     @Override

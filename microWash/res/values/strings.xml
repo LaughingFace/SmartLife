@@ -15,6 +15,9 @@
     <string name="changeModel">更换模式</string>
 
 <string name="not_connect_state">未连接</string>
+
+    <string name="timing_text">%d 分钟后启动！</string>
+
 <!--时间选择的滚轮中数字格式-->
 <string name="format">%02d</string>
 

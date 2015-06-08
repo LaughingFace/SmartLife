@@ -7,25 +7,35 @@
         android:id="@+id/slideMenuLayout"
         android:background="@drawable/main_bg">
 
-
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
                   android:gravity="center"
                   android:id="@+id/content">
 
-        <com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                app:maxProgress="1000"
-                app:showProgress="true"
-                app:progress="0"
-                android:id="@+id/process"
-                app:waterWaveColor="#a40ed5de"
-                app:waterWaveBgColor="#3FFFFFFF"
-                app:progressColor="#a40ed5de"
-                app:progressBgColor="#3FFFFFFF"
-                />
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress
+                    android:gravity="center"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    app:showProgress="true"
+                    app:progress="0"
+                    android:id="@+id/process"
+                    app:waterWaveColor="#a40ed5de"
+                    app:waterWaveBgColor="#3FFFFFFF"
+                    app:progressColor="#a40ed5de"
+                    app:progressBgColor="#3FFFFFFF"
+                    />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="#ffffff"
+                      android:textSize="20sp"
+                      android:visibility="invisible"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/timing_text"/>
+        </FrameLayout>
+
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/runningModelName"

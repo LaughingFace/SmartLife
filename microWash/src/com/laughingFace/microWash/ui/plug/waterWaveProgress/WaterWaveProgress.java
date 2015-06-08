@@ -24,22 +24,15 @@ public class WaterWaveProgress extends View {
 
 	public final int PROGRESS_MODEL = 1;
 	public final int TIMER_MODEL = 2;
-	/**
-	 * 模式  1：进度模式
-	 * 		 2：计时器模式
-	 */
-	private int model = 1;
 
 	// 水的画笔 // 画圆环的画笔// 进度百分比的画笔
 	private Paint mPaintWater = null, mRingPaint = null, mTextPaint = null;
 
 	// 圆环颜色 // 圆环背景颜色 // 当前进度 //水波颜色 // 水波背景色 //进度条和水波之间的距离 //进度百分比字体大小
 	// //进度百分比字体颜色
-	private int mRingColor, mRingBgColor, mWaterColor, mWaterBgColor,
-			mFontSize, mTextColor;
+	private int mRingColor, mRingBgColor, mWaterColor, mWaterBgColor, mFontSize, mTextColor;
 	// 进度 //浪峰个数
 	float  crestCount = 1.5f;
-	
 	int mProgress = 10, mMaxProgress = 100;
 
 	// 画布中心点
@@ -61,8 +54,6 @@ public class WaterWaveProgress extends View {
 	private int mWaterAlpha = 255; // 255
 	/** 是否显示水波*/
 	private boolean isShowWater = true;
-
-
 
 	WaterWaveAttrInit attrInit;
 
@@ -203,11 +194,9 @@ public class WaterWaveProgress extends View {
 		}
 
 		// 水与边框的距离
-		float waterPadding = mShowProgress ? mRingWidth + mProgress2WaterWidth
-				: 0;
+		float waterPadding = mShowProgress ? mRingWidth + mProgress2WaterWidth : 0;
 		// 水最高处
-		int waterHeightCount = mShowProgress ? (int) (height - waterPadding * 2)
-				: height;
+		int waterHeightCount = mShowProgress ? (int) (height - waterPadding * 2) : height;
 
 		// 重新生成波浪的形状
 		mWaveFactor++;
@@ -285,28 +274,10 @@ public class WaterWaveProgress extends View {
 		if (mShowNumerical) {
 			String progressTxt;
 			float mTxtWidth;
-			switch (model){
-				/** 进度模式*/
-				case 1:
-				{
-					mTextPaint.setTextSize(mFontSize);
-					 progressTxt = String.format("%.0f", (mProgress * 1f) / mMaxProgress * 100f) + "%";
-					 mTxtWidth = mTextPaint.measureText(progressTxt, 0, progressTxt.length());
-					canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2, mCenterPoint.x * 1.5f - mFontSize / 2, mTextPaint);
-
-				}
-				break;
-				/** 计时器模式*/
-				case 2:
-				{
-					mTextPaint.setTextSize(70);
-					progressTxt = mProgress+ " 分钟后启动！";
-					mTxtWidth = mTextPaint.measureText(progressTxt, 0, progressTxt.length());
-					canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2, mCenterPoint.x*1.3f - mFontSize / 2, mTextPaint);
-
-				}
-				break;
-			}
+            mTextPaint.setTextSize(mFontSize);
+            progressTxt = String.format("%.0f", (mProgress * 1f) / mMaxProgress * 100f) + "%";
+            mTxtWidth = mTextPaint.measureText(progressTxt, 0, progressTxt.length());
+            canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2, mCenterPoint.x * 1.5f - mFontSize / 2, mTextPaint);
 
 			}
 	}
@@ -482,28 +453,7 @@ public class WaterWaveProgress extends View {
 	public void showWater(){
 		isShowWater = true;
 	}
-
 	public void hideWater(){
 		isShowWater = false;
-	}
-
-	public int getModel() {
-		return model;
-	}
-
-	public void setModel(int model) {
-		switch( model){
-			case 1:
-			{
-				showWater();
-			}
-			break;
-			case 2:
-			{
-				hideWater();
-			}
-			break;
-		}
-		this.model = model;
 	}
 }
