@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res/com.laughingFace.microWash"
               android:orientation="vertical"
@@ -57,7 +55,6 @@
                 <com.laughingFace.microWash.ui.view.CircleLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
                         app:angleOffset="160"
                         app:angleRange="270"
                         >
@@ -69,7 +66,7 @@
                             app:waveOnLoad="false"
                             app:waveColor="#80ff0000"
                             app:waveCount="3"
-                            app:canDrag="false"/>
+                            app:canDrag="true"/>
 
                     <com.laughingFace.microWash.ui.view.WaterRipplesView
                             android:id="@+id/model_standard"
@@ -128,14 +125,14 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="25">
             <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
-                     <TextView android:layout_width="0dp"
-                              android:layout_weight="1"
-                              android:id="@+id/ds_device"
-                              android:layout_height="match_parent"
-                              android:background="@drawable/select_bg"
-                               android:gravity="center"
-                               android:textSize="22sp"
-                               android:textColor="@color/main_text"
+            <TextView android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/ds_device"
+                      android:layout_height="match_parent"
+                      android:background="@drawable/select_bg"
+                      android:gravity="center"
+                      android:textSize="22sp"
+                      android:textColor="@color/main_text"
                     />
             <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
