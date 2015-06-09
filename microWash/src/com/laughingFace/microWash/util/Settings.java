@@ -10,7 +10,7 @@ import com.laughingFace.microWash.MyApplication;
 public class Settings {
     public static final String SETTING_ISFIRST = "isFirst";
 
-    public static final String TIMING_MODEL_NAME = "null";
+    public static final String TIMING_MODEL_NAME = "model_id";
     public static final String TIMING_MODEL_BEGIN = "beginTime";
     public static final String TIMING_MODEL_HOW_LONG = "howLong";
 
@@ -34,8 +34,8 @@ public class Settings {
         editor.commit();
     }
 
-    public static String getTimingModelName() {
-        return preferences.getString(TIMING_MODEL_NAME,"null");
+    public static int getTimingModel() {
+        return preferences.getInt(TIMING_MODEL_NAME,-1);
     }
 
     public static long getTimingModelBegin() {
@@ -43,11 +43,11 @@ public class Settings {
     }
 
     public static  long  getTimingModelHowLong() {
-        return preferences.getLong(TIMING_MODEL_HOW_LONG,0);
+        return preferences.getLong(TIMING_MODEL_HOW_LONG,-1);
     }
 
-    public static void setTimingModelName(String name) {
-        editor.putString(TIMING_MODEL_NAME,name);
+    public static void setTimingModelId(int id) {
+        editor.putInt(TIMING_MODEL_NAME,id);
         editor.commit();
     }
 

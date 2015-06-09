@@ -18,10 +18,10 @@ public class Model {
 		return id;
 	}
 
-	public Model(int stateCode)
+	public Model(int id,int stateCode)
 	{
 		this.progress = new Progress();
-		this.id = (long) (System.currentTimeMillis()+Math.random()*10);
+//		this.id = (long) (System.currentTimeMillis()+Math.random()*10);
 		this.cmd = CmdProvider.Model.setState(stateCode);
 		this.stateCode = stateCode;
 	}
