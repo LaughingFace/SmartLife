@@ -170,7 +170,6 @@ public class MainLogo  implements WaterRipplesView.OnCollisionListener{
 
     @Override
     public void onRealse(View perpetrators, View wounder) {
-        Log.i("ww", "----------- onRealse ----------------");
 
         checkArea.stop();
         isRandomBreath = true;

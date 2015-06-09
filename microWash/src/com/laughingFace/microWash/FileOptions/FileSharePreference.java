@@ -15,7 +15,7 @@ public class FileSharePreference {
         SharedPreferences share = context.getSharedPreferences(filename,Context.MODE_APPEND);
         SharedPreferences.Editor edit = share.edit(); //编辑文件
         edit.putString("data", content);
-        edit.commit();  //保存数据信s
+        edit.apply();  //保存数据信s
     }
     public static String LoadData(Context context,String filename) {
         //指定操作的文件名称
@@ -28,6 +28,6 @@ public class FileSharePreference {
         SharedPreferences share = context.getSharedPreferences(filename,Context.MODE_APPEND);
         SharedPreferences.Editor edit = share.edit(); //编辑文件
         edit.clear();
-        edit.commit();
+        edit.apply();
     }
 }

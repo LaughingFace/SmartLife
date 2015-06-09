@@ -22,8 +22,10 @@ import java.lang.ref.WeakReference;
  */
 public class WaterWaveProgress extends View {
 
-	public final int PROGRESS_MODEL = 1;
-	public final int TIMER_MODEL = 2;
+	public static final int PROGRESS_MODEL = 1;//进度模式
+	public static final int TIMER_MODEL = 2;//计时器模式
+
+    private int model = PROGRESS_MODEL;
 
 	// 水的画笔 // 画圆环的画笔// 进度百分比的画笔
 	private Paint mPaintWater = null, mRingPaint = null, mTextPaint = null;
@@ -450,7 +452,25 @@ public class WaterWaveProgress extends View {
 		this.mProgress2WaterWidth = mProgress2WaterWidth;
 	}
 
-	public void showWater(){
+    public int getModel() {
+        return model;
+    }
+
+    public void setModel(int model) {
+        this.model = model;
+        switch(model){
+            case PROGRESS_MODEL:
+                showWater();
+                setShowNumerical(true);
+                break;
+            case TIMER_MODEL:
+                hideWater();
+                setShowNumerical(false);
+                break;
+        }
+    }
+
+    public void showWater(){
 		isShowWater = true;
 	}
 	public void hideWater(){

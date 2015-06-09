@@ -1,14 +1,10 @@
 package com.laughingFace.microWash.ui.activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.laughingFace.microWash.R;
@@ -26,7 +22,7 @@ import java.util.List;
 /**
  * Created by zihao on 15-5-25.
  */
-public class WorkingActivity extends BaseActivity implements View.OnClickListener{
+public class WorkingActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String INTENT_MODEL = "model";
 
@@ -54,7 +50,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     private List<Button> modelBtns;//侧滑菜单中的所有按钮
 
-    private TextView timingText;
+    private TextView timingText;//定时文本信息
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +61,12 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private void init(){
+    private void init() {
 
         timePicker = new WheelTimePicker(this);
         timePicker.setTimePickerListener(new WheelTimePicker.TimePickerListener() {
             @Override
             public void onSelected(long minutes) {
-                Log.i("qq","onSelected delay:"+minutes);
-
                 readyModel.setDelay(minutes);
                 ModelManager.getInstance().startModel(readyModel);
                 readyModel = null;
@@ -86,18 +80,18 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         });
         modelBtns = new ArrayList<Button>();
 
-        modelBtns.add(((Button)findViewById(R.id.working_model_standard)));
-        modelBtns.add(((Button)findViewById(R.id.working_model_dryoff)));
-        modelBtns.add(((Button)findViewById(R.id.working_model_sterilization)));
+        modelBtns.add(((Button) findViewById(R.id.working_model_standard)));
+        modelBtns.add(((Button) findViewById(R.id.working_model_dryoff)));
+        modelBtns.add(((Button) findViewById(R.id.working_model_sterilization)));
         modelBtns.add(((Button) findViewById(R.id.working_model_timingwash)));
-        for(Button btn:modelBtns){
+        for (Button btn : modelBtns) {
             btn.setOnClickListener(this);
         }
 
-        timingText = (TextView)findViewById(R.id.timing_text);
+        timingText = (TextView) findViewById(R.id.timing_text);
 
-        runningModelName = (TextView)findViewById(R.id.runningModelName);
-        process  = (WaterWaveProgress)findViewById(R.id.process);
+        runningModelName = (TextView) findViewById(R.id.runningModelName);
+        process = (WaterWaveProgress) findViewById(R.id.process);
 
         slidingMenu = (SlidingMenu) findViewById(R.id.slideMenuLayout);
         slidingMenu.setSlidingMenuListenear(new SlidingMenu.SlidingMenuListenear() {
@@ -112,10 +106,10 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        countDownDialog  = new CountDownDialog(this){
+        countDownDialog = new CountDownDialog(this) {
             @Override
             public void onCounttingDownOver() {
-                if(null != readyModel){
+                if (null != readyModel) {
                     ModelManager.getInstance().startModel(readyModel);
                     readyModel = null;
                 }
@@ -129,13 +123,16 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
             }
         };
-         }
+    }
 
+    /**
+     * 通过上一界面intent中传递的值决定启动那一个模式
+     */
     @Override
     protected void onResume() {
 
         Log.i("haha", "----------- 模式触发: " + getIntent().getIntExtra(INTENT_MODEL, -1) + "--------------");
-        switch (getIntent().getIntExtra(INTENT_MODEL, -1)){
+        switch (getIntent().getIntExtra(INTENT_MODEL, -1)) {
             case STANDARD:
                 Log.i("xixi", "----------- 标准模式触发 ----------------");
                 readyModel = ModelProvider.standard;
@@ -161,28 +158,39 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         super.onResume();
     }
 
-    private void prepareStart(){
-        if(null == readyModel) return;
+    private void prepareStart() {
 
-        if(readyModel.getId() == ModelProvider.standard.getId() || readyModel.getId() == ModelProvider.dryoff.getId()){
-            /**
-             * 启动倒计时
-             */
+        /**
+         * 如果当前已有模式正在运行则直接显示正在运行的模式进度信息
+         */
+        if (null != ModelManager.getInstance().getRunningModel()) {
+            onModelStart(ModelManager.getInstance().getRunningModel(), ModelAngel.StartType.Normal);
+            return;
+        }
+        if (null == readyModel) return;
+        /**
+         * 立即启动类型
+         */
+        if (readyModel.getId() == ModelProvider.standard.getId()
+                || readyModel.getId() == ModelProvider.dryoff.getId()) {
+
+            /*** 启动倒计时*/
             countDownDialog.setTitle(readyModel.getName());
             hideProgress();
             slidingMenu.hide();
             countDownDialog.start();
         }
-        else if(readyModel.getId() == ModelProvider.timingWash.getId()) {
+        /**
+         * 定时启动类型
+         */
+        else if (readyModel.getId() == ModelProvider.timingWash.getId()) {
             timePicker.show();
         }
-
     }
 
     @Override
     public void offLine() {
         super.offLine();
-        com.laughingFace.microWash.util.Log.i("xixi", "offline");
         Toast.makeText(this, "offline", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, DeviceActivity.class));
     }
@@ -191,37 +199,24 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     public void onModelStart(Model model, ModelAngel.StartType type) {
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
-        int witch =-1;
-        if(model.getId() == ModelProvider.standard.getId()){
-            process.showWater();
+        int witch = -1;
+        if (model.getId() == ModelProvider.standard.getId()) {
             witch = R.id.working_model_standard;
-            process.setProgress(0);
-            process.setShowNumerical(true);
-
-        }
-        else if(model.getId()== ModelProvider.dryoff.getId()){
-            process.showWater();
+            progressInit(WaterWaveProgress.PROGRESS_MODEL, model);
+        } else if (model.getId() == ModelProvider.dryoff.getId()) {
             witch = R.id.working_model_dryoff;
-            process.setProgress(0);
-            process.setShowNumerical(true);
-
-        }
-        else if(model.getId()== ModelProvider.timingWash.getId()){
+            progressInit(WaterWaveProgress.PROGRESS_MODEL, model);
+        } else if (model.getId() == ModelProvider.timingWash.getId()) {
             witch = R.id.working_model_timingwash;
-            timingText.setVisibility(View.VISIBLE);
-            process.hideWater();
-            process.setShowNumerical(false);
-            process.setProgress(process.getMaxProgress());
-            timePicker.dismiss();
-            timingText.setText( String.format(getString(R.string.timing_text),model.getProgress().getRemain()) );
+            progressInit(WaterWaveProgress.TIMER_MODEL, model);
         }
 
         /**
          * 将侧滑菜单中的按钮全部禁用并将与当前正在进行的模式对于的按钮背景改变
          */
-        if(-1 != witch){
-            for (Button btn:modelBtns){
-                if (btn.getId() == witch){
+        if (-1 != witch) {
+            for (Button btn : modelBtns) {
+                if (btn.getId() == witch) {
                     btn.setBackgroundResource(R.drawable.round_btn_bg);
                 }
                 btn.setEnabled(false);
@@ -229,8 +224,6 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         }
 
         dismissDia();
-        runningModelName.setText(model.getName());
-        showProgress();
         super.onModelStart(model, type);
     }
 
@@ -240,11 +233,10 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         /**
          * 定时类型
          */
-        if(model.getDelay() >0){
-            process.setProgress((int) ((1-model.getProgress().getPercentage()) * process.getMaxProgress()));
+        if (model.getDelay() > 0) {
+            process.setProgress((int) ((1 - model.getProgress().getPercentage()) * process.getMaxProgress()));
             timingText.setText(String.format(getString(R.string.timing_text), model.getProgress().getRemain()));
-        }
-        else {
+        } else {
             process.setProgress((int) (model.getProgress().getPercentage() * process.getMaxProgress()));
         }
         super.onProcessing(model);
@@ -252,32 +244,31 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onFinish(Model model) {
-        int witch =-1;
-        if(model.getId() == ModelProvider.standard.getId()){
-            witch = R.id.working_model_standard;
-            process.setProgress(process.getMaxProgress());
+        /**
+         * 无延时立即启动类型
+         */
+        if (model.getId() == ModelProvider.dryoff.getId()
+                || model.getId() == ModelProvider.standard.getId()) {
 
-        }
-        else if(model.getId()== ModelProvider.dryoff.getId()){
-            witch = R.id.working_model_dryoff;
             process.setProgress(process.getMaxProgress());
         }
-        else if(model.getId()== ModelProvider.timingWash.getId()){
-            timingText.setVisibility(View.INVISIBLE);
-            witch = R.id.working_model_timingwash;
+        /**
+         * 延时启动类型
+         */
+        else if (model.getId() == ModelProvider.timingWash.getId()) {
             process.setProgress(0);
-            process.showWater();
-            process.setShowNumerical(true);
         }
 
-        if(-1 != witch){
-            for (Button btn:modelBtns){
-                if (btn.getId() == witch){
-                    btn.setBackgroundResource(R.drawable.tran);
-                }
+        /**
+         * 让侧滑菜单中的各按钮回复可点击状态
+         */
+        for (Button btn : modelBtns) {
+            if (!btn.isEnabled()) {
+                btn.setBackgroundResource(R.drawable.tran);
                 btn.setEnabled(true);
             }
         }
+
         super.onFinish(model);
     }
 
@@ -287,13 +278,16 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    public void faillOnStart(Model model,ModelAngel.StartFaillType type) {
+    public void faillOnStart(Model model, ModelAngel.StartFaillType type) {
         super.faillOnStart(model, type);
         process.setProgress(0);
         com.laughingFace.microWash.util.Log.i("xixi", "faillonstart" + type);
-        Toast.makeText(this,"fail on start "+type,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "fail on start " + type, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * 点击手机上的返回键时让当前activity退回到后台而不是直接销毁
+     */
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
@@ -301,18 +295,38 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         dismissDia();
     }
 
-    private void dismissDia(){
-        if(countDownDialog.isShowing()){
+    private void progressInit(int type, Model model) {
+        switch (type) {
+            case WaterWaveProgress.TIMER_MODEL:
+                timingText.setText(String.format(getString(R.string.timing_text), model.getProgress().getRemain()));
+                timingText.setVisibility(View.VISIBLE);
+                break;
+            case WaterWaveProgress.PROGRESS_MODEL:
+                timingText.setVisibility(View.INVISIBLE);
+                break;
+        }
+
+        runningModelName.setText(model.getName());
+        process.setModel(type);
+        process.setVisibility(View.VISIBLE);
+    }
+
+
+    private void dismissDia() {
+        if (countDownDialog.isShowing()) {
             countDownDialog.dismiss();
         }
-        if(slidingMenu.isShowing()){
+        if (slidingMenu.isShowing()) {
             slidingMenu.hide();
+        }
+        if (timePicker.isShowing()) {
+            timePicker.dismiss();
         }
     }
 
     /**
-     *
      * 更新Intent
+     *
      * @param intent intent
      */
     @Override
@@ -321,13 +335,22 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         setIntent(intent);
     }
 
-    private void hideProgress(){
+    private void hideProgress() {
         process.setVisibility(View.INVISIBLE);
         runningModelName.setVisibility(View.INVISIBLE);
+        timingText.setVisibility(View.INVISIBLE);
     }
-    private void showProgress(){
+
+    private void showProgress() {
+
         process.setVisibility(View.VISIBLE);
         runningModelName.setVisibility(View.VISIBLE);
+        /**
+         * 如果进度空间当前是倒计时模式则显示倒计时文本框
+         */
+        if (process.getModel() == WaterWaveProgress.TIMER_MODEL) {
+            timingText.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -339,10 +362,15 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         super.onDestroy();
     }
 
+    /**
+     *
+     * 侧滑菜单中按钮的点击事件监听
+     * @param v
+     */
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.working_model_standard:
                 readyModel = ModelProvider.standard;
                 break;

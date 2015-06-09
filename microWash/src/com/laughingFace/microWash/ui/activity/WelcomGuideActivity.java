@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.util.Settings;
 
 import java.util.ArrayList;
 
@@ -48,20 +49,17 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
      SharedPreferences.Editor editor;
 
     final String SETTING_NAME = "microWashSettings";
-    final String SETTING_ISFIRST = "isFirst";
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        preferences = getSharedPreferences(SETTING_NAME,MODE_APPEND);
-         editor = preferences.edit();
-        boolean isFirst = true;
-        isFirst = preferences.getBoolean(SETTING_ISFIRST,true);
-        Log.i("gg","isFirst:"+isFirst);
+
+
         /**
          * 不是第一次启动软件直接跳到设备界面
          */
-        if(!isFirst){
+        if(!Settings.isFirst()){
             startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
             this.finish();
             return;
@@ -113,8 +111,8 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
                 /**
                  * 保存软件设置-已经不是第一次启动了以后不再显示欢迎界面了
                  */
-                editor.putBoolean(SETTING_ISFIRST, false);
-                editor.commit();
+                Settings.setIsFirst(false);
+
             }
         });
 		//定义一个布局并设置参数
