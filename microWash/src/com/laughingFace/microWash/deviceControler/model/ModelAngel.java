@@ -13,7 +13,6 @@ import com.laughingFace.microWash.util.Log;
 public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListener{
 	private NetInterface net = NetProvider.getDefaultProduct();
 	private ModelStateListener modelStateListener;
-	private DeviceStateListener deviceStateListener;
 	private Model RunningModel;
 	private Timer hearbeatProgress;
 	private boolean isRunning = false;
@@ -26,15 +25,12 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	{
 		this.modelStateListener = modelStateListener;
 	}
-	public void setDeviceStateListener(DeviceStateListener deviceStateListener)
-	{
-		this.deviceStateListener = deviceStateListener;
-	}
+
 	public void startModel(Model model) {
 		if (model.getDelay() > 0)
 		{
 			setRunningModel(model);
-			modelStateListener.onModelStart(model,StartType.Normal);
+			modelStateListener.onModelStart(model, StartType.Normal);
 			return;
 		}
 		if (model.getStateCode() == CmdProvider.ModelStateCode.STOP)
@@ -112,14 +108,15 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 		}
         else if (CmdProvider.ModelStateCode.STOP == modelState) {
             if (isRunning) {
+				RunningModel.getProgress().setRemain(0);
                 modelStateListener.onFinish(RunningModel);
             } else {
-                Log.e("xixi", "don't know device state but state = 0");
+                Log.i("xixi", "don't know device state but state = 0");
             }
         }
         else
         {
-            Log.e("xixi","don't know device state but state = "+modelState);
+            Log.i("xixi","don't know device state but state = "+modelState);
         }
 		return cmd;
 	}

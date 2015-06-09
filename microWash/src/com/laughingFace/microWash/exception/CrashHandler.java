@@ -17,11 +17,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Looper;
 import android.widget.Toast;
-import com.laughingFace.microWash.util.FileSharePreference;
+import com.laughingFace.microWash.FileOptions.FileSharePreference;
 import com.laughingFace.microWash.util.Log;
 import com.umeng.analytics.MobclickAgent;
 
@@ -121,8 +120,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
         }.start();
 //        Log.i("haha",android.util.Log.getStackTraceString(ex));
-//        MobclickAgent.reportError(mContext,"aaaaaaaaaaaa");
        FileSharePreference.saveData(mContext, "errorLog","new question3\n" + Log.getLogBuffer());
+        MobclickAgent.reportError(mContext, ex);
 
 
         final Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());

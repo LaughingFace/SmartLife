@@ -7,6 +7,7 @@ import com.laughingFace.microWash.deviceControler.utils.Timer;
 import com.laughingFace.microWash.net.DeviceState;
 import com.laughingFace.microWash.net.NetInterface;
 import com.laughingFace.microWash.net.NetProvider;
+import com.laughingFace.microWash.util.Log;
 
 public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 	private DeviceStateListener deviceStateListener;
@@ -62,11 +63,16 @@ public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 		}
 		else
 		{
-			net.send(CmdProvider.Request.REQUEST_DEVICE);
+//			net.send(CmdProvider.Request.REQUEST_DEVICE);
+			net.send(CmdProvider.Model.REQUEST_STATE);
 			hate++;
+			if (hate == 2)
+			{
+				Log.e("error","hate = "+hate);
+			}
 			if (hate > 2)
 			{
-			deviceStateListener.offLine();
+				deviceStateListener.offLine();
 				hate = 0;
 			}
 		}

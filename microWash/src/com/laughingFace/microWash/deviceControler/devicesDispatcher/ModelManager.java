@@ -197,7 +197,7 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 
         if (model.getStateCode() ==  CmdProvider.ModelStateCode.STANDARD || model.getStateCode() ==  CmdProvider.ModelStateCode.DRYOFF)
         {
-            timer = new Timer(onTimingActionListener, 985);
+            timer = new Timer(onTimingActionListener, 99);
             timer.setInterval((int) (model.getProgress().getTotal()/timer.getRepeatCount())).start();
         }
     }
@@ -233,11 +233,12 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
 //            Thread.sleep(500);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
-//        }
+//        }dd
     }
 
     @Override
     public void onInterupt(Model model) {
+
         timer.stop();
         mHandler.obtainMessage(HANDLER_ON_INTERUPT,model).sendToTarget();
     }
@@ -245,6 +246,10 @@ public class ModelManager extends ModelAngel implements DeviceMonitor {
     @Override
     public void faillOnStart(Model model,StartFaillType type) {
         mHandler.obtainMessage(HANDLER_FAIL_ON_START,type).sendToTarget();
+    }
+
+    public Device getOnLineDevice() {
+        return onLineDevice;
     }
 
     public boolean isOnline() {

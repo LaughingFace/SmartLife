@@ -1,4 +1,4 @@
-package com.laughingFace.microWash.util;
+package com.laughingFace.microWash.FileOptions;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,12 +15,19 @@ public class FileSharePreference {
         SharedPreferences share = context.getSharedPreferences(filename,Context.MODE_APPEND);
         SharedPreferences.Editor edit = share.edit(); //编辑文件
         edit.putString("data", content);
-        edit.commit();  //保存数据信息
-
+        edit.commit();  //保存数据信s
     }
     public static String LoadData(Context context,String filename) {
         //指定操作的文件名称
         SharedPreferences share = context.getSharedPreferences(filename, Context.MODE_APPEND);
+
        return share.getString("data","");
+    }
+    public static void clearData(Context context,String filename)
+    {
+        SharedPreferences share = context.getSharedPreferences(filename,Context.MODE_APPEND);
+        SharedPreferences.Editor edit = share.edit(); //编辑文件
+        edit.clear();
+        edit.commit();
     }
 }
