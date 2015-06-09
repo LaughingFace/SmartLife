@@ -34,8 +34,8 @@ public class Settings {
         editor.commit();
     }
 
-    public static int getTimingModel() {
-        return preferences.getInt(TIMING_MODEL_NAME,-1);
+    public static long getTimingModelId() {
+        return preferences.getLong(TIMING_MODEL_NAME,-1);
     }
 
     public static long getTimingModelBegin() {
@@ -46,8 +46,8 @@ public class Settings {
         return preferences.getLong(TIMING_MODEL_HOW_LONG,-1);
     }
 
-    public static void setTimingModelId(int id) {
-        editor.putInt(TIMING_MODEL_NAME,id);
+    public static void setTimingModelId(long id) {
+        editor.putLong(TIMING_MODEL_NAME,id);
         editor.commit();
     }
 

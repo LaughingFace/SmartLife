@@ -15,9 +15,12 @@ import com.laughingFace.microWash.deviceControler.model.ModelProvider;
 import com.laughingFace.microWash.ui.plug.waterWaveProgress.WaterWaveProgress;
 import com.laughingFace.microWash.ui.view.SlidingMenu;
 import com.laughingFace.microWash.ui.view.WheelTimePicker;
+import com.laughingFace.microWash.util.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.laughingFace.microWash.deviceControler.model.ModelProvider.*;
 
 /**
  * Created by zihao on 15-5-25.
@@ -69,6 +72,9 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             public void onSelected(long minutes) {
                 readyModel.setDelay(minutes);
                 ModelManager.getInstance().startModel(readyModel);
+                Settings.setTimingModelId(readyModel.getId());
+                Settings.setTimingModelBegin(System.currentTimeMillis());
+                Settings.setTimingModelHowLong(readyModel.getDelay() * 1000);
                 readyModel = null;
             }
 
@@ -135,14 +141,14 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         switch (getIntent().getIntExtra(INTENT_MODEL, -1)) {
             case STANDARD:
                 Log.i("xixi", "----------- 标准模式触发 ----------------");
-                readyModel = ModelProvider.standard;
+                readyModel = standard;
                 break;
             case TIMINGWASH:
-                readyModel = ModelProvider.timingWash;
+                readyModel = timingWash;
                 Log.i("xixi", "----------- 定时清洗触发 ----------------");
                 break;
             case DRYOFF:
-                readyModel = ModelProvider.dryoff;
+                readyModel = dryoff;
                 Log.i("xixi", "----------- 烘干模式触发 ----------------");
                 break;
             /*case STERILIZATION:
@@ -167,12 +173,28 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
             onModelStart(ModelManager.getInstance().getRunningModel(), ModelAngel.StartType.Normal);
             return;
         }
+
+        /**
+         * 读取配置文件判断上次启动软件后是否设置了定时模式
+         */
+        if(Settings.getTimingModelId() == ModelProvider.timingWash.getId()){
+            if(Settings.getTimingModelBegin()+Settings.getTimingModelHowLong()
+                    > System.currentTimeMillis()){
+
+                ModelProvider.timingWash.setDelay((Settings.getTimingModelHowLong() -(System.currentTimeMillis()-Settings.getTimingModelBegin()))/ 1000);
+                ModelManager.getInstance().startModel(ModelProvider.timingWash);
+                readyModel = null;
+                return;
+
+            }
+        }
+
         if (null == readyModel) return;
         /**
          * 立即启动类型
          */
-        if (readyModel.getId() == ModelProvider.standard.getId()
-                || readyModel.getId() == ModelProvider.dryoff.getId()) {
+        if (readyModel.getId() == standard.getId()
+                || readyModel.getId() == dryoff.getId()) {
 
             /*** 启动倒计时*/
             countDownDialog.setTitle(readyModel.getName());
@@ -183,7 +205,7 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         /**
          * 定时启动类型
          */
-        else if (readyModel.getId() == ModelProvider.timingWash.getId()) {
+        else if (readyModel.getId() == timingWash.getId()) {
             timePicker.show();
         }
     }
@@ -200,13 +222,13 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
         Log.i("hehe", "----------- " + model.getName() + " 启动----------------");
         int witch = -1;
-        if (model.getId() == ModelProvider.standard.getId()) {
+        if (model.getId() == standard.getId()) {
             witch = R.id.working_model_standard;
             progressInit(WaterWaveProgress.PROGRESS_MODEL, model);
-        } else if (model.getId() == ModelProvider.dryoff.getId()) {
+        } else if (model.getId() == dryoff.getId()) {
             witch = R.id.working_model_dryoff;
             progressInit(WaterWaveProgress.PROGRESS_MODEL, model);
-        } else if (model.getId() == ModelProvider.timingWash.getId()) {
+        } else if (model.getId() == timingWash.getId()) {
             witch = R.id.working_model_timingwash;
             progressInit(WaterWaveProgress.TIMER_MODEL, model);
         }
@@ -247,15 +269,15 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
         /**
          * 无延时立即启动类型
          */
-        if (model.getId() == ModelProvider.dryoff.getId()
-                || model.getId() == ModelProvider.standard.getId()) {
+        if (model.getId() == dryoff.getId()
+                || model.getId() == standard.getId()) {
 
             process.setProgress(process.getMaxProgress());
         }
         /**
          * 延时启动类型
          */
-        else if (model.getId() == ModelProvider.timingWash.getId()) {
+        else if (model.getId() == timingWash.getId()) {
             process.setProgress(0);
         }
 
@@ -372,16 +394,16 @@ public class WorkingActivity extends BaseActivity implements View.OnClickListene
 
         switch (v.getId()) {
             case R.id.working_model_standard:
-                readyModel = ModelProvider.standard;
+                readyModel = standard;
                 break;
             case R.id.working_model_dryoff:
-                readyModel = ModelProvider.dryoff;
+                readyModel = dryoff;
                 break;
             /*case R.id.working_model_sterilization:
                 readyModel = ModelProvider.sterilization;
                 break;*/
             case R.id.working_model_timingwash:
-                readyModel = ModelProvider.timingWash;
+                readyModel = timingWash;
                 break;
         }
         prepareStart();
