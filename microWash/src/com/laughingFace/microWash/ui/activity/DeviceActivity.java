@@ -52,7 +52,9 @@ public class DeviceActivity extends BaseActivity{
                 }
                 Intent intent = new Intent(DeviceActivity.this, AddDeviceActivity.class);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                overridePendingTransition(R.anim.in_from_down,R.anim.out_to_up);
+                overridePendingTransition(R.anim.in_from_down, R.anim.out_to_up);
             }
         });
         tv_device.setOnLongClickListener(new View.OnLongClickListener() {
@@ -60,7 +62,9 @@ public class DeviceActivity extends BaseActivity{
             public boolean onLongClick(View v) {
                 Intent intent = new Intent(DeviceActivity.this, AddDeviceActivity.class);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                overridePendingTransition(R.anim.in_from_down,R.anim.out_to_up);
+                overridePendingTransition(R.anim.in_from_down, R.anim.out_to_up);
                 return true;
             }
         });
@@ -76,7 +80,7 @@ public class DeviceActivity extends BaseActivity{
     @Override
     public void offLine() {
         super.offLine();
-        tv_device.setText("add device");
+        tv_device.setText(getString(R.string.not_found_device));
         tv_device.setEnabled(true);
     }
 

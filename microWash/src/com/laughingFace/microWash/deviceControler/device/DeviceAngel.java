@@ -13,7 +13,7 @@ public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 	private DeviceStateListener deviceStateListener;
 	private NetInterface net = NetProvider.getDefaultProduct();
 	private Timer hearbeatRequest;
-	private int interval = 2000;
+	private int interval = 4000;
 	private boolean isMeat = false;
 	private int hate = 0;
 	public DeviceAngel()
@@ -25,6 +25,7 @@ public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 	public void onLineDevice(Device device) {
 		deviceStateListener.onLine(device);
 		isMeat = true;
+//		Log.i("error","new meat");
 	}
 
 	public void searchDevice() {
@@ -66,17 +67,18 @@ public class DeviceAngel implements DeviceState,Timer.OnTimingActionListener{
 //			net.send(CmdProvider.Request.REQUEST_DEVICE);
 			net.send(CmdProvider.Model.REQUEST_STATE);
 			hate++;
-			if (hate == 2)
+
+			if (hate > 4)
 			{
 				Log.e("error","hate = "+hate);
-			}
-			if (hate > 2)
-			{
 				deviceStateListener.offLine();
 				hate = 0;
 			}
 		}
 		isMeat = false;
+		Log.i("error ", "eat meat");
+
+
 	}
 
 	@Override

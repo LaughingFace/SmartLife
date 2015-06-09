@@ -105,7 +105,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     @Override
     public void onFinish(Model model) {
- Log.i("xixi","finsish");
+ Log.i("xixi", "finsish");
         Toast.makeText(this,model.getName()+" finish",Toast.LENGTH_SHORT).show();
         if(model.getId() == ModelProvider.standard.getId()){
             notification.contentView.setTextViewText(R.id.content_view_text1, model.getName()+"完成！");
@@ -121,6 +121,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
             notification.contentView.setTextViewText(R.id.content_view_text1, model.getName());
             notification.contentView.setProgressBar(R.id.content_view_progress, (int) model.getProgress().getTotal(), (int) model.getProgress().getRemain(), false);
         }
+        notificationManager.notify(0, notification);
     }
 
     @Override
@@ -170,5 +171,6 @@ public class BaseActivity extends Activity implements DeviceMonitor {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+
     }
 }

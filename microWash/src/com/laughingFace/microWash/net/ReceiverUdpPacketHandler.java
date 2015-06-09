@@ -1,6 +1,8 @@
 package com.laughingFace.microWash.net;
 
 import android.util.Log;
+import com.laughingFace.microWash.MyApplication;
+import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
 
 import java.net.DatagramPacket;
@@ -27,7 +29,7 @@ public class ReceiverUdpPacketHandler {
             if (null == device)
             {
                 device = new Device();
-                device.setName("wei xi");
+                device.setName(MyApplication.getContext().getString(R.string.device_name));
             }
             deviceState.onLineDevice(device);
             switch(data[1])

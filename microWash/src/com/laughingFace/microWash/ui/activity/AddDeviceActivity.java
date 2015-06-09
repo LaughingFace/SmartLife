@@ -71,13 +71,19 @@ public class AddDeviceActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        ModelManager.getInstance().stopAngel();
+//        ModelManager.getInstance().stopAngel();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ModelManager.getInstance().startAngel();
+//        ModelManager.getInstance().startAngel();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
     }
 

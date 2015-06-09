@@ -131,6 +131,7 @@
                       android:layout_height="match_parent"
                       android:background="@drawable/select_bg"
                       android:gravity="center"
+
                       android:textSize="22sp"
                       android:textColor="@color/main_text"
                     />
