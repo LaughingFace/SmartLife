@@ -48,15 +48,13 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         notification.icon= R.drawable.ic_launcher;
         notification.contentView = new RemoteViews(getPackageName(),R.layout.process_notification);
         notification.contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, WorkingActivity.class), 0);
-
-
     }
 
     @Override
     public void setContentView(int layoutResID) {
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); //设置标题栏为自定义模式
+      //  requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); //设置标题栏为自定义模式
         super.setContentView(layoutResID);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);// 设置标题栏的布局
+       // getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);// 设置标题栏的布局
         ModelManager.getInstance().setDeviceMonitor(this);
         modelManager = ModelManager.getInstance();
 
@@ -147,9 +145,9 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         super.onResume();
         MobclickAgent.onResume(this);
         modelManager.setDeviceMonitor(this);
-        initView();
+        //initView();
     }
-    public void initView()
+    /*public void initView()
     {
         btnConnect = (Button) findViewById(R.id.btn_connect);
         btnConnect.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +164,7 @@ public class BaseActivity extends Activity implements DeviceMonitor {
                 return true;
             }
         });
-    }
+    }*/
     @Override
     protected void onPause() {
         super.onPause();

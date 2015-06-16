@@ -29,6 +29,6 @@
         <item name="android:taskToFrontExitAnimation">@null</item>
         <item name="android:taskToBackEnterAnimation">@null</item>
         <item name="android:taskToBackExitAnimation">@null</item>
-
     </style>
+
 </resources>

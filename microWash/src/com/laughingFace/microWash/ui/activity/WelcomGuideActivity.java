@@ -54,19 +54,7 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
-        /**
-         * 不是第一次启动软件直接跳到设备界面
-         */
-        if(!Settings.isFirst()){
-            startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
-            this.finish();
-            return;
-        }
         setContentView(R.layout.welcom_guide);
-
-
 		initView();
 		initData();
 	}
@@ -108,10 +96,6 @@ public class WelcomGuideActivity extends Activity implements OnClickListener,OnP
             public void onClick(View v) {
                 startActivity(new Intent(WelcomGuideActivity.this, DeviceActivity.class));
                 WelcomGuideActivity.this.finish();
-                /**
-                 * 保存软件设置-已经不是第一次启动了以后不再显示欢迎界面了
-                 */
-                Settings.setIsFirst(false);
 
             }
         });

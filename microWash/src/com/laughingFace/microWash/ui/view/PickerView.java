@@ -14,8 +14,10 @@ import android.graphics.Paint.Style;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import com.laughingFace.microWash.util.Log;
 
 /**
  * 滚动选择器 更多详解见博客http://blog.csdn.net/zhongkejingwang/article/details/38513301
@@ -34,7 +36,7 @@ public class PickerView extends View
 	/**
 	 * 自动回滚到中间的速度
 	 */
-	public static final float SPEED = 2;
+	public static final float SPEED = 50;
 
 	private List<String> mDataList;
 	/**
@@ -63,6 +65,8 @@ public class PickerView extends View
 	private onSelectListener mSelectListener;
 	private Timer timer;
 	private MyTimerTask mTask;
+
+    GestureDetector mGestureDetector ;
 
 	Handler updateHandler = new Handler()
 	{
@@ -157,6 +161,16 @@ public class PickerView extends View
 		mPaint.setStyle(Style.FILL);
 		mPaint.setTextAlign(Align.CENTER);
 		mPaint.setColor(mColorText);
+
+        /*this.setLongClickable(true);//没这句的话不能触发滑动事件
+        mGestureDetector = new GestureDetector(getContext(),new MySimpleGL());
+
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mGestureDetector.onTouchEvent(event);
+            }
+        });*/
 	}
 
 	@Override
@@ -296,6 +310,7 @@ public class PickerView extends View
 		}
 		mTask = new MyTimerTask(updateHandler);
 		timer.schedule(mTask, 0, 10);
+
 	}
 
 	class MyTimerTask extends TimerTask
@@ -319,4 +334,47 @@ public class PickerView extends View
 	{
 		void onSelect(String text);
 	}
+
+
+    private class MySimpleGL extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return super.onDown(e);
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+
+            if (distanceY <0)
+            {
+                Log.i("ee","往下滑  disY:"+distanceY);
+                // 往下滑超过离开距离
+                moveTailToHead();
+                mMoveLen = mMoveLen - MARGIN_ALPHA * mMinTextSize;
+            } else if (distanceY >0)
+            {
+                Log.i("ee","往上滑  disY:"+distanceY);
+                // 往上滑超过离开距离
+                moveHeadToTail();
+                mMoveLen = mMoveLen + MARGIN_ALPHA * mMinTextSize;
+            }
+
+            invalidate();
+
+            Log.i("ee","disY:"+distanceY);
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+
+            return true;
+        }
+    }
+
 }

@@ -52,7 +52,6 @@
         </attr>
     </declare-styleable>
 
-
     <!--开关按钮-->
     <declare-styleable name="SwitchButton">
         <attr name="frameDrawable" format="reference|color"/>
@@ -77,4 +76,5 @@
         <attr name="progress" format="integer" />
         <attr name="maxProgress" format="integer" />
     </declare-styleable>
+
 </resources>

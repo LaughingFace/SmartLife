@@ -8,30 +8,32 @@
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
             android:name=".MyApplication">
 
+        <activity android:name=".ui.activity.ShortcutActivity"
+                  android:icon="@drawable/ic_launcher"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+                    <intent-filter>
+                    <action android:name="android.intent.action.MAIN"/>
+                    <category android:name="android.intent.category.LAUNCHER"/>
+                    </intent-filter>
+                </activity>
+
         <activity android:name=".ui.activity.DeviceActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:theme="@style/titlebar"
-                  android:screenOrientation="portrait"
-                >
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
+                  android:screenOrientation="portrait">
+
         </activity>
+
 
         <activity
                 android:name="com.laughingFace.microWash.ui.activity.WelcomGuideActivity"
                 android:label="@string/app_name"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                android:screenOrientation="portrait"
+                android:screenOrientation="portrait"/>
 
-                >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+
 
         <activity android:name=".PostmanTest.DeviceActivityTest"
                   android:label="@string/app_name"

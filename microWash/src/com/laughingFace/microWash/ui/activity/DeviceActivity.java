@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 import com.laughingFace.microWash.R;
 import com.laughingFace.microWash.deviceControler.device.Device;
@@ -25,7 +26,10 @@ public class DeviceActivity extends BaseActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE); //设置标题栏为自定义模式
         setContentView(R.layout.main);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);// 设置标题栏的布局
         Log.i("hehe", "DeviceActivity onCreate...");
 
         mainLogo = new MainLogo(findViewById(R.id.device_top_container));
