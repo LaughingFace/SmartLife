@@ -1,7 +1,11 @@
 package com.laughingFace.microWash.PostmanTest;
 
+import com.laughingFace.microWash.util.Log;
+
 import java.io.IOException;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Authro: mathcoder.
@@ -12,7 +16,7 @@ import java.net.*;
 public class WifiVM {
     public static void main(String[] args)
     {
-        WifiVM wifi = new WifiVM(7878);
+        WifiVM wifi = new WifiVM(4544);
         wifi.start();
     }
     boolean isSencond = false;
@@ -23,11 +27,11 @@ public class WifiVM {
     }
     int currentState = 0;
     byte progress = 0;
-    final byte Stand_Progress = 60;
-    final byte Dy_Progress = 100;
+    final byte Stand_Progress = 20;
+    final byte Dy_Progress = 30;
     DatagramPacket receivePacket;
     DatagramPacket sendPacket ;
-    String host = "";
+    String host = "255.255.255.255";
     int port = 0;
     public void start()
     {
@@ -39,20 +43,23 @@ public class WifiVM {
             while(true)
             {
                 socket.receive(receivePacket);
-                host = receivePacket.getAddress().getHostName();
+                host = InetAddress.getByName("255.255.255.255").getHostName();
                 port = receivePacket.getPort();
                 String str = new String(data).trim();
-                System.out.print("message ::::::::::::   " + str);
+                System.out.print("message ::::::::::::   " + str+"\n");
                 if(str.contains("{W:P}"))
                 {
                     String id = "{W:12435}";
                     byte[] bid = id.getBytes();
                     bid[3] = 1;
-                    sendPacket = new DatagramPacket(bid,9,receivePacket.getAddress(),receivePacket.getPort());
+                    sendPacket = new DatagramPacket(bid,9,InetAddress.getByName("255.255.255.255"),receivePacket.getPort());
+                    
                     socket.send(sendPacket);
                 }
                 else if (str.contains("{A:P}")){
-                    sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,receivePacket.getAddress(),receivePacket.getPort());
+                    System.out.println(new SimpleDateFormat("yyyy年MM月dd日    HH:mm:ss     ").format(new Date(System.currentTimeMillis()))+"send...\n");
+                    sendPacket = new DatagramPacket((str.replace('P',(char)(currentState+'0'))).getBytes(),(str.replace('P',(char)(currentState+'0'))).length(),InetAddress.getByName("255.255.255.255"),receivePacket.getPort());
+//                    sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,InetAddress.getByName("255.255.255.255"),receivePacket.getPort());
                     socket.send(sendPacket);
                 }
                 else if (str.length()>4 && str.getBytes()[1] == 'A')
@@ -152,7 +159,7 @@ public class WifiVM {
                     }
 
                     System.out.println(currentState);
-                    sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,receivePacket.getAddress(),receivePacket.getPort());
+                    sendPacket = new DatagramPacket(("{A:"+currentState+"}").getBytes(),5,InetAddress.getByName("255.255.255.255"),receivePacket.getPort());
                     socket.send(sendPacket);
                 }
                 else if (str.contains("{B:P"))
@@ -161,7 +168,7 @@ public class WifiVM {
                         continue;
                     System.out.println("current progress:"+progress);
                     byte[] progress2 = new byte[]{'{','B',':',0,progress,'}'};
-                    sendPacket = new DatagramPacket(progress2,progress2.length,receivePacket.getAddress(),receivePacket.getPort());
+                    sendPacket = new DatagramPacket(progress2,progress2.length,InetAddress.getByName("255.255.255.255"),receivePacket.getPort());
                     socket.send(sendPacket);
                 }
             }

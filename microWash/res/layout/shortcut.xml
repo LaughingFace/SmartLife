@@ -4,6 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/root"
+              android:background="#a0000000"
        >
 
     <LinearLayout android:layout_width="wrap_content"
@@ -14,7 +15,7 @@
                      android:layout_height="match_parent"
                      android:background="#a0ffffff"
                      android:layout_gravity="center"
-                     android:id="@+id/btnsh"
+                     android:id="@+id/menuCenter"
                 />
     </LinearLayout>
 

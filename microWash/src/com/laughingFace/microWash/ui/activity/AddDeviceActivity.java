@@ -16,7 +16,9 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.*;
 import android.widget.LinearLayout.LayoutParams;
+import com.laughingFace.microWash.FileOptions.HomeApCfg;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.deviceControler.device.Device;
 import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
 import com.laughingFace.microWash.net.NetworkManager;
 import com.laughingFace.microWash.net.UdpSocket;
@@ -52,7 +54,7 @@ public class AddDeviceActivity extends BaseActivity {
     private final int PROCESS_FINISH = 3;
     private boolean isConnecting = false;
     private boolean isHandler = false;
-
+    private  IoTManagerNative iot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,7 +345,7 @@ public class AddDeviceActivity extends BaseActivity {
 //                            Log.i("haha", "重新连接原ap");
 //                        }
 //                    }).start();
-                    IoTManagerNative iot = new IoTManagerNative();
+                     iot = new IoTManagerNative();
                     iot.InitSmartConnection();
 
                     String mac = "";
@@ -358,10 +360,16 @@ public class AddDeviceActivity extends BaseActivity {
                             etPwd.getText().toString()+",mac:"+mac);
                     iot.StartSmartConnection(etSsid.getText().toString(),
                             etPwd.getText().toString(), "", (byte) 0);
+                    HomeApCfg.SaveHomeAp(etSsid.getText().toString(),
+                            etPwd.getText().toString());
                     try {
-                        Thread.sleep(5000);
-                        iot.StopSmartConnection();
-                        wifiStateListener.OnConnected(PROCESS_FINISH);
+                        Thread.sleep(60000);
+                        if (!isSuccesful)
+                        {
+                            iot.StopSmartConnection();
+                            wifiStateListener.OnDisConnected(PROCESS_FINISH);
+                        }
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -400,4 +408,12 @@ public class AddDeviceActivity extends BaseActivity {
             }
         }
     };
+    boolean isSuccesful = false;
+    @Override
+    public void onLine(Device device) {
+        isSuccesful = true;
+        iot.StopSmartConnection();
+        wifiStateListener.OnConnected(PROCESS_FINISH);
+        super.onLine(device);
+    }
 }

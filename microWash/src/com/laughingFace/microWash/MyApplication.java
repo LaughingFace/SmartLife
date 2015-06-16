@@ -3,6 +3,7 @@ package com.laughingFace.microWash;
 import android.app.Application;
 import android.content.Context;
 import com.laughingFace.microWash.FileOptions.FileSharePreference;
+import com.laughingFace.microWash.FileOptions.HomeApCfg;
 import com.laughingFace.microWash.exception.CrashHandler;
 import com.laughingFace.microWash.util.Log;
 import com.umeng.analytics.MobclickAgent;

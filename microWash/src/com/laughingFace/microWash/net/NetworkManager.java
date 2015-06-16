@@ -20,8 +20,8 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     private ReceiverUdpPacketHandler udpHandler;
     private ModelRunningState modelStateListener;
     private boolean isRunning = true;
-    public int srcPort = 8989;
-    public int desPort = 7878;
+    public int srcPort = 7777;
+    public int desPort = 4544;
     public static final class Holder{
         public static final NetworkManager SINGLE = new NetworkManager();
     }
@@ -61,10 +61,10 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
 
     @Override
     public void send(final String data, boolean isAck) {
-        if (!isRunning)
-        {
-            return;
-        }
+//        if (!isRunning)
+//        {
+//            return;
+//        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -106,6 +106,7 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
             @Override
             public void run() {
                 udpSocket.send(data);
+                Log.i("error", "send" + new String(data));
             }
         }).start();
     }
@@ -122,12 +123,18 @@ public class NetworkManager implements NetInterface,UdpSocket.ReceiveListener {
     }
 
     @Override
-    public void Receive(DatagramPacket receivePacket) {
+    public void Receive(final DatagramPacket receivePacket) {
         if (!isRunning)
         {
             return;
         }
-        udpHandler.handler(receivePacket);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                udpHandler.handler(receivePacket);
+
+            }
+        }).start();
         if(IsDebug.Is)
             NetworkdInterfaceRetransmission.sendAppReceive(receivePacket.getData());
     }

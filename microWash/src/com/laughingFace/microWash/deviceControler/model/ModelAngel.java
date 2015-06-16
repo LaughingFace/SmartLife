@@ -14,7 +14,8 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	private NetInterface net = NetProvider.getDefaultProduct();
 	private ModelStateListener modelStateListener;
 	private Model RunningModel;
-	private Timer hearbeatProgress;
+	private Timer hearbeatProgress;//心跳请求进度.维护进度与设备一致.
+	private boolean isMeatHearbeatProgress = false;//心跳请求吃的肉.
 	private boolean isRunning = false;
 	private StartType startType = StartType.Normal;
 	public ModelAngel()
@@ -27,9 +28,9 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	}
 
 	public void startModel(Model model) {
+		setRunningModel(model);//RunningModel为就绪态.等待执行.
 		if (model.getDelay() > 0)
 		{
-			setRunningModel(model);
 			modelStateListener.onModelStart(model, StartType.Normal);
 			return;
 		}
@@ -38,7 +39,6 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 			net.send(model.getCmd());
 			return;
 		}
-		setRunningModel(model);
 		net.send(model.getCmd(),true);
 		requestState();
 	}
@@ -65,7 +65,8 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	@Override
 	public String onModelState(int modelState) {
         Log.i("xixi", "state:" + modelState);
-		String cmd =null;
+		String cmd =(null == RunningModel)?null:RunningModel.getCmd();
+		//数据发送可靠性策略,此状态标识数据发送超时
 		if (-1 == modelState)
 		{
 			modelStateListener.faillOnStart(RunningModel,StartFaillType.Timeout);
@@ -73,29 +74,25 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 			return null;
 		}
 
-		if (null != RunningModel)
-		{
-			cmd = RunningModel.getCmd();
-		}
-
         if (modelState ==  CmdProvider.ModelStateCode.STANDARD || modelState ==  CmdProvider.ModelStateCode.DRYOFF) {
-			if (isRunning)
+			if (isRunning && RunningModel.getStateCode() == modelState)
 			{
-				if (RunningModel.getStateCode() == modelState)
-				{
+					//模式本身在正常运行,并且设备模式没有改变,将不影响app运行.
 					return cmd;
-				}
 			}
-			if (null == RunningModel || RunningModel.getStateCode() != modelState) {
-					if (null == RunningModel){
-						startType = StartType.ACCIDENT;
-					}
-					else{
-						startType = StartType.OtherRunning;
-					}
+			else if  (null == RunningModel)
+			{
+				//主动接收到设备模式信息
+				startType = StartType.ACCIDENT;
+				setRunningModel(ModelProvider.getModelByStateCode(modelState));
+			}
+			else if (RunningModel.getStateCode() != modelState) {
+				//与设备模式信息不一直,以设备的模式状态为准
+				startType = StartType.OtherRunning;
                 setRunningModel(ModelProvider.getModelByStateCode(modelState));
 			}else
 			{
+				//正常启动模式
 				startType = StartType.Normal;
 			}
             startProgress();
@@ -124,6 +121,12 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	@Override
 	public void onProcessingState(int processing) {
 		Log.i("xixi","p:"+processing);
+		if (null == RunningModel)
+		{
+			requestState();//请求设备真实状态
+			return;//如果其他app在请求进度,可能没有加载模式,就回调此方法.
+		}
+		isMeatHearbeatProgress = true;//得到心跳肉.
 		if (null == hearbeatProgress)
 		{
 			Log.i("xixi","start progress");
@@ -132,7 +135,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 			RunningModel.getProgress().setTotal(processing*1000);
 			RunningModel.getProgress().setRemain(processing*1000);
 			modelStateListener.onModelStart(RunningModel, startType);
-            setRunning(true);
+            setRunning(true);//模式处于运行态
 			startType = StartType.Normal;
 		}
 		else
@@ -146,12 +149,7 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	{
 		net.send(RunningModel.getCmdRequestProgress());
 	}
-	private void endProgress()
-	{
-		Log.i("xixi","stop progress");
-		hearbeatProgress.stop();
-		hearbeatProgress = null;
-	}
+
 	private void endModel()
 	{
 		Log.i("xixi", "end model");
@@ -178,12 +176,12 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 	public void setRunningModel(Model model)
 	{
 		this.RunningModel = model;
-		Log.i("xixi","runningmodel state : "+(model == null?"null":"not null"));
+		Log.i("xixi","runningmodel state : "+(model == null?"模式就绪态 终止":"模式就绪态"));
 	}
 	public void setRunning(boolean isRunning)
 	{
 		this.isRunning = isRunning;
-		Log.i("xixi","running state : "+isRunning);
+		Log.i("xixi","running state : "+(isRunning?"模式运行态":"模式运行态 终止"));
 	}
 
 	@Override
@@ -192,14 +190,19 @@ public class ModelAngel implements ModelRunningState,Timer.OnTimingActionListene
 
 	@Override
 	public void action() {
-		net.send(RunningModel.getCmdRequestProgress());
+		if (!isMeatHearbeatProgress)
+		{
+			//如果没有肉请求得到一个肉.
+			net.send(RunningModel.getCmdRequestProgress());
+		}
+		isMeatHearbeatProgress = false;//吃肉.
 	}
 
 	@Override
 	public void after() {
 	}
 	public enum StartType {
-		Normal,OtherRunning,ACCIDENT,AlreadyRunning, Delay_Start
+		Normal,OtherRunning,ACCIDENT,AlreadyRunning
 	}
 	public enum StartFaillType{
 		Timeout,Offline

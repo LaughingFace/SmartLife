@@ -30,4 +30,5 @@ public class FileSharePreference {
         edit.clear();
         edit.apply();
     }
+
 }
