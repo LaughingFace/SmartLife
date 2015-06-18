@@ -207,6 +207,12 @@ public class ShortcutActivity extends BaseActivity {
          */
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
         Rect launcherBounds = getIntent().getSourceBounds();
+        if(null == launcherBounds){
+            //startActivity(new Intent(ShortcutActivity.this, WorkingActivity.class));
+            finish();
+            super.onResume();
+            return;
+        }
         layoutParams.width = launcherBounds.width();
         layoutParams.height = launcherBounds.width();
         layoutParams.leftMargin = launcherBounds.left;
@@ -224,6 +230,29 @@ public class ShortcutActivity extends BaseActivity {
                 circleMenu.toggle(circleMenu.isAnimated());
             }
         });
+
+        /**
+         * 如果当前已有模式正在运行则直接显示正在运行的模式进度信息
+         */
+        if (null != ModelManager.getInstance().getRunningModel()) {
+            onModelStart(ModelManager.getInstance().getRunningModel(), ModelAngel.StartType.Normal);
+            super.onResume();
+            return;
+        }
+
+        /**
+         * 读取配置文件判断上次启动软件后是否设置了定时模式
+         */
+        if(Settings.getTimingModelId() == ModelProvider.timingWash.getId()){
+            if(Settings.getTimingModelBegin()+Settings.getTimingModelHowLong()
+                    > System.currentTimeMillis()){
+
+                ModelProvider.timingWash.setDelay((Settings.getTimingModelHowLong() - (System.currentTimeMillis() - Settings.getTimingModelBegin())) / 1000);
+                ModelManager.getInstance().startModel(ModelProvider.timingWash);
+                super.onResume();
+                return;
+            }
+        }
 
         super.onResume();
     }
@@ -272,6 +301,7 @@ public class ShortcutActivity extends BaseActivity {
      */
     @Override
     protected void onNewIntent(Intent intent) {
+
         super.onNewIntent(intent);
         setIntent(intent);
     }
