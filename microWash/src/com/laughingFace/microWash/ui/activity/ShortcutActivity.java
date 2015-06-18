@@ -5,19 +5,30 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.os.Looper;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import com.laughingFace.microWash.R;
+import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager;
+import com.laughingFace.microWash.deviceControler.model.Model;
+import com.laughingFace.microWash.deviceControler.model.ModelAngel;
+import com.laughingFace.microWash.deviceControler.model.ModelProvider;
 import com.laughingFace.microWash.ui.plug.CircularFloatingActionMenu.FloatingActionMenu;
+import com.laughingFace.microWash.ui.plug.Kurt.Mbanje.FabButton.FabButton;
+import com.laughingFace.microWash.util.Log;
 import com.laughingFace.microWash.util.Settings;
 
 /**
  * Created by zihao on 15-6-15.
  */
 public class ShortcutActivity extends BaseActivity {
-    private View vMenuCenter = null;
+    //private View vMenuCenter = null;
     FloatingActionMenu circleMenu;
+    LinearLayout layout;
+    FabButton menuCenter;
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -37,34 +48,62 @@ public class ShortcutActivity extends BaseActivity {
             return;
         }
         setContentView(R.layout.shortcut);
-        /*
-        Button btn = (Button)findViewById(R.id.btnsh);
-        btn.layout(500,50,600,7000);*/
 
-        LinearLayout layoutt = (LinearLayout) findViewById(R.id.layout);
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layoutt.getLayoutParams();
-        Rect launcherBounds = getIntent().getSourceBounds();
-        if (null == launcherBounds) {
-            this.finish();
-        }
-        layoutParams.width = launcherBounds.width();
-        layoutParams.height = launcherBounds.width();
-        layoutParams.leftMargin = launcherBounds.left;
-        layoutParams.topMargin = launcherBounds.top - 50;
-        layoutt.setLayoutParams(layoutParams);
-        findViewById(R.id.root).setOnTouchListener(new View.OnTouchListener() {
+         layout = (LinearLayout) findViewById(R.id.layout);
+
+        findViewById(R.id.root).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
+                //  Toast.makeText(ShortcutActivity.this, "haha", Toast.LENGTH_LONG).show();
+                circleMenu.close(circleMenu.isAnimated());
 
-                ShortcutActivity.this.finish();
-                overridePendingTransition(R.anim.normal_anim,android.R.anim.fade_out);
-                return false;
+                ScaleAnimation animation = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                animation.setDuration(300);//设置动画持续时间
+                animation.setFillAfter(true);//动画执行完后停留在执行完的状态
+                menuCenter.startAnimation(animation);
+                animation.startNow();
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(final Animation animation) {
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Looper.prepare();
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                moveTaskToBack(true);
+                                Looper.loop();
+                            }
+                        }).start();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
         });
+
         initMenu();
     }
 
+    /**
+     * 快捷菜单
+     */
     private void initMenu() {
+        menuCenter = (FabButton)findViewById(R.id.menuCenter);
+
         ImageView iv1 = new ImageButton(this);
         ImageView iv2 = new ImageButton(this);
         ImageView iv3 = new ImageButton(this);
@@ -77,7 +116,14 @@ public class ShortcutActivity extends BaseActivity {
         iv2.setLayoutParams(tvParams);
         iv3.setLayoutParams(tvParams);
 
-        vMenuCenter = findViewById(R.id.menuCenter);
+//        vMenuCenter = findViewById(R.id.menuCenter);
+
+        ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(400);//设置动画持续时间
+        animation.setFillAfter(true);//动画执行完后停留在执行完的状态
+        menuCenter.startAnimation(animation);
+
         circleMenu = new FloatingActionMenu.Builder(this)
                 .setStartAngle(-150) // A whole circle!
                 .setEndAngle(-30)
@@ -85,13 +131,148 @@ public class ShortcutActivity extends BaseActivity {
                 .addSubActionView(iv3)
                 .addSubActionView(iv1)
                 .addSubActionView(iv2)
-                .attachTo(vMenuCenter)
+                .attachTo(menuCenter)
                 .build();
-        vMenuCenter.post(new Runnable() {
+
+        circleMenu.setActionViewClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ModelManager mm = ModelManager.getInstance();
+                if(mm.isOnline()&& null != mm.getRunningModel()){
+                    startActivity(new Intent(ShortcutActivity.this, WorkingActivity.class));
+                }else {
+                    startActivity(new Intent(ShortcutActivity.this, DeviceActivity.class));
+                }
+            }
+        });
+        menuCenter.post(new Runnable() {
             @Override
             public void run() {
                 circleMenu.toggle(circleMenu.isAnimated());
             }
         });
+    }
+
+    /**
+     * 返回home 而不是退出
+     */
+    @Override
+    public void onBackPressed() {
+
+        circleMenu.close(circleMenu.isAnimated());
+
+        ScaleAnimation animation = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(300);//设置动画持续时间
+        animation.setFillAfter(true);//动画执行完后停留在执行完的状态
+        menuCenter.startAnimation(animation);
+        animation.startNow();
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(final Animation animation) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Looper.prepare();
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        moveTaskToBack(true);
+                        Looper.loop();
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+
+        /**
+         * 计算弹出快捷菜单的位置和大小信息
+         */
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
+        Rect launcherBounds = getIntent().getSourceBounds();
+        layoutParams.width = launcherBounds.width();
+        layoutParams.height = launcherBounds.width();
+        layoutParams.leftMargin = launcherBounds.left;
+        layoutParams.topMargin = launcherBounds.top - 100;
+        layout.setLayoutParams(layoutParams);
+        ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(400);//设置动画持续时间
+        animation.setFillAfter(true);//动画执行完后停留在执行完的状态
+        menuCenter.startAnimation(animation);
+
+        menuCenter.post(new Runnable() {
+            @Override
+            public void run() {
+                circleMenu.toggle(circleMenu.isAnimated());
+            }
+        });
+
+        super.onResume();
+    }
+
+    @Override
+    public void onModelStart(Model model, ModelAngel.StartType type) {
+//        Log.i("xixi", "start" + model.getStateCode());
+        menuCenter.resetIcon();
+        menuCenter.showProgress(true);
+        menuCenter.setProgress(0);
+        super.onModelStart(model,type);
+    }
+
+    @Override
+    public void onProcessing(Model model) {
+//        Log.i("xixi", "processing-----" + model.getProgress().getPercentage());
+        menuCenter.setProgress(model.getProgress().getPercentage()*100);
+        super.onProcessing(model);
+    }
+
+    @Override
+    public void onFinish(Model model) {
+        menuCenter.setProgress(100);
+        super.onFinish(model);
+    }
+
+    @Override
+    public void onInterupt(Model model) {
+
+    }
+
+    @Override
+    public void faillOnStart(Model model,ModelAngel.StartFaillType type) {
+        Log.i("xixi","faillonstart"+type);
+        Toast.makeText(this,"fail on start "+type,Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+
+    /**
+     * 更新Intent
+     *
+     * @param intent intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

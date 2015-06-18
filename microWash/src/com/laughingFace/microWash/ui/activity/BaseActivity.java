@@ -60,14 +60,6 @@ public class BaseActivity extends Activity implements DeviceMonitor {
 
     }
 
-
-    @Override
-    public void onModelStart(Model model, ModelAngel.StartType type) {
-        Log.i("xixi", "start" + model.getStateCode());
-        Toast.makeText(this,"start:::"+type,Toast.LENGTH_SHORT).show();
-        notification.tickerText=model.getName();
-    }
-
     @Override
     public void onLine(Device device) {
         Log.i("xixi", "online");
@@ -80,6 +72,13 @@ public class BaseActivity extends Activity implements DeviceMonitor {
         Log.i("xixi", "offline");
         Toast.makeText(this,"offline",Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public void onModelStart(Model model, ModelAngel.StartType type) {
+        Log.i("xixi", "start" + model.getStateCode());
+        Toast.makeText(this,"start:::"+type,Toast.LENGTH_SHORT).show();
+        notification.tickerText=model.getName();
     }
 
     @Override

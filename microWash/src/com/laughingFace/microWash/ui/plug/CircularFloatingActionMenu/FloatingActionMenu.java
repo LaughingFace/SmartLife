@@ -521,6 +521,9 @@ public class FloatingActionMenu {
         @Override
         public void onClick(View v) {
             toggle(animated);
+            actionViewClickListener.onClick(v);
+
+
         }
     }
 
@@ -736,5 +739,10 @@ public class FloatingActionMenu {
 
     public void setAnimated(boolean animated) {
         this.animated = animated;
+    }
+
+    View.OnClickListener actionViewClickListener;
+    public void setActionViewClickListener( View.OnClickListener listener){
+        actionViewClickListener = listener;
     }
 }

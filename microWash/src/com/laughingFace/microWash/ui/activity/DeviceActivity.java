@@ -99,4 +99,17 @@ public class DeviceActivity extends BaseActivity{
         return instance;
     }
 
+    /**
+     * 返回home 而不是退出
+     */
+    @Override
+    public void onBackPressed() {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
+    }
+
 }
