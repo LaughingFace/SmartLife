@@ -379,6 +379,26 @@ public class FloatingActionMenu {
         return radius;
     }
 
+    public int getStartAngle() {
+        return startAngle;
+    }
+
+    public void setStartAngle(int startAngle) {
+        this.startAngle = startAngle;
+    }
+
+    public int getEndAngle() {
+        return endAngle;
+    }
+
+    public void setEndAngle(int endAngle) {
+        this.endAngle = endAngle;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
     /**
      * @return a reference to the sub action items list
      */

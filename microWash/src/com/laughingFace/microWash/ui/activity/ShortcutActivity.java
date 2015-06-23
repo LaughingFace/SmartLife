@@ -15,9 +15,11 @@ import com.laughingFace.microWash.deviceControler.devicesDispatcher.ModelManager
 import com.laughingFace.microWash.deviceControler.model.Model;
 import com.laughingFace.microWash.deviceControler.model.ModelAngel;
 import com.laughingFace.microWash.deviceControler.model.ModelProvider;
+import com.laughingFace.microWash.ui.activity.utils.ShorcutMenuDirection;
 import com.laughingFace.microWash.ui.plug.CircularFloatingActionMenu.FloatingActionMenu;
 import com.laughingFace.microWash.ui.plug.Kurt.Mbanje.FabButton.FabButton;
 import com.laughingFace.microWash.util.Log;
+import com.laughingFace.microWash.util.ScreenUtil;
 import com.laughingFace.microWash.util.Settings;
 
 /**
@@ -125,8 +127,6 @@ public class ShortcutActivity extends BaseActivity {
         menuCenter.startAnimation(animation);
 
         circleMenu = new FloatingActionMenu.Builder(this)
-                .setStartAngle(-150) // A whole circle!
-                .setEndAngle(-30)
                 .setRadius(getResources().getDimensionPixelSize(R.dimen.radius_large))
                 .addSubActionView(iv3)
                 .addSubActionView(iv1)
@@ -213,10 +213,11 @@ public class ShortcutActivity extends BaseActivity {
             super.onResume();
             return;
         }
+        ShorcutMenuDirection.setDirection(launcherBounds, circleMenu);
         layoutParams.width = launcherBounds.width();
         layoutParams.height = launcherBounds.width();
         layoutParams.leftMargin = launcherBounds.left;
-        layoutParams.topMargin = launcherBounds.top - 100;
+        layoutParams.topMargin = launcherBounds.top - ScreenUtil.getStatusHeight();
         layout.setLayoutParams(layoutParams);
         ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
